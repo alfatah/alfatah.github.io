@@ -1,0 +1,48 @@
+h1 {
+    font-size: 5.3vw;
+    font-weight: bold;
+    text-align: center;
+}
+
+h2 {
+    text-align: center;
+}
+
+.btn {
+    background-color: black;
+    border-color: #20c20e;
+}
+
+.btn:hover {
+    background-color: #20c20e;
+    border-color: black;
+    color: black;
+}
+
+.btn-select {
+    background-color: #20c20e;
+    border-color: black;
+    color: black;
+    font-family: 'Share Tech Mono', monospace;
+}
+
+.jumbotron {
+    text-align: center;
+    background-color: black;
+    padding-bottom: 0px;
+}
+
+body {
+    background-color: black;
+}
+
+.mantab-text {
+    text-align: center;
+    color: #20c20e;
+    font-family: 'Share Tech Mono', monospace;
+}
+
+.conditions-container {
+    padding-bottom: 20px;
+    padding-top: 0px;
+}
