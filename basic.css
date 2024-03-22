@@ -1,48 +1,61 @@
-h1 {
-    font-size: 5.3vw;
-    font-weight: bold;
-    text-align: center;
+/* General styles */
+body {
+    background-color: black;
+    margin: 0;
+    padding: 0;
+    font-family: 'Share Tech Mono', monospace;
+    color: #20c20e;
 }
 
+/* Header styles */
+h1 {
+    font-size: 5.3vw; /* Responsive font size */
+    font-weight: bold;
+    text-align: center;
+    margin: 20px 0; /* Add margin for better spacing */
+}
+
+/* Navigation styles */
 h2 {
     text-align: center;
 }
 
-.btn {
+/* Button styles */
+.btn, .btn-select {
     background-color: black;
-    border-color: #20c20e;
+    color: #20c20e;
+    border: 2px solid #20c20e;
+    padding: 10px 20px;
+    display: inline-block; /* Ensures buttons are displayed in-line */
+    text-decoration: none; /* Removes default underline */
+    margin: 10px; /* Adds margin between buttons */
+    border-radius: 5px; /* Adds rounded corners */
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s; /* Smooth transition effect */
 }
 
 .btn:hover {
     background-color: #20c20e;
-    border-color: black;
     color: black;
 }
 
-.btn-select {
-    background-color: #20c20e;
-    border-color: black;
-    color: black;
-    font-family: 'Share Tech Mono', monospace;
-}
-
+/* Jumbotron styles */
 .jumbotron {
     text-align: center;
     background-color: black;
-    padding-bottom: 0px;
+    padding-bottom: 20px; /* Add padding for better spacing */
 }
 
-body {
-    background-color: black;
-}
-
-.mantab-text {
-    text-align: center;
-    color: #20c20e;
-    font-family: 'Share Tech Mono', monospace;
-}
-
+/* Container for conditions */
 .conditions-container {
-    padding-bottom: 20px;
-    padding-top: 0px;
+    padding: 20px; /* Add padding for better spacing */
+}
+
+/* Adjustments for smaller screens */
+@media screen and (max-width: 768px) {
+    h1 {
+        font-size: 7vw; /* Increase font size for smaller screens */
+    }
+    .jumbotron {
+        padding-bottom: 40px; /* Increase padding for smaller screens */
+    }
 }
