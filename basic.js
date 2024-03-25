@@ -8,6 +8,7 @@ $(document).ready(function() {
             $("#ip-address").html("Your IP : " + ip.ip + "," + " " + ip.org + " " + ip.asn);
             $("#location-data").html(ip.latitude + "," + ip.longitude + " " + ip.city + ", " + ip.region + " " + ip.postal + " " + ip.country_name);
             $("#population").html("Population Country : " + ip.country_population + " ");
+            $("#currency_name").html("Currency : " + ip.currency_name + " ");
 
             // Get country code from IP data
             var countryCode = ip.country;
@@ -88,3 +89,5 @@ $(document).ready(function() {
     $("#current-time").html("Time : " + formattedTime);
     $("#current-day").html("Day : " + dayOfWeek);
 });
+
+
