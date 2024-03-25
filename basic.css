@@ -51,5 +51,5 @@ body {
  table {
     margin: 0 auto;
     border: 1px solid #20c20e;
-    
+    border-collapse: collapse;
 }
