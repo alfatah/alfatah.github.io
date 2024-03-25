@@ -46,3 +46,10 @@ body {
     padding-bottom: 20px;
     padding-top: 0px;
 }
+
+ /* Center the table horizontally */
+ table {
+    margin: 0 auto;
+    border: 1px solid #20c20e;
+    
+}
