@@ -14,6 +14,7 @@ $(document).ready(function() {
             getGDP(countryCode);
             
             getWeatherF(ip.latitude, ip.longitude); // Pass latitude and longitude to the weather function
+            displaySeason(); // Call function to display current season
         });
     }
     
@@ -40,6 +41,25 @@ $(document).ready(function() {
             $("#temperature").html("Temperature: " + temperature + "°C");
             $("#weather").html("Weather: " + weatherDescription);
         });
+    }
+
+    // Function to display current season
+    function displaySeason() {
+        var now = new Date();
+        var month = now.getMonth() + 1; // Months are zero indexed, so add 1
+        
+        var season;
+        if (month >= 3 && month <= 5) {
+            season = "Spring";
+        } else if (month >= 6 && month <= 8) {
+            season = "Summer";
+        } else if (month >= 9 && month <= 11) {
+            season = "Autumn";
+        } else {
+            season = "Winter";
+        }
+        
+        $("#season").html("Season: " + season);
     }
 
 });
