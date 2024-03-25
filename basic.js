@@ -38,8 +38,8 @@ $(document).ready(function() {
             var temperature = weatherData.main.temp;
             var weatherDescription = weatherData.weather[0].description;
 
-            $("#temperature").html("Temperature: " + temperature + "°C");
-            $("#weather").html("Weather: " + weatherDescription);
+            $("#temperature").html("Temperature : " + temperature + "°C");
+            $("#weather").html("Weather : " + weatherDescription);
         });
     }
 
@@ -59,7 +59,7 @@ $(document).ready(function() {
             season = "Winter";
         }
         
-        $("#season").html("Season: " + season);
+        $("#season").html("Season : " + season);
     }
 
 });
