@@ -63,3 +63,28 @@ $(document).ready(function() {
     }
 
 });
+
+  // JavaScript to display current date, time, and day
+  $(document).ready(function() {
+    // Get current date
+    var currentDate = new Date();
+    var day = currentDate.getDate();
+    var month = currentDate.getMonth() + 1; // Months are zero based
+    var year = currentDate.getFullYear();
+    var formattedDate = day + '/' + month + '/' + year;
+
+    // Get current time
+    var hours = currentDate.getHours();
+    var minutes = currentDate.getMinutes();
+    var seconds = currentDate.getSeconds();
+    var formattedTime = hours + ':' + minutes + ':' + seconds;
+
+    // Get current day
+    var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var dayOfWeek = days[currentDate.getDay()];
+
+    // Display date, time, and day
+    $("#current-date").html("Date : " + formattedDate);
+    $("#current-time").html("Time : " + formattedTime);
+    $("#current-day").html("Day : " + dayOfWeek);
+});
