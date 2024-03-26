@@ -92,3 +92,55 @@ $(document).ready(function() {
 
 
 
+// Function to get air quality data using latitude and longitude
+function getAirQuality(latitude, longitude) {
+    var apiKey = 'a01ca450-9bc6-4163-84dc-e37f7128b4f2'; // Ganti dengan kunci API AirVisual Anda
+    var apiUrl = `https://api.airvisual.com/v2/nearest_city?lat=${latitude}&lon=${longitude}&key=${apiKey}`;
+
+    $.getJSON(apiUrl, function(airData) {
+        var airQualityIndex = airData.data.current.pollution.aqius;
+        var airQualityCategory = getAirQualityCategory(airQualityIndex);
+
+        $("#air-quality-index").html("Air Quality Index : " + airQualityIndex);
+        $("#air-quality-category").html("Air Quality Category : " + airQualityCategory);
+    });
+}
+
+// Function to determine air quality category based on air quality index (AQI)
+function getAirQualityCategory(aqi) {
+    if (aqi <= 50) {
+        return "Good";
+    } else if (aqi <= 100) {
+        return "Moderate";
+    } else if (aqi <= 150) {
+        return "Unhealthy for Sensitive Groups";
+    } else if (aqi <= 200) {
+        return "Unhealthy";
+    } else if (aqi <= 300) {
+        return "Very Unhealthy";
+    } else {
+        return "Hazardous";
+    }
+}
+
+// Panggil fungsi getLocationF di dalam $(document).ready
+$(document).ready(function() {
+    getLocationF();
+});
+
+// Update getLocationF function to call getAirQuality
+function getLocationF() {
+    $.getJSON("https://ipapi.co/json/", function(ip) {
+        console.log(ip);
+
+        // Get air quality data using latitude and longitude
+        getAirQuality(ip.latitude, ip.longitude);
+
+        // Get country code from IP data
+        var countryCode = ip.country;
+        getGDP(countryCode);
+
+        getWeatherF(ip.latitude, ip.longitude); // Pass latitude and longitude to the weather function
+        displaySeason(); // Call function to display current season
+    });
+}
