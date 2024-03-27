@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Graph Harga Emas</title>
+  <!-- Masukkan pustaka Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body style="width: auto; height: auto;">
+  <!-- Tambahkan elemen canvas untuk menampilkan grafik -->
+  <canvas id="goldChart" width="800" height="400"></canvas>
+
+  <script>
+    // Data harga emas (dalam USD) per bulan
+    const goldPrices = {
+      labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      datasets: [{
+        label: 'Harga Emas (USD)',
+        data: [1850, 1800, 1780, 1750, 1720, 1750, 1800, 1820, 1850, 1900, 1920, 1950],
+        borderColor: 'gold',
+        fill: false
+      }]
+    };
+
+    // Konfigurasi grafik
+    const chartConfig = {
+      type: 'line',
+      data: goldPrices,
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: false
+            }
+          }]
+        }
+      }
+    };
+
+    // Membuat grafik menggunakan Chart.js
+    const ctx = document.getElementById('goldChart').getContext('2d');
+    new Chart(ctx, chartConfig);
+  </script>
+</body>
+</html>
