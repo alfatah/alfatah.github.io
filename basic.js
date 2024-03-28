@@ -169,3 +169,49 @@ function getLocationF() {
     });
 }
 
+
+function getStockIndices(countryCode) {
+    var apiKey = 'E3BTDBIGOBXVXPXU'; // Replace with your Alpha Vantage API key
+    var symbols = '^GSPC,^IXIC,^FTSE,^N225'; // S&P 500, NASDAQ, FTSE 100, Nikkei 225
+    var apiUrl = 'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbols=' + symbols + '&apikey=' + apiKey;
+
+    $.getJSON(apiUrl, function(data) {
+        console.log(data); // Log the API response to check its structure
+        var indicesHTML = '<h2>Stock Market Indices:</h2>';
+        
+        if (data && data['Global Quote']) {
+            // Loop through each index
+            $.each(data['Global Quote'], function(symbol, quote) {
+                var indexName;
+                switch (symbol) {
+                    case '^GSPC':
+                        indexName = 'S&P 500';
+                        break;
+                    case '^IXIC':
+                        indexName = 'NASDAQ';
+                        break;
+                    case '^FTSE':
+                        indexName = 'FTSE 100';
+                        break;
+                    case '^N225':
+                        indexName = 'Nikkei 225';
+                        break;
+                    default:
+                        indexName = symbol;
+                }
+                var indexValue = parseFloat(quote['05. price']).toFixed(2);
+                indicesHTML += '<p>' + indexName + ': ' + indexValue + '</p>';
+            });
+        } else {
+            indicesHTML += '<p>Error fetching stock market indices</p>';
+        }
+
+        $('#stock-indices').html(indicesHTML);
+    })
+    .fail(function(jqXHR, textStatus, errorThrown) {
+        console.error('Error fetching stock market indices:', errorThrown);
+        $('#stock-indices').html('<p>Error fetching stock market indices</p>');
+    });
+}
+
+
