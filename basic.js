@@ -170,9 +170,10 @@ function getLocationF() {
 }
 
 
+// Function to fetch world stock market indices based on country code
 function getStockIndices(countryCode) {
     var apiKey = 'E3BTDBIGOBXVXPXU'; // Replace with your Alpha Vantage API key
-    var symbols = '^GSPC,^IXIC,^FTSE,^N225'; // S&P 500, NASDAQ, FTSE 100, Nikkei 225
+    var symbols = '^GSPC,^IXIC,^FTSE,^N225,' + countryCode + '^JKSE'; // S&P 500, NASDAQ, FTSE 100, Nikkei 225, Indonesia Stock Exchange
     var apiUrl = 'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbols=' + symbols + '&apikey=' + apiKey;
 
     $.getJSON(apiUrl, function(data) {
@@ -196,6 +197,9 @@ function getStockIndices(countryCode) {
                     case '^N225':
                         indexName = 'Nikkei 225';
                         break;
+                    case countryCode + '^JKSE':
+                        indexName = 'Indonesia Stock Exchange';
+                        break;
                     default:
                         indexName = symbol;
                 }
@@ -213,5 +217,4 @@ function getStockIndices(countryCode) {
         $('#stock-indices').html('<p>Error fetching stock market indices</p>');
     });
 }
-
 
