@@ -169,38 +169,3 @@ function getLocationF() {
     });
 }
 
-// Function to fetch world stock market indices
-function getStockIndices(countryCode) {
-    var apiKey = 'E3BTDBIGOBXVXPXU'; // Replace with your Alpha Vantage API key
-    var symbols = '^GSPC,^IXIC,^FTSE,^N225'; // S&P 500, NASDAQ, FTSE 100, Nikkei 225
-    var apiUrl = 'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbols=' + symbols + '&apikey=' + apiKey;
-
-    $.getJSON(apiUrl, function(data) {
-        var indicesHTML = '<h2>Stock Market Indices:</h2>';
-        
-        // Loop through each index
-        $.each(data['Global Quote'], function(symbol, quote) {
-            var indexName;
-            switch (symbol) {
-                case '^GSPC':
-                    indexName = 'S&P 500';
-                    break;
-                case '^IXIC':
-                    indexName = 'NASDAQ';
-                    break;
-                case '^FTSE':
-                    indexName = 'FTSE 100';
-                    break;
-                case '^N225':
-                    indexName = 'Nikkei 225';
-                    break;
-                default:
-                    indexName = symbol;
-            }
-            var indexValue = parseFloat(quote['05. price']).toFixed(2);
-            indicesHTML += '<p>' + indexName + ': ' + indexValue + '</p>';
-        });
-
-        $('#stock-indices').html(indicesHTML);
-    });
-}
