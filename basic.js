@@ -154,6 +154,7 @@ function getLocationF() {
 function fetchGoldPrices() {
     var apiKey = 'goldapi-cnvkiwslub8f06p-io';
     var apiUrl = 'https://www.goldapi.io/api/XAU/USD';
+    var exchangeRateUrl = 'https://api.exchangerate-api.com/v4/latest/USD'; // URL untuk mendapatkan nilai tukar USD ke IDR
 
     $.ajax({
         url: apiUrl,
@@ -164,7 +165,23 @@ function fetchGoldPrices() {
         success: function(data) {
             var goldPricePerOunce = data.price;
             var goldPricePerGram = goldPricePerOunce / 31.1035; // Konversi ke per gram
-            $("#gold-price").html("Gold Price (per gram) : $" + goldPricePerGram.toFixed(2));
+            
+            // Memperbarui harga emas dalam dolar
+            $("#gold-price-usd").html("Gold Price (per gram, USD) : $" + goldPricePerGram.toFixed(2));
+            
+            // Mengambil nilai tukar dari USD ke IDR
+            $.ajax({
+                url: exchangeRateUrl,
+                type: 'GET',
+                success: function(rateData) {
+                    var exchangeRate = rateData.rates.IDR; // Mendapatkan nilai tukar dari USD ke IDR
+                    var goldPricePerGramIDR = goldPricePerGram * exchangeRate; // Mengonversi harga emas dari dolar ke rupiah
+                    $("#gold-price-idr").html("Gold Price (per gram, IDR) : Rp " + goldPricePerGramIDR.toFixed(0)); // Menampilkan harga emas dalam rupiah
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error fetching exchange rate:", error);
+                }
+            });
         },
         error: function(xhr, status, error) {
             console.error("Error fetching gold prices:", error);
