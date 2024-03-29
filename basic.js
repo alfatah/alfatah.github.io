@@ -24,16 +24,17 @@ $(document).ready(function() {
         });
     }
     
-    // Function to get GDP data of a country using country code
-    function getGDP(countryCode) {
-        $.getJSON(`https://api.worldbank.org/v2/country/${countryCode}/indicator/NY.GDP.MKTP.CD?format=json`, function(data) {
-            var gdp = "Not Available";
-            if (data[1] && data[1][0] && data[1][0].value) {
-                gdp = data[1][0].value;
-            }
-            $("#gdp").html("GDP Country : " + gdp);
-        });
-    }
+ // Function to get GDP data of a country using country code
+function getGDP(countryCode) {
+    $.getJSON(`https://api.worldbank.org/v2/country/${countryCode}/indicator/NY.GDP.MKTP.CD?format=json`, function(data) {
+        var gdp = "Not Available";
+        if (data[1] && data[1][0] && data[1][0].value) {
+            gdp = parseFloat(data[1][0].value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+        $("#gdp").html("GDP Country : $" + gdp);
+    });
+}
+
 
     // Function to get weather data using latitude and longitude
     function getWeatherF(latitude, longitude) {
@@ -176,7 +177,7 @@ function fetchGoldPrices() {
                 success: function(rateData) {
                     var exchangeRate = rateData.rates.IDR; // Mendapatkan nilai tukar dari USD ke IDR
                     var goldPricePerGramIDR = goldPricePerGram * exchangeRate; // Mengonversi harga emas dari dolar ke rupiah
-                    $("#gold-price-idr").html("Gold Price (per gram, IDR) : Rp " + goldPricePerGramIDR.toFixed(0)); // Menampilkan harga emas dalam rupiah
+                    $("#gold-price-idr").html("Gold Price (per gram, IDR) : Rp " + goldPricePerGramIDR.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".")); // Menampilkan harga emas dalam rupiah dengan titik nol
                 },
                 error: function(xhr, status, error) {
                     console.error("Error fetching exchange rate:", error);
