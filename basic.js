@@ -150,8 +150,8 @@ function getLocationF() {
     });
 }
 
-  // Function to fetch gold prices
-  function fetchGoldPrices() {
+// Function to fetch gold prices
+function fetchGoldPrices() {
     var apiKey = 'goldapi-cnvkiwslub8f06p-io';
     var apiUrl = 'https://www.goldapi.io/api/XAU/USD';
 
@@ -162,8 +162,9 @@ function getLocationF() {
             xhr.setRequestHeader('x-access-token', apiKey);
         },
         success: function(data) {
-            var goldPrice = data.price;
-            $("#gold-price").html("Gold Price (per ounce) : $" + goldPrice.toFixed(2));
+            var goldPricePerOunce = data.price;
+            var goldPricePerGram = goldPricePerOunce / 31.1035; // Konversi ke per gram
+            $("#gold-price").html("Gold Price (per gram) : $" + goldPricePerGram.toFixed(2));
         },
         error: function(xhr, status, error) {
             console.error("Error fetching gold prices:", error);
