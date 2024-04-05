@@ -33,7 +33,7 @@ Berikut adalah roadmap umum untuk pemrograman, yang dapat membantu Anda memahami
    - **Containerization dan Orkestrasi:** Pelajari Docker untuk kontainerisasi aplikasi dan Kubernetes untuk orkestrasi kontainer.
 
 ### 9. Pengembangan Karir:
-   - **Portofolio:** Bangun portofolio proyek yang kuat untuk menunjukkan keterampilan dan pengalaman Anda kepada calon majikan.
+   - **Portofolio:** Bangun portofolio proyek yang kuat untuk menunjukkan keterampilan dan pengalaman Anda kepada perusahaan.
    - **Networking:** Terlibat dalam komunitas pengembang, menghadiri konferensi, dan membangun jaringan profesional.
 
 ### 10. Pembaruan dan Perkembangan Terus Menerus:
