@@ -1,6 +1,6 @@
 Berikut adalah roadmap umum untuk pemrograman, yang dapat membantu Anda memahami dan mengembangkan keterampilan dalam bidang ini:
 
-### 1. Dasar-dasar Pemrograman:
+### 1. Dasar-dasar Pemprogra:
    - **Bahasa Pemrograman:** Pilih bahasa pemrograman untuk dipelajari, seperti Python, JavaScript, atau Java.
    - **Konsep Dasar:** Pelajari konsep dasar pemrograman seperti variabel, tipe data, operator, kontrol aliran, dan struktur data.
 
