@@ -23,16 +23,18 @@ $(document).ready(function() {
         });
     }
     
- // Function to get GDP data of a country using country code
+// Function to get GDP data of a country using country code
 function getGDP(countryCode) {
     $.getJSON(`https://api.worldbank.org/v2/country/${countryCode}/indicator/NY.GDP.MKTP.CD?format=json`, function(data) {
-        var gdp = "Not Available";
-        if (data[1] && data[1][0] && data[1][0].value) {
-            gdp = parseFloat(data[1][0].value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        if (data[1] && data[1].length > 0 && data[1][0].value) {
+            var gdp = parseFloat(data[1][0].value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            $("#gdp").html("GDP Country : $" + gdp);
+        } else {
+            $("#gdp").html("GDP Country : Not Available");
         }
-        $("#gdp").html("GDP Country : $" + gdp);
     });
 }
+
 
 
     // Function to get weather data using latitude and longitude
