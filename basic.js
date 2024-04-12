@@ -30,11 +30,10 @@ function getGDP(countryCode) {
             var gdp = parseFloat(data[1][0].value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             $("#gdp").html("GDP Country : $" + gdp);
         } else {
-            $("#gdp").html("GDP Country : Not Available");
+            $("#gdp").html("GDP Country : Data not available for this country");
         }
     });
 }
-
 
 
     // Function to get weather data using latitude and longitude
