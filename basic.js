@@ -23,8 +23,8 @@ $(document).ready(function() {
         });
     }
     
-// Function to get GDP data of a country using country code
-function getGDP(countryCode) {
+ // Function to get GDP data of a country using country code
+ function getGDP(countryCode) {
     $.getJSON(`https://api.worldbank.org/v2/country/${countryCode}/indicator/NY.GDP.MKTP.CD?format=json`, function(data) {
         if (data[1] && data[1].length > 0 && data[1][0].value) {
             var gdp = parseFloat(data[1][0].value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -34,7 +34,6 @@ function getGDP(countryCode) {
         }
     });
 }
-
 
     // Function to get weather data using latitude and longitude
     function getWeatherF(latitude, longitude) {
