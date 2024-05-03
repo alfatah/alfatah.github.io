@@ -57,14 +57,14 @@ $(document).ready(function() {
     var season;
     if (countryName === "Indonesia") {
         if (month >= 12 || month <= 2) {
-            season = "Musim Hujan";
+            season = "Rainy Season";
         } else if (month >= 6 && month <= 9) {
-            season = "Musim Kemarau";
+            season = "Dry Season";
         } else {
-            season = "Musim Pancaroba";
+            season = "Transition Season";
         }
-        $("#season").html("Season : " + season);
-    } else if (countryName === "Asia" || countryName === "Eropa") {
+        $("#season").html("Season: " + season);
+    } else if (countryName === "Asia" || countryName === "Europe") {
         if (month >= 3 && month <= 5) {
             season = "Spring";
         } else if (month >= 6 && month <= 8) {
@@ -74,7 +74,45 @@ $(document).ready(function() {
         } else {
             season = "Winter";
         }
-        $("#season").html("Season : " + season);
+        $("#season").html("Season: " + season);
+    } else if (countryName === "Africa") {
+        if (month >= 6 && month <= 8) {
+            season = "Winter";
+        } else if (month >= 9 && month <= 11) {
+            season = "Spring";
+        } else {
+            season = "Summer";
+        }
+        $("#season").html("Season: " + season);
+    } else if (countryName === "North America" || countryName === "South America") {
+        if (month >= 3 && month <= 5) {
+            season = "Spring";
+        } else if (month >= 6 && month <= 8) {
+            season = "Summer";
+        } else if (month >= 9 && month <= 11) {
+            season = "Autumn";
+        } else {
+            season = "Winter";
+        }
+        $("#season").html("Season: " + season);
+    } else if (countryName === "Australia" || countryName === "Oceania") {
+        if (month >= 3 && month <= 5) {
+            season = "Autumn";
+        } else if (month >= 6 && month <= 8) {
+            season = "Winter";
+        } else if (month >= 9 && month <= 11) {
+            season = "Spring";
+        } else {
+            season = "Summer";
+        }
+        $("#season").html("Season: " + season);
+    } else if (countryName === "Antarctica") {
+        if (month >= 3 && month <= 10) {
+            season = "Summer";
+        } else {
+            season = "Winter";
+        }
+        $("#season").html("Season: " + season);
     } else {
         $("#season").html("Unknown Location");
     }
