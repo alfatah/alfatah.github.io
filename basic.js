@@ -16,7 +16,7 @@ $(document).ready(function() {
             getGDP(countryCode);
             
             getWeatherF(ip.latitude, ip.longitude); // Pass latitude and longitude to the weather function
-            displaySeason(); // Call function to display current season
+            displaySeason(ip.country_name); // Call function to display current season based on country
 
              // Fetch gold prices
             fetchGoldPrices();
@@ -49,12 +49,22 @@ $(document).ready(function() {
         });
     }
 
-    // Function to display current season
-    function displaySeason() {
-        var now = new Date();
-        var month = now.getMonth() + 1; // Months are zero indexed, so add 1
-        
-        var season;
+  // Function to display current season based on location
+  function displaySeason(countryName) {
+    var now = new Date();
+    var month = now.getMonth() + 1; // Months are zero indexed, so add 1
+
+    var season;
+    if (countryName === "Indonesia") {
+        if (month >= 12 || month <= 2) {
+            season = "Rainy season";
+        } else if (month >= 6 && month <= 9) {
+            season = "Dry season";
+        } else {
+            season = "Transition season";
+        }
+        $("#season").html("Season : " + season);
+    } else if (countryName === "Asia" || countryName === "Eropa") {
         if (month >= 3 && month <= 5) {
             season = "Spring";
         } else if (month >= 6 && month <= 8) {
@@ -64,11 +74,13 @@ $(document).ready(function() {
         } else {
             season = "Winter";
         }
-        
         $("#season").html("Season : " + season);
+    } else {
+        $("#season").html("Unknown Location");
     }
-
+}
 });
+
 
   // JavaScript to display current date, time, and day
   $(document).ready(function() {
