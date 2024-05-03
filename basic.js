@@ -57,11 +57,11 @@ $(document).ready(function() {
     var season;
     if (countryName === "Indonesia") {
         if (month >= 12 || month <= 2) {
-            season = "Rainy season";
+            season = "Musim Hujan";
         } else if (month >= 6 && month <= 9) {
-            season = "Dry season";
+            season = "Musim Kemarau";
         } else {
-            season = "Transition season";
+            season = "Musim Pancaroba";
         }
         $("#season").html("Season : " + season);
     } else if (countryName === "Asia" || countryName === "Eropa") {
