@@ -59,7 +59,7 @@ $(document).ready(function() {
         if (month >= 12 || month <= 2) {
             season = "Rainy Season";
         } else if (month >= 6 && month <= 9) {
-            season = "Dry Season";
+            season = "Dry Season ";
         } else {
             season = "Transition Season";
         }
