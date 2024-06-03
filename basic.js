@@ -23,17 +23,28 @@ $(document).ready(function() {
         });
     }
     
- // Function to get GDP data of a country using country code
- function getGDP(countryCode) {
+// Function to get GDP data of a country using country code
+function getGDP(countryCode) {
+    // Get the current year and subtract one to get the previous year
+    var currentYear = new Date().getFullYear();
+    var previousYear = currentYear - 2;
+
     $.getJSON(`https://api.worldbank.org/v2/country/${countryCode}/indicator/NY.GDP.MKTP.CD?format=json`, function(data) {
-        if (data[1] && data[1].length > 0 && data[1][0].value) {
-            var gdp = parseFloat(data[1][0].value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            $("#gdp").html("GDP Country : $" + gdp);
+        if (data[1] && data[1].length > 0) {
+            // Find the GDP value for the previous year
+            var gdpData = data[1].find(entry => entry.date == previousYear);
+            if (gdpData && gdpData.value) {
+                var gdp = parseFloat(gdpData.value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                $("#gdp").html(`GDP Country (${previousYear}) : $${gdp}`);
+            } else {
+                $("#gdp").html(`GDP Country (${previousYear}) : Data not available for this country`);
+            }
         } else {
-            $("#gdp").html("GDP Country : Data not available for this country");
+            $("#gdp").html(`GDP Country (${previousYear}) : Data not available for this country`);
         }
     });
 }
+
 
     // Function to get weather data using latitude and longitude
     function getWeatherF(latitude, longitude) {
