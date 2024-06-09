@@ -54,4 +54,9 @@ body {
     border-collapse: collapse;
 }
 
-
+.kotak {
+    border: 2px solid #20c20e;
+    padding: 10px;
+    width: 290px;
+    margin: 20px;
+}
