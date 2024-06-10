@@ -1,3 +1,5 @@
+/* Base styles */
+
 h1 {
     font-size: 5.3vw;
     font-weight: bold;
@@ -47,8 +49,8 @@ body {
     padding-top: 0px;
 }
 
- /* Center the table horizontally */
- table {
+/* Center the table horizontally */
+table {
     margin: 0 auto;
     border: 1px solid #20c20e;
     border-collapse: collapse;
@@ -59,4 +61,48 @@ body {
     padding: 10px;
     width: 290px;
     margin: 20px;
+}
+
+/* Responsive styles */
+
+/* Small devices (phones, 600px and down) */
+@media (max-width: 600px) {
+    h1 {
+        font-size: 7vw; /* Adjusted font size for smaller screens */
+    }
+    
+    .kotak {
+        width: 90%; /* Adjusted width for smaller screens */
+        margin: 10px;
+    }
+
+    .btn, .btn-select {
+        width: 90%; /* Full width for buttons on small screens */
+        padding: 10px;
+    }
+    
+    .jumbotron {
+        padding: 20px; /* Adjusted padding for better spacing */
+    }
+}
+
+/* Medium devices (tablets, 768px and down) */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 6vw; /* Slightly larger font size for tablets */
+    }
+    
+    .kotak {
+        width: 80%; /* Adjusted width for tablets */
+        margin: 15px;
+    }
+
+    .btn, .btn-select {
+        width: 80%; /* Adjusted width for buttons on tablets */
+        padding: 12px;
+    }
+    
+    .jumbotron {
+        padding: 30px; /* Adjusted padding for better spacing */
+    }
 }
