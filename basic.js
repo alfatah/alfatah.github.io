@@ -253,7 +253,6 @@ function fetchGoldPrices() {
 
 ////////////////////////////////////////////////////////////////////////////
 
-
 function fetchEarthquakeData(latitude, longitude, userCountryName) {
     const usgsApiUrl = `https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson`;
     const bmkgApiUrl = `https://data.bmkg.go.id/DataMKG/TEWS/autogempa.xml`;
