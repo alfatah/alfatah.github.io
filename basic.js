@@ -21,12 +21,22 @@ $(document).ready(function() {
              // Fetch gold prices
             fetchGoldPrices();
 
-              // Fetch earthquake data
-            fetchEarthquakeData(ip.latitude, ip.longitude);
+            // Fetch earthquake data
+            fetchEarthquakeData(ip.latitude, ip.longitude, ip.country_name);
+
+            // Get air quality data using latitude and longitude
+             getAirQuality(ip.latitude, ip.longitude);
+
+            // Get country code from IP data
+            var countryCode = ip.country;
+            getGDP(countryCode);
+
         });
     }
         });
-    }
+
+
+////////////////////////////////////////////////////////////////////////////
     
 // Function to get GDP data of a country using country code
 function getGDP(countryCode) {
@@ -50,6 +60,7 @@ function getGDP(countryCode) {
     });
 }
 
+////////////////////////////////////////////////////////////////////////////
 
     // Function to get weather data using latitude and longitude
     function getWeatherF(latitude, longitude) {
@@ -133,7 +144,6 @@ function getGDP(countryCode) {
         $("#season").html("Unknown Location");
     }
 }
-});
 
 
   // JavaScript to display current date, time, and day
@@ -161,7 +171,7 @@ function getGDP(countryCode) {
     $("#current-day").html("Day : " + dayOfWeek);
 });
 
-
+////////////////////////////////////////////////////////////////////////////
 
 // Function to get air quality data using latitude and longitude
 function getAirQuality(latitude, longitude) {
@@ -199,22 +209,8 @@ $(document).ready(function() {
     getLocationF();
 });
 
-// Update getLocationF function to call getAirQuality
-function getLocationF() {
-    $.getJSON("https://ipapi.co/json/", function(ip) {
-        console.log(ip);
 
-        // Get air quality data using latitude and longitude
-        getAirQuality(ip.latitude, ip.longitude);
-
-        // Get country code from IP data
-        var countryCode = ip.country;
-        getGDP(countryCode);
-
-        getWeatherF(ip.latitude, ip.longitude); // Pass latitude and longitude to the weather function
-        displaySeason(); // Call function to display current season
-    });
-}
+////////////////////////////////////////////////////////////////////////////
 
 // Function to fetch gold prices
 function fetchGoldPrices() {
@@ -255,39 +251,94 @@ function fetchGoldPrices() {
     });
 }
 
+////////////////////////////////////////////////////////////////////////////
 
-function fetchEarthquakeData(latitude, longitude) {
-    const apiUrl = `https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson`;
 
-    $.get(apiUrl, function(data) {
-        displayEarthquakeData(data, latitude, longitude);
+function fetchEarthquakeData(latitude, longitude, userCountryName) {
+    const usgsApiUrl = `https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson`;
+    const bmkgApiUrl = `https://data.bmkg.go.id/DataMKG/TEWS/autogempa.xml`;
+
+    // Fetch USGS data
+    $.get(usgsApiUrl, function(usgsData) {
+        // Fetch BMKG data
+        $.ajax({
+            url: bmkgApiUrl,
+            method: 'GET',
+            dataType: 'xml',
+            success: function(bmkgData) {
+                displayEarthquakeData(usgsData, bmkgData, latitude, longitude, userCountryName);
+            }
+        });
     });
 }
 
-function displayEarthquakeData(data, latitude, longitude) {
-    const earthquakes = data.features;
-    let earthquakeHtml = '<div class="list-group">';
-    
-    earthquakes.forEach(function(earthquake) {
-        const place = earthquake.properties.place;
-        const magnitude = earthquake.properties.mag;
-        const time = new Date(earthquake.properties.time).toLocaleString();
-        const coordinates = earthquake.geometry.coordinates;
-        const distance = calculateDistance(latitude, longitude, coordinates[1], coordinates[0]);
+function displayEarthquakeData(usgsData, bmkgData, latitude, longitude, userCountryName) {
+    const usgsEarthquakes = usgsData.features;
 
-        earthquakeHtml += `
-            <a href="${earthquake.properties.url}" target="_blank" class="list-group-item list-group-item-action flex-column align-items-start">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Magnitude: ${magnitude}</h5>
-                    <small>${time}</small>
-                </div>
-                <p class="mb-1">${place}</p>
-                <small>Distance: ${distance.toFixed(2)} km</small>
-            </a>`;
+    // Parse BMKG XML data
+    const bmkgEarthquakes = [];
+    $(bmkgData).find('gempa').each(function() {
+        const time = $(this).find('DateTime').text();
+        const magnitude = parseFloat($(this).find('Magnitude').text());
+        const coordinates = [
+            parseFloat($(this).find('Lintang').text().replace(' LS', '')) * (($(this).find('Lintang').text().includes('LS')) ? -1 : 1),
+            parseFloat($(this).find('Bujur').text().replace(' BT', '')) * (($(this).find('Bujur').text().includes('BT')) ? -1 : 1)
+        ];
+        const place = $(this).find('Wilayah').text();
+
+        bmkgEarthquakes.push({
+            time: new Date(time).getTime(),
+            magnitude: magnitude,
+            coordinates: coordinates,
+            place: place,
+            source: 'BMKG'
+        });
     });
 
-    earthquakeHtml += '</div>';
+    // Combine and sort by time
+    const combinedEarthquakes = usgsEarthquakes.map(eq => ({
+        time: eq.properties.time,
+        magnitude: eq.properties.mag,
+        coordinates: eq.geometry.coordinates,
+        place: eq.properties.place,
+        source: 'USGS'
+    })).concat(bmkgEarthquakes).sort((a, b) => b.time - a.time);
+
+    if (combinedEarthquakes.length === 0) {
+        $('#earthquake-data').html('<p>No recent earthquakes found.</p>');
+        return;
+    }
+
+    // Find the most recent earthquake
+    const latestEarthquake = combinedEarthquakes[0];
+
+    const place = latestEarthquake.place;
+    const magnitude = latestEarthquake.magnitude;
+    const time = new Date(latestEarthquake.time).toLocaleString();
+    const coordinates = latestEarthquake.coordinates;
+    const distance = calculateDistance(latitude, longitude, coordinates[0], coordinates[1]);
+    const countryName = (latestEarthquake.source === 'USGS') ? extractCountryFromPlace(place) : userCountryName;
+
+    const earthquakeHtml = `
+        <a class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+                <h3>Earthquake :</h3>
+                <small class="mb-1">Magnitude: ${magnitude}</small>
+                <small>${time}</small>
+            </div>
+            <small class="mb-1">${place}</small>
+            <small>Distance: ${distance.toFixed(2)} km</small><br>
+            <small>Country: ${countryName}</small><br>
+            <small>Source: ${latestEarthquake.source}</small>
+        </a>`;
+
     $('#earthquake-data').html(earthquakeHtml);
+}
+
+function extractCountryFromPlace(place) {
+    // Extract country from the place string. This is a simple heuristic and might need improvement.
+    const parts = place.split(',');
+    return parts.length > 1 ? parts[parts.length - 1].trim() : 'Unknown';
 }
 
 function calculateDistance(lat1, lon1, lat2, lon2) {
@@ -299,9 +350,4 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
         Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
         (1 - Math.cos(dLon))/2;
     return R * 2 * Math.asin(Math.sqrt(a));
-    }
-
-    });
-
 }
-
