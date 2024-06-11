@@ -21,8 +21,10 @@ $(document).ready(function() {
              // Fetch gold prices
             fetchGoldPrices();
 
-             // Fetch stock index
-             getStockIndex(countryCode);
+              // Fetch earthquake data
+            fetchEarthquakeData(ip.latitude, ip.longitude);
+        });
+    }
         });
     }
     
@@ -253,4 +255,53 @@ function fetchGoldPrices() {
     });
 }
 
+
+function fetchEarthquakeData(latitude, longitude) {
+    const apiUrl = `https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson`;
+
+    $.get(apiUrl, function(data) {
+        displayEarthquakeData(data, latitude, longitude);
+    });
+}
+
+function displayEarthquakeData(data, latitude, longitude) {
+    const earthquakes = data.features;
+    let earthquakeHtml = '<div class="list-group">';
+    
+    earthquakes.forEach(function(earthquake) {
+        const place = earthquake.properties.place;
+        const magnitude = earthquake.properties.mag;
+        const time = new Date(earthquake.properties.time).toLocaleString();
+        const coordinates = earthquake.geometry.coordinates;
+        const distance = calculateDistance(latitude, longitude, coordinates[1], coordinates[0]);
+
+        earthquakeHtml += `
+            <a href="${earthquake.properties.url}" target="_blank" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">Magnitude: ${magnitude}</h5>
+                    <small>${time}</small>
+                </div>
+                <p class="mb-1">${place}</p>
+                <small>Distance: ${distance.toFixed(2)} km</small>
+            </a>`;
+    });
+
+    earthquakeHtml += '</div>';
+    $('#earthquake-data').html(earthquakeHtml);
+}
+
+function calculateDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371; // Radius of the Earth in kilometers
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = 
+        0.5 - Math.cos(dLat)/2 + 
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+        (1 - Math.cos(dLon))/2;
+    return R * 2 * Math.asin(Math.sqrt(a));
+    }
+
+    });
+
+}
 
