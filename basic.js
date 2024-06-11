@@ -351,3 +351,5 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
         (1 - Math.cos(dLon))/2;
     return R * 2 * Math.asin(Math.sqrt(a));
 }
+
+////////////////////////////////////////////////////////////////////////////
