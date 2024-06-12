@@ -62,7 +62,11 @@ function getGDP(countryCode) {
 
 ////////////////////////////////////////////////////////////////////////////
 
+<<<<<<< Updated upstream
    // Function to get weather data using latitude and longitude
+=======
+// Function to get weather data using latitude and longitude
+>>>>>>> Stashed changes
 function getWeatherF(latitude, longitude) {
     var apiKey = '74cc8a3c199f63bb2998825eb67ca8db'; // Replace 'YOUR_WEATHER_API_KEY' with your actual API key
     var apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
@@ -99,9 +103,13 @@ function getCategory(temperature) {
     }
 }
 
+<<<<<<< Updated upstream
 
 
     ////////////////////////////////////////////////////////////////////////////
+=======
+////////////////////////////////////////////////////////////////////////////
+>>>>>>> Stashed changes
 
   // Function to display current season based on location
   function displaySeason(countryName) {
