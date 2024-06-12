@@ -283,25 +283,32 @@ function fetchGoldPrices() {
 function fetchEarthquakeData(latitude, longitude, userCountryName) {
     const usgsApiUrl = `https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson`;
     const bmkgApiUrl = `https://data.bmkg.go.id/DataMKG/TEWS/autogempa.xml`;
+    const emscApiUrl = `https://www.emsc-csem.org/service/rss/rss.php`;
+    const jmaApiUrl = `https://www.jma.go.jp/en/quake/quake_singendo.xml`;
+    const gaApiUrl = `https://earthquakes.ga.gov.au/services/event/quake_details.php`; // Replace with actual URL
+    const geofonApiUrl = `https://geofon.gfz-potsdam.de/eqinfo/list.php`;
 
-    // Fetch USGS data
-    $.get(usgsApiUrl, function(usgsData) {
-        // Fetch BMKG data
-        $.ajax({
-            url: bmkgApiUrl,
-            method: 'GET',
-            dataType: 'xml',
-            success: function(bmkgData) {
-                displayEarthquakeData(usgsData, bmkgData, latitude, longitude, userCountryName);
-            }
-        });
+    $.when(
+        $.get(usgsApiUrl),
+        $.ajax({ url: bmkgApiUrl, method: 'GET', dataType: 'xml' }),
+        $.ajax({ url: emscApiUrl, method: 'GET', dataType: 'xml' }),
+        $.ajax({ url: jmaApiUrl, method: 'GET', dataType: 'xml' }),
+        $.get(gaApiUrl),
+        $.get(geofonApiUrl)
+    ).done(function(usgsData, bmkgData, emscData, jmaData, gaData, geofonData) {
+        displayEarthquakeData(usgsData[0], bmkgData[0], emscData[0], jmaData[0], gaData[0], geofonData[0], latitude, longitude, userCountryName);
     });
 }
 
-function displayEarthquakeData(usgsData, bmkgData, latitude, longitude, userCountryName) {
-    const usgsEarthquakes = usgsData.features;
+function displayEarthquakeData(usgsData, bmkgData, emscData, jmaData, gaData, geofonData, latitude, longitude, userCountryName) {
+    const usgsEarthquakes = usgsData.features.map(eq => ({
+        time: eq.properties.time,
+        magnitude: eq.properties.mag,
+        coordinates: [eq.geometry.coordinates[1], eq.geometry.coordinates[0]],
+        place: eq.properties.place,
+        source: 'USGS'
+    }));
 
-    // Parse BMKG XML data
     const bmkgEarthquakes = [];
     $(bmkgData).find('gempa').each(function() {
         const time = $(this).find('DateTime').text();
@@ -321,23 +328,19 @@ function displayEarthquakeData(usgsData, bmkgData, latitude, longitude, userCoun
         });
     });
 
-    // Combine and sort by time
-    const combinedEarthquakes = usgsEarthquakes.map(eq => ({
-        time: eq.properties.time,
-        magnitude: eq.properties.mag,
-        coordinates: eq.geometry.coordinates,
-        place: eq.properties.place,
-        source: 'USGS'
-    })).concat(bmkgEarthquakes).sort((a, b) => b.time - a.time);
+    const emscEarthquakes = parseEmscData(emscData);
+    const jmaEarthquakes = parseJmaData(jmaData);
+    const gaEarthquakes = parseGaData(gaData);
+    const geofonEarthquakes = parseGeofonData(geofonData);
+
+    const combinedEarthquakes = usgsEarthquakes.concat(bmkgEarthquakes, emscEarthquakes, jmaEarthquakes, gaEarthquakes, geofonEarthquakes).sort((a, b) => b.time - a.time);
 
     if (combinedEarthquakes.length === 0) {
         $('#earthquake-data').html('<p>No recent earthquakes found.</p>');
         return;
     }
 
-    // Find the most recent earthquake
     const latestEarthquake = combinedEarthquakes[0];
-
     const place = latestEarthquake.place;
     const magnitude = latestEarthquake.magnitude;
     const time = new Date(latestEarthquake.time).toLocaleString();
@@ -361,8 +364,101 @@ function displayEarthquakeData(usgsData, bmkgData, latitude, longitude, userCoun
     $('#earthquake-data').html(earthquakeHtml);
 }
 
+function parseEmscData(data) {
+    const earthquakes = [];
+    $(data).find('item').each(function() {
+        const time = $(this).find('pubDate').text();
+        const description = $(this).find('description').text();
+        const magnitudeMatch = description.match(/Magnitude ([0-9.]+)/);
+        const latitudeMatch = description.match(/Latitude ([0-9.]+)/);
+        const longitudeMatch = description.match(/Longitude ([0-9.]+)/);
+        const place = $(this).find('title').text();
+
+        if (magnitudeMatch && latitudeMatch && longitudeMatch) {
+            const magnitude = parseFloat(magnitudeMatch[1]);
+            const latitude = parseFloat(latitudeMatch[1]);
+            const longitude = parseFloat(longitudeMatch[1]);
+
+            earthquakes.push({
+                time: new Date(time).getTime(),
+                magnitude: magnitude,
+                coordinates: [latitude, longitude],
+                place: place,
+                source: 'EMSC'
+            });
+        }
+    });
+    return earthquakes;
+}
+
+function parseJmaData(data) {
+    const earthquakes = [];
+    $(data).find('item').each(function() {
+        const time = $(this).find('pubDate').text();
+        const title = $(this).find('title').text();
+        const description = $(this).find('description').text();
+        const magnitudeMatch = description.match(/M ([0-9.]+)/);
+        const locationMatch = title.match(/near ([^,]+)/);
+        const coordinatesMatch = description.match(/Location: ([0-9.]+)N, ([0-9.]+)E/);
+
+        if (magnitudeMatch && coordinatesMatch) {
+            const magnitude = parseFloat(magnitudeMatch[1]);
+            const latitude = parseFloat(coordinatesMatch[1]);
+            const longitude = parseFloat(coordinatesMatch[2]);
+            const place = locationMatch ? locationMatch[1] : 'Unknown location';
+
+            earthquakes.push({
+                time: new Date(time).getTime(),
+                magnitude: magnitude,
+                coordinates: [latitude, longitude],
+                place: place,
+                source: 'JMA'
+            });
+        }
+    });
+    return earthquakes;
+}
+
+function parseGaData(data) {
+    const earthquakes = data.features.map(eq => ({
+        time: new Date(eq.properties.origintime).getTime(),
+        magnitude: eq.properties.magnitude,
+        coordinates: [eq.geometry.coordinates[1], eq.geometry.coordinates[0]],
+        place: eq.properties.place,
+        source: 'GA'
+    }));
+    return earthquakes;
+}
+
+function parseGeofonData(data) {
+    const earthquakes = [];
+    $(data).find('item').each(function() {
+        const time = $(this).find('pubDate').text();
+        const title = $(this).find('title').text();
+        const description = $(this).find('description').text();
+        const magnitudeMatch = description.match(/Magnitude ([0-9.]+)/);
+        const latitudeMatch = description.match(/Latitude ([0-9.]+)/);
+        const longitudeMatch = description.match(/Longitude ([0-9.]+)/);
+        const place = title.split(',')[1].trim();
+
+        if (magnitudeMatch && latitudeMatch && longitudeMatch) {
+            const magnitude = parseFloat(magnitudeMatch[1]);
+            const latitude = parseFloat(latitudeMatch[1]);
+            const longitude = parseFloat(longitudeMatch[1]);
+
+            earthquakes.push({
+                time: new Date(time).getTime(),
+                magnitude: magnitude,
+                coordinates: [latitude, longitude],
+                place: place,
+                source: 'GEOFON'
+            });
+        }
+    });
+    return earthquakes;
+}
+
 function extractCountryFromPlace(place) {
-    // Extract country from the place string. This is a simple heuristic and might need improvement.
     const parts = place.split(',');
     return parts.length > 1 ? parts[parts.length - 1].trim() : 'Unknown';
 }
@@ -377,5 +473,6 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
         (1 - Math.cos(dLon))/2;
     return R * 2 * Math.asin(Math.sqrt(a));
 }
+
 
 ////////////////////////////////////////////////////////////////////////////
