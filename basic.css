@@ -104,3 +104,9 @@
                 padding: 30px; /* Adjusted padding for better spacing */
             }
         }
+
+
+        a {
+            text-decoration: none; /* Menghapus garis bawah */
+            color: #20c20e; /* Mengatur warna teks tautan */
+        }
