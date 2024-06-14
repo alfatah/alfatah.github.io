@@ -110,4 +110,17 @@
             text-decoration: none; /* Menghapus garis bawah */
             color: #20c20e; /* Mengatur warna teks tautan */
         }
+
+        /* CSS untuk link standar */
+        .ajib {
+            color: #20c20e; /* Warna teks link */
+            text-decoration: none; /* Menghilangkan garis bawah pada link */
+            transition: color 0.3s ease; /* Animasi perubahan warna saat hover */
+        }
+        
+        /* CSS untuk link saat disentuh */
+        .ajib:hover {
+            color: #20c20e; /* Warna neon saat link disentuh */
+            text-shadow: 0 0 5px #20c20e, 0 0 10px #20c20e, 0 0 15px #20c20e; /* Efek bayangan neon */
+        }
         
