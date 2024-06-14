@@ -411,4 +411,3 @@ async function checkInternetSpeed() {
 window.addEventListener('load', checkInternetSpeed);
 
 //////////////////////////////////////////////////////////////////////////
-
