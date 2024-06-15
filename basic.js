@@ -6,10 +6,14 @@ $(document).ready(function() {
         $.getJSON("https://ipapi.co/json/", function(ip) {
             console.log(ip);
             $("#ip-address").html("Your IP : " + ip.ip + "," + " " + ip.org + " " + ip.asn);
-            $("#location-data").html(ip.latitude + "," + ip.longitude + " " + ip.city + ", " + ip.region + " " + ip.postal + " " + ip.country_name);
+            $("#location-data").html(ip.latitude + "," + ip.longitude  +  " " + ip.city + ", " + ip.region + " " + ip.postal + " " + ip.country_name);
             var formattedPopulation = ip.country_population.toLocaleString(); // Menambahkan tiga titik sebagai pemisah ribuan
             $("#population").html("Population Country : " + formattedPopulation + " ");
             $("#currency_name").html("Currency : " + ip.currency_name + " ");
+            
+            // Create Google Maps link
+            var mapsLink = "https://www.google.com/maps?authuser=0&q=" + ip.latitude + "," + ip.longitude;
+            $("#maps-link").html('Location : <a href="' + mapsLink + '" target="_blank">View on Google Maps</a>');
 
             // Get country code from IP data
             var countryCode = ip.country;
@@ -18,14 +22,14 @@ $(document).ready(function() {
             getWeatherF(ip.latitude, ip.longitude); // Pass latitude and longitude to the weather function
             displaySeason(ip.country_name); // Call function to display current season based on country
 
-             // Fetch gold prices
+            // Fetch gold prices
             fetchGoldPrices();
 
             // Fetch earthquake data
             fetchEarthquakeData(ip.latitude, ip.longitude, ip.country_name);
 
             // Get air quality data using latitude and longitude
-             getAirQuality(ip.latitude, ip.longitude);
+            getAirQuality(ip.latitude, ip.longitude);
 
             // Get country code from IP data
             var countryCode = ip.country;
@@ -33,7 +37,8 @@ $(document).ready(function() {
 
         });
     }
-        });
+});
+
 
 
 //////////////////////////////////////////////////////////////////////////
