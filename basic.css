@@ -1,133 +1,136 @@
-    /* Base styles */
+/* Base styles */
+h1 {
+    font-size: 5.3vw;
+    font-weight: bold;
+    text-align: center;
+}
+
+h2 {
+    text-align: center;
+}
+
+.btn {
+    background-color: black;
+    border-color: #20c20e;
+}
+
+.btn:hover {
+    background-color: #20c20e;
+    border-color: black;
+    color: black;
+}
+
+.btn-select {
+    background-color: #20c20e;
+    border-color: black;
+    color: black;
+    font-family: 'Share Tech Mono', monospace;
+}
+
+.jumbotron {
+    text-align: center;
+    background-color: black;
+    padding-bottom: 0px;
+}
+
+body {
+    background-color: black;
+}
+
+.mantab-text {
+    text-align: center;
+    color: #20c20e;
+    font-family: 'Share Tech Mono', monospace;
+}
+
+.conditions-container {
+    padding-bottom: 20px;
+    padding-top: 0px;
+}
+
+/* Center the table horizontally */
+table {
+    margin: 0 auto;
+    border: 1px solid #20c20e;
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.kotak {
+    border: 2px solid #20c20e;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 10px 0;
+}
+
+/* Responsive styles */
+/* Small devices (phones, 600px and down) */
+@media (max-width: 600px) {
     h1 {
-        font-size: 5.3vw;
-        font-weight: bold;
-        text-align: center;
-    }
-
-    h2 {
-        text-align: center;
-    }
-
-    .btn {
-        background-color: black;
-        border-color: #20c20e;
-    }
-
-    .btn:hover {
-        background-color: #20c20e;
-        border-color: black;
-        color: black;
-    }
-
-    .btn-select {
-        background-color: #20c20e;
-        border-color: black;
-        color: black;
-        font-family: 'Share Tech Mono', monospace;
-    }
-
-    .jumbotron {
-        text-align: center;
-        background-color: black;
-        padding-bottom: 0px;
-    }
-
-    body {
-        background-color: black;
-    }
-
-    .mantab-text {
-        text-align: center;
-        color: #20c20e;
-        font-family: 'Share Tech Mono', monospace;
-    }
-
-    .conditions-container {
-        padding-bottom: 20px;
-        padding-top: 0px;
-    }
-
-    /* Center the table horizontally */
-    table {
-        margin: 0 auto;
-        border: 1px solid #20c20e;
-        border-collapse: collapse;
+        font-size: 7vw; /* Adjusted font size for smaller screens */
     }
 
     .kotak {
-        border: 2px solid #20c20e;
+        width: 90%; /* Adjusted width for smaller screens */
+        margin: 10px auto;
+    }
+
+    .btn, .btn-select {
+        width: 90%; /* Full width for buttons on small screens */
         padding: 10px;
-        width: 290px;
-        margin: 20px;
     }
 
-    /* Responsive styles */
-    /* Small devices (phones, 600px and down) */
-    @media (max-width: 600px) {
-        h1 {
-            font-size: 7vw; /* Adjusted font size for smaller screens */
-        }
-
-        .kotak {
-            width: 90%; /* Adjusted width for smaller screens */
-            margin: 10px;
-        }
-
-        .btn, .btn-select {
-            width: 90%; /* Full width for buttons on small screens */
-            padding: 10px;
-        }
-
-        .jumbotron {
-            padding: 20px; /* Adjusted padding for better spacing */
-        }
-
-        #toolsTable, #toolsTable tr, #toolsTable td {
-            display: block;
-            width: 100%;
-        }
-
-        #toolsTable td {
-            margin-bottom: 20px;
-        }
+    .jumbotron {
+        padding: 20px; /* Adjusted padding for better spacing */
     }
 
-    /* Medium devices (tablets, 768px and down) */
-    @media (max-width: 768px) {
-        h1 {
-            font-size: 6vw; /* Slightly larger font size for tablets */
-        }
-
-        .kotak {
-            width: 80%; /* Adjusted width for tablets */
-            margin: 15px;
-        }
-
-        .btn, .btn-select {
-            width: 80%; /* Adjusted width for buttons on tablets */
-            padding: 12px;
-        }
-
-        .jumbotron {
-            padding: 30px; /* Adjusted padding for better spacing */
-        }
+    #toolsTable, #toolsTable tr, #toolsTable td {
+        display: block;
+        width: 100%;
     }
 
-    a {
-        text-decoration: none; /* Menghapus garis bawah */
-        color: #20c20e; /* Mengatur warna teks tautan */
+    #toolsTable td {
+        margin-bottom: 20px;
+    }
+}
+
+/* Medium devices (tablets, 768px and down) */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 6vw; /* Slightly larger font size for tablets */
     }
 
-    /* CSS untuk link standar */
-    .ajib {
-        color: #20c20e; /* Warna teks link */
-        text-decoration: none; /* Menghilangkan garis bawah pada link */
-        transition: color 0.3s ease; /* Animasi perubahan warna saat hover */
+    .kotak {
+        width: 80%; /* Adjusted width for tablets */
+        margin: 15px auto;
     }
 
-    /* CSS untuk link saat disentuh */
-    .ajib:hover {
-        color: #20c20e; /* Warna neon saat link disentuh */
-        text-shadow: 0 0 5px #20c20e, 0 0 10px #20c20e, 0 0 15px #20c20e; /* Efek bayangan neon */
+    .btn, .btn-select {
+        width: 80%; /* Adjusted width for buttons on tablets */
+        padding: 12px;
     }
+
+    .jumbotron {
+        padding: 30px; /* Adjusted padding for better spacing */
+    }
+}
+
+a {
+    text-decoration: none; /* Menghapus garis bawah */
+    color: #20c20e; /* Mengatur warna teks tautan */
+}
+
+/* CSS untuk link standar */
+.ajib {
+    color: #20c20e; /* Warna teks link */
+    text-decoration: none; /* Menghilangkan garis bawah pada link */
+    transition: color 0.3s ease; /* Animasi perubahan warna saat hover */
+}
+
+/* CSS untuk link saat disentuh */
+.ajib:hover {
+    color: #20c20e; /* Warna neon saat link disentuh */
+    text-shadow: 0 0 5px #20c20e, 0 0 10px #20c20e, 0 0 15px #20c20e; /* Efek bayangan neon */
+}
