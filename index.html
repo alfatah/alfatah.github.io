@@ -9,6 +9,7 @@
 </head>
 
 <body>
+    
 
 <!-- //////////////////////////////////////////////////////// -->  
 
@@ -24,8 +25,8 @@
     </div>
 
 <!-- //////////////////////////////////////////////////////// -->
- 
-    <table class="mantab-text table">
+
+    <table class="mantab-text table" id="content">
         <tr>
             <td class="mantab-text"></td>
             <td id="gdp"></td>
@@ -98,7 +99,7 @@
 
 <!-- //////////////////////////////////////////////////////// -->
 
-    <div>
+    <div id="content">
         <h2 class="mantab-text">Tools Menu</h2>
         <table id="toolsTable">
             <tr class="mantab-text">
@@ -108,7 +109,7 @@
                                 <a class="mantab-text ajib" target="_blank" href="https://stackoverflow.com/">Stack Overflow</a>
                                 <a class="mantab-text ajib" href="https://roadmap.sh/">Developer Roadmaps</a>
                                 <a class="mantab-text ajib" target="_blank" href="roadmap.html">Roadmaps Pemrograman</a>
-                                <a class="mantab-text ajib" target="_blank" href="tech.html">Teknologi dalam Pengembangan Perangkat Lunak</a>
+                                <a class="mantab-text ajib" target="_blank" href="tech.html">Technology in Software Development</a>
                         
                                 <br>
                             <a class="mantab-text">Coding Platforms :</a>
@@ -149,7 +150,7 @@
                                 <a class="mantab-text ajib" target="_blank" href="https://www.w3schools.com/">w3schools</a>
                                 <a class="mantab-text ajib" target="_blank" href="https://books.google.com/">Google Books</a>
                                 <a class="mantab-text ajib" target="_blank" href="https://www.notion.so/">Notion</a>
-                                <a class="mantab-text ajib" target="_blank" href="jurnal.html">Jurnal</a>
+                                <a class="mantab-text ajib" target="_blank" href="jurnal.html">Journal</a>
                         
                                 <br>
                             <a class="mantab-text ajib">Mental Health :</a>
@@ -203,30 +204,37 @@
                                 <a class="mantab-text ajib" target="_blank" href="https://www.whatsapp.com/">WhatsApp</a>
                                 <a class="mantab-text ajib" target="_blank" href="https://telegram.org/">Telegram</a>
                                 <a class="mantab-text ajib" target="_blank" href="https://www.qgis.org/en/site/">QGIS</a>
-                                <a class="mantab-text ajib" target="_blank" href="https://panelharga.badanpangan.go.id/">Panel Harga Pangan</a>
+                                <a class="mantab-text ajib" target="_blank" href="https://panelharga.badanpangan.go.id/">Food Price Panel</a>
 
                 </td>
             </tr>
         </table>
     </div>
+
     
 <!-- //////////////////////////////////////////////////////// -->
 
-<center>
-    
-    <center>
-        <h3 class="mantab-text">
+<div style="text-align: center;">
+    <h3 class="mantab-text">
         Sholahuddin Alfatah © 2024 Open Source 
     </h3>
-    </center>
-   
-    <br>
-    <script type="text/javascript" src="https://www.counters-free.net/count/fq7m"></script><br>
-    <a href='https://dissertationschreibenlassen.com/dissertation-medizin/'>medizinische Dissertation</a> <script type='text/javascript' src='https://whomania.com/ctr?id=df0fcbc15ffb7fc87c998ad03e06bd6c0b5cf677'></script>
-</center>
-    
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
-    <script src="./basic.js"></script>
-</body>
 
+    <select id="languageSelect" onchange="translatePage()">
+        <option value="en">English</option>
+        <option value="id">Indonesian</option>
+        <!-- Tambahkan bahasa lain sesuai kebutuhan -->
+    </select>
+
+    <br><br>
+    <script type="text/javascript" src="https://www.counters-free.net/count/fq7m"></script>
+    <br>
+    <a href='https://dissertationschreibenlassen.com/dissertation-medizin/'>medizinische Dissertation</a> 
+    <script type='text/javascript' src='https://whomania.com/ctr?id=df0fcbc15ffb7fc87c998ad03e06bd6c0b5cf677'></script>
+</div>
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
+<script src="basic.js"></script>
+<script src="translate.js"></script>
+
+</body>
 </html>

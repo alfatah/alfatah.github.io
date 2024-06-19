@@ -416,3 +416,23 @@ async function checkInternetSpeed() {
 window.addEventListener('load', checkInternetSpeed);
 
 //////////////////////////////////////////////////////////////////////////
+
+// Function to translate the page
+function translatePage() {
+    const language = document.getElementById('languageSelect').value;
+    const content = document.getElementById('content').innerText;
+
+    // API URL for Google Translate
+    const apiUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${language}&dt=t&q=${encodeURIComponent(content)}`;
+
+    // Fetch the translation
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            const translatedText = data[0].map(item => item[0]).join('');
+            document.getElementById('content').innerText = translatedText;
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+//////////////////////////////////////////////////////////////////////////
