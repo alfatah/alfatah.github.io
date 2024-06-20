@@ -441,17 +441,37 @@ function translatePage() {
 
 //////////////////////////////////////////////////////////////////////////
 
- function getGovernmentSystem(countryName) {
-        $.getJSON("https://raw.githubusercontent.com/alfatah/alfatah.github.io/master/systemGovernment.json", function(data) {
-            console.log(data); // Cek data di konsol untuk memastikan data sudah terambil dengan baik
+function getGovernmentSystem(countryName) {
+    var apiUrl = "https://raw.githubusercontent.com/alfatah/alfatah.github.io/master/systemGovernment.json";
+
+    // Lakukan request GET menggunakan AJAX untuk mengambil data dari API
+    $.ajax({
+        url: apiUrl,
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            // Cari sistem pemerintahan berdasarkan nama negara
             var governmentSystem = data.countries.find(country => country.name === countryName);
+
             if (governmentSystem) {
-                $("#government-system").html("Government System: " + governmentSystem.government);
+                var governmentHtml = "Government System : " + governmentSystem.government;
+
+                // Cari halaman Wikipedia berdasarkan nama negara
+                var wikiUrl = "https://en.wikipedia.org/wiki/" + countryName.replace(/\s+/g, '_');
+
+                // Tambahkan link Wikipedia jika halaman ditemukan
+                governmentHtml += ' (<a href="' + wikiUrl + '" target="_blank">Wikipedia</a>)';
+
+                $("#government-system").html(governmentHtml);
             } else {
-                $("#government-system").html("Government System: Data not found");
+                $("#government-system").html("Government System : Data not found");
             }
-        });
-    }
+        },
+        error: function() {
+            $("#government-system").html("Failed to fetch data from the API");
+        }
+    });
+}
 
 
 //////////////////////////////////////////////////////////////////////////
