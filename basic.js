@@ -35,6 +35,9 @@ $(document).ready(function() {
             var countryCode = ip.country;
             getGDP(countryCode);
 
+            // Fetch and display government system
+            getGovernmentSystem(ip.country_name);
+
         });
     }
 });
@@ -437,3 +440,16 @@ function translatePage() {
 
 //////////////////////////////////////////////////////////////////////////
 
+function getGovernmentSystem(countryName) {
+    $.getJSON("https://raw.githubusercontent.com/alfatah/alfatah.github.io/master/systemGovernment.json", function(data) {
+        var governmentSystem = data.countries.find(country => country.name === countryName);
+        if (governmentSystem) {
+            $("#government-system").html("Government System: " + governmentSystem.government);
+        } else {
+            $("#government-system").html("Government System: Data not found");
+        }
+    });
+}
+
+
+//////////////////////////////////////////////////////////////////////////
