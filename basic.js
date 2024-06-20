@@ -505,7 +505,7 @@ function categorizeEconomicStatus(incomeLevel) {
 function displayCountryEconomicStatus(countryName, economicStatus) {
     const outputDiv = document.getElementById('output');
     const countryDiv = document.createElement('div');
-    countryDiv.innerHTML = `<h2>${countryName}</h2><p>${economicStatus}</p>`;
+    countryDiv.innerHTML = `Economic Status : ${economicStatus}`;
     outputDiv.appendChild(countryDiv);
 }
 
