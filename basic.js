@@ -38,6 +38,10 @@ $(document).ready(function() {
             // Fetch and display government system
             getGovernmentSystem(ip.country_name);
 
+              // Get country code from IP data
+              var countryCode = ip.country;
+              getCountryEconomicStatus(countryCode);
+
 
         });
     }
@@ -472,6 +476,44 @@ function getGovernmentSystem(countryName) {
         }
     });
 }
+
+
+//////////////////////////////////////////////////////////////////////////
+
+async function getCountryEconomicStatus(countryCode) {
+    const response = await fetch(`https://api.worldbank.org/v2/country/${countryCode}?format=json`);
+    const data = await response.json();
+    const country = data[1][0];
+
+    const economicStatus = categorizeEconomicStatus(country.incomeLevel.value);
+    displayCountryEconomicStatus(country.name, economicStatus);
+}
+
+function categorizeEconomicStatus(incomeLevel) {
+    if (incomeLevel === "High income") {
+        return "High-Income Country";
+    } else if (incomeLevel === "Upper middle income") {
+        return "Upper-Middle-Income Developing Country";
+    } else if (incomeLevel === "Lower middle income") {
+        return "Lower-Middle-Income Developing Country";
+    } else if (incomeLevel === "Low income") {
+        return "Low-Income Country";
+    }
+    return "Unknown";
+}
+
+function displayCountryEconomicStatus(countryName, economicStatus) {
+    const outputDiv = document.getElementById('output');
+    const countryDiv = document.createElement('div');
+    countryDiv.innerHTML = `<h2>${countryName}</h2><p>${economicStatus}</p>`;
+    outputDiv.appendChild(countryDiv);
+}
+
+async function main() {
+    getLocationF();
+}
+
+main();
 
 
 //////////////////////////////////////////////////////////////////////////
