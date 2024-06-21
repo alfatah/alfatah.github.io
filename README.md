@@ -23,8 +23,4 @@ Ini adalah alfatah.github.io saya yang mencakup berbagai fitur untuk memeriksa i
 
 ---
 
-**Tautan GitHub**: [Alfatah](https://alfatah.github.io/)
-
----
-
 Dengan alfatah.github.io ini, saya berharap dapat menunjukkan kemampuan saya dalam mengembangkan aplikasi yang memberikan akses mudah dan cepat ke informasi penting tentang negara-negara di seluruh dunia. Terima kasih telah mengunjungi profil saya! 🌍🛠️
