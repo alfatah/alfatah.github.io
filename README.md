@@ -23,7 +23,7 @@ Ini adalah alfatah.github.io saya yang mencakup berbagai fitur untuk memeriksa i
 
 ---
 
-**Tautan GitHub**: [Alfatah](alfatah.github.io)
+**Tautan GitHub**: [Alfatah](https://alfatah.github.io/)
 
 ---
 
