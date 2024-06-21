@@ -446,7 +446,7 @@ function translatePage() {
 //////////////////////////////////////////////////////////////////////////
 
 function getGovernmentSystem(countryName) {
-    var apiUrl = "https://raw.githubusercontent.com/alfatah/alfatah.github.io/master/systemGovernment.json";
+    var apiUrl = "https://raw.githubusercontent.com/alfatah/alfatah.github.io/master/API/systemGovernment.json";
 
     // Lakukan request GET menggunakan AJAX untuk mengambil data dari API
     $.ajax({
