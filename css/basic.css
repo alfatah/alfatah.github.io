@@ -131,3 +131,18 @@ a {
     color: #20c20e; /* Warna neon saat link disentuh */
     text-shadow: 0 0 5px #20c20e, 0 0 10px #20c20e, 0 0 15px #20c20e; /* Efek bayangan neon */
 }
+
+/* Untuk layar kecil (misalnya smartphone) */
+@media only screen and (max-width: 600px) {
+    /* Atur tata letak dan gaya untuk layar kecil di sini */
+}
+
+/* Untuk layar menengah (misalnya tablet) */
+@media only screen and (min-width: 601px) and (max-width: 1024px) {
+    /* Atur tata letak dan gaya untuk layar menengah di sini */
+}
+
+/* Untuk layar besar (misalnya desktop) */
+@media only screen and (min-width: 1025px) {
+    /* Atur tata letak dan gaya untuk layar besar di sini */
+}
