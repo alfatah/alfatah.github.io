@@ -42,6 +42,7 @@ $(document).ready(function() {
               var countryCode = ip.country;
               getCountryEconomicStatus(countryCode);
 
+              getEconomicSystem(ip.country_name);
 
         });
     }
@@ -514,6 +515,38 @@ async function main() {
 }
 
 main();
+
+
+//////////////////////////////////////////////////////////////////////////
+
+
+function getEconomicSystem(countryName) {
+    $.getJSON("https://raw.githubusercontent.com/alfatah/alfatah.github.io/master/API/economicSystem.json", function(data) {
+        console.log(data);
+        var economicSystemHtml = "<h3>Economic System Data for " + countryName + "</h3><ul>";
+        
+        // Filter data based on country name
+        var countryData = data.filter(function(item) {
+            return item.country === countryName;
+        });
+        
+        if (countryData.length > 0) {
+            countryData.forEach(function(item) {
+                economicSystemHtml += "<li><strong>" + item.name + ":</strong> " + item.description + "</li>";
+            });
+        } else {
+            economicSystemHtml += "<li>No economic system data available for " + countryName + "</li>";
+        }
+        
+        economicSystemHtml += "</ul>";
+        $("#economic-system").html(economicSystemHtml);
+    })
+    .fail(function() {
+        var errorHtml = "<p>Failed to fetch economic system data.</p>";
+        $("#economic-system").html(errorHtml);
+    });
+}
+
 
 
 //////////////////////////////////////////////////////////////////////////
