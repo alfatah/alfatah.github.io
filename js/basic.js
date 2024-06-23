@@ -41,7 +41,7 @@ $(document).ready(function() {
               // Get country code from IP data
               var countryCode = ip.country;
               getCountryEconomicStatus(countryCode);
-
+              
               getEconomicSystem(ip.country_name);
 
         });
