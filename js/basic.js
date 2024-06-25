@@ -15,39 +15,35 @@ $(document).ready(function() {
             var mapsLink = "https://www.google.com/maps?authuser=0&q=" + ip.latitude + "," + ip.longitude;
             $("#maps-link").html('Location : <a href="' + mapsLink + '" target="_blank">View on Google Maps</a>');
 
-            // Get country code from IP data
             var countryCode = ip.country;
+            var countryName = ip.country_name;
+            var latitude = ip.latitude;
+            var longitude = ip.longitude;
+
             getGDP(countryCode);
-            
-            getWeatherF(ip.latitude, ip.longitude); // Pass latitude and longitude to the weather function
-            displaySeason(ip.country_name); // Call function to display current season based on country
+            getWeatherF(latitude, longitude); // Pass latitude and longitude to the weather function
+            displaySeason(countryName); // Call function to display current season based on country
 
             // Fetch gold prices
             fetchGoldPrices();
 
             // Fetch earthquake data
-            fetchEarthquakeData(ip.latitude, ip.longitude, ip.country_name);
+            fetchEarthquakeData(latitude, longitude, countryName);
 
             // Get air quality data using latitude and longitude
-            getAirQuality(ip.latitude, ip.longitude);
-
-            // Get country code from IP data
-            var countryCode = ip.country;
-            getGDP(countryCode);
+            getAirQuality(latitude, longitude);
 
             // Fetch and display government system
-            getGovernmentSystem(ip.country_name);
+            getGovernmentSystem(countryName);
 
-              // Get country code from IP data
-              var countryCode = ip.country;
-              getCountryEconomicStatus(countryCode);
+            // Get country economic status
+            getCountryEconomicStatus(countryCode);
               
-              getEconomicSystem(ip.country_name);
-
+            // Fetch and display economic system
+            getEconomicSystem(countryName);
         });
     }
 });
-
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -521,31 +517,34 @@ main();
 
 
 function getEconomicSystem(countryName) {
-    $.getJSON("https://raw.githubusercontent.com/alfatah/alfatah.github.io/master/API/economicSystem.json", function(data) {
-        console.log(data);
-        var economicSystemHtml = "<h3>Economic System Data for " + countryName + "</h3><ul>";
-        
-        // Filter data based on country name
-        var countryData = data.filter(function(item) {
-            return item.country === countryName;
-        });
-        
-        if (countryData.length > 0) {
-            countryData.forEach(function(item) {
-                economicSystemHtml += "<li><strong>" + item.name + ":</strong> " + item.description + "</li>";
-            });
-        } else {
-            economicSystemHtml += "<li>No economic system data available for " + countryName + "</li>";
+    var apiUrl = "https://raw.githubusercontent.com/alfatah/alfatah.github.io/master/API/economicSystem.json";
+
+    // Lakukan request GET menggunakan AJAX untuk mengambil data dari API
+    $.ajax({
+        url: apiUrl,
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            // Cari sistem ekonomi berdasarkan nama negara
+            var countryData = data.find(item => item.country === countryName);
+
+            if (countryData) {
+                var economicSystemHtml = "<h3>Economic System Data for " + countryName + "</h3><ul>";
+
+                economicSystemHtml += "<li><strong>" + countryData.name + ":</strong> " + countryData.description + "</li>";
+                
+                economicSystemHtml += "</ul>";
+                $("#economic-system").html(economicSystemHtml);
+            } else {
+                $("#economic-system").html("Economic System Data : Data not found");
+            }
+        },
+        error: function() {
+            $("#economic-system").html("Failed to fetch economic system data from the API");
         }
-        
-        economicSystemHtml += "</ul>";
-        $("#economic-system").html(economicSystemHtml);
-    })
-    .fail(function() {
-        var errorHtml = "<p>Failed to fetch economic system data.</p>";
-        $("#economic-system").html(errorHtml);
     });
 }
+
 
 
 
