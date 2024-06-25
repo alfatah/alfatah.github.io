@@ -516,36 +516,5 @@ main();
 //////////////////////////////////////////////////////////////////////////
 
 
-function getEconomicSystem(countryName) {
-    var apiUrl = "https://raw.githubusercontent.com/alfatah/alfatah.github.io/master/API/economicSystem.json";
-
-    // Lakukan request GET menggunakan AJAX untuk mengambil data dari API
-    $.ajax({
-        url: apiUrl,
-        type: 'GET',
-        dataType: 'json',
-        success: function(data) {
-            // Cari sistem ekonomi berdasarkan nama negara
-            var countryData = data.find(item => item.country === countryName);
-
-            if (countryData) {
-                var economicSystemHtml = "<h3>Economic System Data for " + countryName + "</h3><ul>";
-
-                economicSystemHtml += "<li><strong>" + countryData.name + ":</strong> " + countryData.description + "</li>";
-                
-                economicSystemHtml += "</ul>";
-                $("#economic-system").html(economicSystemHtml);
-            } else {
-                $("#economic-system").html("Economic System Data : Data not found");
-            }
-        },
-        error: function() {
-            $("#economic-system").html("Failed to fetch economic system data from the API");
-        }
-    });
-}
-
-
-
 
 //////////////////////////////////////////////////////////////////////////
