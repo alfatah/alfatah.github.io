@@ -529,7 +529,6 @@ function getEconomicSystem(countryName) {
 
             if (economicSystem) {
                 var economicHtml = "Economic System : " + economicSystem.economic_system;
-
                 $("#economic-system").html(economicHtml);
             } else {
                 $("#economic-system").html("Economic System : Data not found");
@@ -540,5 +539,6 @@ function getEconomicSystem(countryName) {
         }
     });
 }
+
 
 //////////////////////////////////////////////////////////////////////////
