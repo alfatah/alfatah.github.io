@@ -1,4 +1,5 @@
-[
+{
+    "countries": [
     {"country": "Afghanistan", "economic_system": "Mixed Economy"},
     {"country": "Albania", "economic_system": "Mixed Economy"},
     {"country": "Algeria", "economic_system": "Mixed Economy"},
@@ -200,4 +201,4 @@
         "Last Update Date 21 June 2024.",
         "Never be afraid to dream big. The future belongs to those who believe in the beauty of their dreams."  
       ]
-
+}
