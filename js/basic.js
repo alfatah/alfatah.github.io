@@ -618,15 +618,15 @@ function displayData(data) {
 function classifyUnemploymentRate(rate, categoryDiv) {
     let category;
     if (rate < 2) {
-        category = "Very Low: Less than 2% - This indicates a very robust labor market with minimal unemployment.";
+        category = "Very Low: Less than 2% <br> This indicates a very robust labor market with minimal unemployment.";
     } else if (rate >= 2 && rate <= 5) {
-        category = "Low: Between 2% to 5% - This is still considered a low unemployment rate with a majority of the workforce employed.";
+        category = "Low: Between 2% to 5% <br> This is still considered a low unemployment rate with a majority of the workforce employed.";
     } else if (rate > 5 && rate <= 10) {
-        category = "Moderate: Between 5% to 10% - This range is common in many countries, reflecting a mix of available jobs and individuals seeking employment.";
+        category = "Moderate: Between 5% to 10% <br> This range is common in many countries, reflecting a mix of available jobs and individuals seeking employment.";
     } else if (rate > 10 && rate <= 20) {
-        category = "High: Between 10% to 20% - This indicates a high level of unemployment, often occurring in unstable economic conditions or during economic crises.";
+        category = "High: Between 10% to 20% <br> This indicates a high level of unemployment, often occurring in unstable economic conditions or during economic crises.";
     } else {
-        category = "Very High: More than 20% - This signifies an extremely high unemployment rate, typically associated with severe economic crises.";
+        category = "Very High: More than 20% <br> This signifies an extremely high unemployment rate, typically associated with severe economic crises.";
     }
     categoryDiv.innerHTML = `Unemployment Rate Category :<br>${category}`;
 }
