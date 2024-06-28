@@ -41,6 +41,8 @@ $(document).ready(function() {
               
             // Fetch and display economic system
             getEconomicSystem(countryName);
+
+            getUnemploymentRate(countryCode);
         });
     }
 });
@@ -561,6 +563,72 @@ function getEconomicSystem(countryName) {
             $("#economic-system").html("Failed to fetch data from the API");
         }
     });
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+
+async function getUnemploymentRate(countryCode) {
+    if (!countryCode) {
+        alert('Country code not found.');
+        return;
+    }
+
+    const apiUrl = `https://api.worldbank.org/v2/country/${countryCode}/indicator/SL.UEM.TOTL.ZS?format=json`;
+
+    try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+        const data = await response.json();
+        displayData(data);
+    } catch (error) {
+        console.error('There has been a problem with your fetch operation:', error);
+        document.getElementById('unemploymentData').innerHTML = '<p>Failed to fetch data.</p>';
+    }
+}
+
+function displayData(data) {
+    const unemploymentDataDiv = document.getElementById('unemploymentData');
+    const unemploymentCategoryDiv = document.getElementById('unemploymentCategory');
+    
+    if (data.length > 1 && data[1].length > 0) {
+        let latestData = null;
+        for (let i = 0; i < data[1].length; i++) {
+            if (data[1][i].value !== null) {
+                latestData = data[1][i];
+                break;
+            }
+        }
+
+        if (latestData) {
+            const year = latestData.date;
+            const value = latestData.value;
+            unemploymentDataDiv.innerHTML = `The unemployment rate in ${year} is ${value.toFixed(2)}%.`;
+            classifyUnemploymentRate(value, unemploymentCategoryDiv);
+        } else {
+            unemploymentDataDiv.innerHTML = 'Unemployment rate data is not available.';
+        }
+    } else {
+        unemploymentDataDiv.innerHTML = 'Data not available.';
+    }
+}
+
+function classifyUnemploymentRate(rate, categoryDiv) {
+    let category;
+    if (rate < 2) {
+        category = "Very Low: Less than 2% - This indicates a very robust labor market with minimal unemployment.";
+    } else if (rate >= 2 && rate <= 5) {
+        category = "Low: Between 2% to 5% - This is still considered a low unemployment rate with a majority of the workforce employed.";
+    } else if (rate > 5 && rate <= 10) {
+        category = "Moderate: Between 5% to 10% - This range is common in many countries, reflecting a mix of available jobs and individuals seeking employment.";
+    } else if (rate > 10 && rate <= 20) {
+        category = "High: Between 10% to 20% - This indicates a high level of unemployment, often occurring in unstable economic conditions or during economic crises.";
+    } else {
+        category = "Very High: More than 20% - This signifies an extremely high unemployment rate, typically associated with severe economic crises.";
+    }
+    categoryDiv.innerHTML = `Unemployment Rate Category :<br>${category}`;
 }
 
 
