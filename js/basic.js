@@ -113,77 +113,92 @@ function getCategory(temperature) {
 
 //////////////////////////////////////////////////////////////////////////
 
+ // Function to determine current period of the day
+function getCurrentPeriod(hours) {
+    if (hours >= 6 && hours < 10) {
+      return "Morning";
+    } else if (hours >= 10 && hours < 14) {
+      return "Midday";
+    } else if (hours >= 14 && hours < 17) {
+      return "Afternoon";
+    } else if (hours >= 17 && hours < 18) {
+      return "Evening";
+    } else if (hours >= 18 && hours < 19) {
+      return "Dusk";
+    } else if (hours >= 19 && hours < 24) {
+      return "Night";
+    } else if (hours >= 0 && hours < 3) {
+      return "Early Morning";
+    } else {
+      return "Dawn";
+    }
+  }
+  
   // Function to display current season based on location
   function displaySeason(countryName) {
     var now = new Date();
     var month = now.getMonth() + 1; // Months are zero indexed, so add 1
-
+  
     var season;
     if (countryName === "Indonesia") {
-        if (month >= 12 || month <= 2) {
-            season = "Rainy Season";
-        } else if (month >= 6 && month <= 9) {
-            season = "Dry Season ";
-        } else {
-            season = "Transition Season";
-        }
-        $("#season").html("Season: " + season);
+      if (month >= 12 || month <= 2) {
+        season = "Rainy Season";
+      } else if (month >= 6 && month <= 9) {
+        season = "Dry Season";
+      } else {
+        season = "Transition Season";
+      }
     } else if (countryName === "Asia" || countryName === "Europe") {
-        if (month >= 3 && month <= 5) {
-            season = "Spring";
-        } else if (month >= 6 && month <= 8) {
-            season = "Summer";
-        } else if (month >= 9 && month <= 11) {
-            season = "Autumn";
-        } else {
-            season = "Winter";
-        }
-        $("#season").html("Season: " + season);
+      if (month >= 3 && month <= 5) {
+        season = "Spring";
+      } else if (month >= 6 && month <= 8) {
+        season = "Summer";
+      } else if (month >= 9 && month <= 11) {
+        season = "Autumn";
+      } else {
+        season = "Winter";
+      }
     } else if (countryName === "Africa") {
-        if (month >= 6 && month <= 8) {
-            season = "Winter";
-        } else if (month >= 9 && month <= 11) {
-            season = "Spring";
-        } else {
-            season = "Summer";
-        }
-        $("#season").html("Season: " + season);
+      if (month >= 6 && month <= 8) {
+        season = "Winter";
+      } else if (month >= 9 && month <= 11) {
+        season = "Spring";
+      } else {
+        season = "Summer";
+      }
     } else if (countryName === "North America" || countryName === "South America") {
-        if (month >= 3 && month <= 5) {
-            season = "Spring";
-        } else if (month >= 6 && month <= 8) {
-            season = "Summer";
-        } else if (month >= 9 && month <= 11) {
-            season = "Autumn";
-        } else {
-            season = "Winter";
-        }
-        $("#season").html("Season: " + season);
+      if (month >= 3 && month <= 5) {
+        season = "Spring";
+      } else if (month >= 6 && month <= 8) {
+        season = "Summer";
+      } else if (month >= 9 && month <= 11) {
+        season = "Autumn";
+      } else {
+        season = "Winter";
+      }
     } else if (countryName === "Australia" || countryName === "Oceania") {
-        if (month >= 3 && month <= 5) {
-            season = "Autumn";
-        } else if (month >= 6 && month <= 8) {
-            season = "Winter";
-        } else if (month >= 9 && month <= 11) {
-            season = "Spring";
-        } else {
-            season = "Summer";
-        }
-        $("#season").html("Season: " + season);
+      if (month >= 3 && month <= 5) {
+        season = "Autumn";
+      } else if (month >= 6 && month <= 8) {
+        season = "Winter";
+      } else if (month >= 9 && month <= 11) {
+        season = "Spring";
+      } else {
+        season = "Summer";
+      }
     } else if (countryName === "Antarctica") {
-        if (month >= 3 && month <= 10) {
-            season = "Summer";
-        } else {
-            season = "Winter";
-        }
-        $("#season").html("Season: " + season);
+      if (month >= 3 && month <= 10) {
+        season = "Summer";
+      } else {
+        season = "Winter";
+      }
     } else {
-        $("#season").html("Unknown Location");
+      season = "Unknown Location";
     }
-}
-
-
-  // JavaScript to display current date, time, and day
+    $("#season").html("Season: " + season);
+  }
+  
+  // JavaScript to display current date, time, day, and period of the day
   $(document).ready(function() {
     // Get current date
     var currentDate = new Date();
@@ -191,22 +206,30 @@ function getCategory(temperature) {
     var month = currentDate.getMonth() + 1; // Months are zero based
     var year = currentDate.getFullYear();
     var formattedDate = day + '/' + month + '/' + year;
-
+  
     // Get current time
     var hours = currentDate.getHours();
     var minutes = currentDate.getMinutes();
     var seconds = currentDate.getSeconds();
     var formattedTime = hours + ':' + minutes + ':' + seconds;
-
+  
     // Get current day
     var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     var dayOfWeek = days[currentDate.getDay()];
-
-    // Display date, time, and day
-    $("#current-date").html("Date : " + formattedDate);
-    $("#current-time").html("Time : " + formattedTime);
-    $("#current-day").html("Day : " + dayOfWeek);
-});
+  
+    // Determine the current period of the day
+    var currentPeriod = getCurrentPeriod(hours);
+  
+    // Display date, time, day, and period of the day
+    $("#current-date").html("Date: " + formattedDate);
+    $("#current-time").html("Time: " + formattedTime);
+    $("#current-day").html("Day: " + dayOfWeek);
+    $("#current-period").html("Current Period: " + currentPeriod);
+  
+    // Example: display season for Indonesia
+    displaySeason("Indonesia");
+  });
+  
 
 //////////////////////////////////////////////////////////////////////////
 
