@@ -550,8 +550,10 @@ function getEconomicSystem(countryName) {
         dataType: 'json',
         success: function(data) {
             // Cari sistem ekonomi berdasarkan nama negara
-            var economicSystem = data.countries.find(country => country.name === countryName);
-
+            var economicSystem = data.countries.find(function(country) {
+                return country.name === countryName;
+            });
+            
             if (economicSystem) {
                 var economicHtml = "Economic System : " + economicSystem.economic_system;
                 $("#economic-system").html(economicHtml);
@@ -564,6 +566,7 @@ function getEconomicSystem(countryName) {
         }
     });
 }
+
 
 
 //////////////////////////////////////////////////////////////////////////
