@@ -74,43 +74,101 @@ function getGDP(countryCode) {
 
 //////////////////////////////////////////////////////////////////////////
 
-   // Function to get weather data using latitude and longitude
-function getWeatherF(latitude, longitude) {
-    var apiKey = '74cc8a3c199f63bb2998825eb67ca8db'; // Replace 'YOUR_WEATHER_API_KEY' with your actual API key
-    var apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
+      // Function to get weather data using latitude and longitude
+      function getWeatherF(latitude, longitude) {
+        var apiKey = '74cc8a3c199f63bb2998825eb67ca8db'; // Replace with your actual API key
+        var apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
 
-    $.getJSON(apiUrl, function(weatherData) {
-        var temperature = weatherData.main.temp;
-        var weatherDescription = weatherData.weather[0].description;
+        $.getJSON(apiUrl, function(weatherData) {
+            var temperature = weatherData.main.temp;
+            var humidity = weatherData.main.humidity;
+            var windSpeed = weatherData.wind.speed;
+            var weatherDescription = weatherData.weather[0].description;
+            var rainfall = weatherData.rain ? weatherData.rain['1h'] : 0;
 
-        // Determine the category based on the temperature
-        var category = getCategory(temperature);
+            // Determine the categories
+            var temperatureCategory = categorizeTemperature(temperature);
+            var humidityCategory = categorizeHumidity(humidity);
+            var windSpeedCategory = categorizeWindSpeed(windSpeed);
+            var rainfallCategory = categorizeRainfall(rainfall);
 
-        $("#temperature").html("Temperature: " + temperature + "°C");
-        $("#weather").html("Weather: " + weatherDescription);
-        $("#category").html("Category: " + category);
-    });
-}
-
-// Function to determine the category based on temperature
-function getCategory(temperature) {
-    if (temperature < 0) {
-        return "Very Cold";
-    } else if (temperature >= 0 && temperature < 15) {
-        return "Cold";
-    } else if (temperature >= 15 && temperature < 20) {
-        return "Cool";
-    } else if (temperature >= 20 && temperature < 25) {
-        return "Normal/Comfortable";
-    } else if (temperature >= 25 && temperature < 30) {
-        return "Warm";
-    } else if (temperature >= 30 && temperature < 35) {
-        return "Hot";
-    } else {
-        return "Very Hot";
+            $("#temperature").html("Temperature: " + temperature + "°C (" + temperatureCategory + ")");
+            $("#weather").html("Weather: " + weatherDescription);
+            $("#category").html("Humidity: " + humidity + "% (" + humidityCategory + ")<br>" +
+                                "Wind Speed: " + windSpeed + " m/s (" + windSpeedCategory + ")<br>" +
+                                "Rainfall: " + rainfall + " mm (" + rainfallCategory + ")");
+        });
     }
-}
 
+    // Function to categorize temperature
+    function categorizeTemperature(temp) {
+        if (temp < 0) {
+            return 'Sangat Dingin';
+        } else if (temp >= 0 && temp < 10) {
+            return 'Dingin';
+        } else if (temp >= 10 && temp < 20) {
+            return 'Sejuk';
+        } else if (temp >= 20 && temp < 30) {
+            return 'Hangat';
+        } else if (temp >= 30 && temp < 40) {
+            return 'Panas';
+        } else {
+            return 'Sangat Panas';
+        }
+    }
+
+    // Function to categorize humidity
+    function categorizeHumidity(humidity) {
+        if (humidity < 20) {
+            return 'Sangat Kering';
+        } else if (humidity >= 20 && humidity < 40) {
+            return 'Kering';
+        } else if (humidity >= 40 && humidity < 60) {
+            return 'Normal';
+        } else if (humidity >= 60 && humidity < 80) {
+            return 'Lembap';
+        } else {
+            return 'Sangat Lembap';
+        }
+    }
+
+    // Function to categorize wind speed
+    function categorizeWindSpeed(windSpeed) {
+        if (windSpeed < 5) {
+            return 'Tenang';
+        } else if (windSpeed >= 5 && windSpeed < 15) {
+            return 'Sejuk';
+        } else if (windSpeed >= 15 && windSpeed < 30) {
+            return 'Berangin';
+        } else if (windSpeed >= 30 && windSpeed < 50) {
+            return 'Sangat Berangin';
+        } else {
+            return 'Badai';
+        }
+    }
+
+    // Function to categorize rainfall
+    function categorizeRainfall(rainfall) {
+        if (rainfall === 0) {
+            return 'Tidak Ada Hujan';
+        } else if (rainfall > 0 && rainfall <= 2.5) {
+            return 'Hujan Ringan';
+        } else if (rainfall > 2.5 && rainfall <= 7.5) {
+            return 'Hujan Sedang';
+        } else if (rainfall > 7.5 && rainfall <= 15) {
+            return 'Hujan Lebat';
+        } else {
+            return 'Hujan Sangat Lebat';
+        }
+    }
+
+    // Example usage:
+    $(document).ready(function() {
+        // Replace with your desired latitude and longitude
+        var latitude = -6.200000;
+        var longitude = 106.816666;
+        getWeatherF(latitude, longitude);
+    });
 
 
 //////////////////////////////////////////////////////////////////////////
