@@ -74,93 +74,93 @@ function getGDP(countryCode) {
 
 //////////////////////////////////////////////////////////////////////////
 
-     // Function to get weather data using latitude and longitude
-     function getWeatherF(latitude, longitude) {
-        var apiKey = '74cc8a3c199f63bb2998825eb67ca8db'; // Replace with your actual API key
-        var apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
+   // Function to get weather data using latitude and longitude
+   function getWeatherF(latitude, longitude) {
+    var apiKey = '74cc8a3c199f63bb2998825eb67ca8db'; // Replace with your actual API key
+    var apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
 
-        $.getJSON(apiUrl, function(weatherData) {
-            var temperature = weatherData.main.temp;
-            var humidity = weatherData.main.humidity;
-            var windSpeed = weatherData.wind.speed;
-            var weatherDescription = weatherData.weather[0].description;
-            var rainfall = weatherData.rain ? weatherData.rain['1h'] : 0;
+    $.getJSON(apiUrl, function(weatherData) {
+        var temperature = weatherData.main.temp;
+        var humidity = weatherData.main.humidity;
+        var windSpeed = weatherData.wind.speed;
+        var weatherDescription = weatherData.weather[0].description;
+        var rainfall = weatherData.rain ? weatherData.rain['1h'] || 0 : 0;
 
-            // Determine the categories
-            var temperatureCategory = categorizeTemperature(temperature);
-            var humidityCategory = categorizeHumidity(humidity);
-            var windSpeedCategory = categorizeWindSpeed(windSpeed);
-            var rainfallCategory = categorizeRainfall(rainfall);
+        // Determine the categories
+        var temperatureCategory = categorizeTemperature(temperature);
+        var humidityCategory = categorizeHumidity(humidity);
+        var windSpeedCategory = categorizeWindSpeed(windSpeed);
+        var rainfallCategory = categorizeRainfall(rainfall);
 
-            $("#temperature").html("Temperature: " + temperature + "°C (" + temperatureCategory + ")");
-            $("#weather").html("Weather: " + weatherDescription);
-            $("#category").html("Humidity: " + humidity + "% (" + humidityCategory + ")<br>" +
-                                "Wind Speed: " + windSpeed + " m/s (" + windSpeedCategory + ")<br>" +
-                                "Rainfall: " + rainfall + " mm (" + rainfallCategory + ")");
-        });
+        $("#temperature").html("Temperature: " + temperature + "°C (" + temperatureCategory + ")");
+        $("#weather").html("Weather: " + weatherDescription);
+        $("#category").html("Humidity: " + humidity + "% (" + humidityCategory + ")<br>" +
+                            "Wind Speed: " + windSpeed + " m/s (" + windSpeedCategory + ")<br>" +
+                            "Rainfall: " + rainfall + " mm (" + rainfallCategory + ")");
+    });
+}
+
+// Function to categorize temperature
+function categorizeTemperature(temp) {
+    if (temp < 0) {
+        return 'Very Cold';
+    } else if (temp >= 0 && temp < 10) {
+        return 'Cold';
+    } else if (temp >= 10 && temp < 20) {
+        return 'Cool';
+    } else if (temp >= 20 && temp < 30) {
+        return 'Warm';
+    } else if (temp >= 30 && temp < 40) {
+        return 'Hot';
+    } else {
+        return 'Very Hot';
     }
+}
 
-       // Function to categorize temperature
-       function categorizeTemperature(temp) {
-        if (temp < 0) {
-            return 'Very Cold';
-        } else if (temp >= 0 && temp < 10) {
-            return 'Cold';
-        } else if (temp >= 10 && temp < 20) {
-            return 'Cool';
-        } else if (temp >= 20 && temp < 30) {
-            return 'Warm';
-        } else if (temp >= 30 && temp < 40) {
-            return 'Hot';
-        } else {
-            return 'Very Hot';
-        }
+// Function to categorize humidity
+function categorizeHumidity(humidity) {
+    if (humidity < 20) {
+        return 'Very Dry';
+    } else if (humidity >= 20 && humidity < 40) {
+        return 'Dry';
+    } else if (humidity >= 40 && humidity < 60) {
+        return 'Normal';
+    } else if (humidity >= 60 && humidity < 80) {
+        return 'Humid';
+    } else {
+        return 'Very Humid';
     }
+}
 
-    // Function to categorize humidity
-    function categorizeHumidity(humidity) {
-        if (humidity < 20) {
-            return 'Very Dry';
-        } else if (humidity >= 20 && humidity < 40) {
-            return 'Dry';
-        } else if (humidity >= 40 && humidity < 60) {
-            return 'Normal';
-        } else if (humidity >= 60 && humidity < 80) {
-            return 'Humid';
-        } else {
-            return 'Very Humid';
-        }
+// Function to categorize wind speed
+function categorizeWindSpeed(windSpeed) {
+    if (windSpeed < 5) {
+        return 'Calm';
+    } else if (windSpeed >= 5 && windSpeed < 15) {
+        return 'Breezy';
+    } else if (windSpeed >= 15 && windSpeed < 30) {
+        return 'Windy';
+    } else if (windSpeed >= 30 && windSpeed < 50) {
+        return 'Very Windy';
+    } else {
+        return 'Stormy';
     }
+}
 
-    // Function to categorize wind speed
-    function categorizeWindSpeed(windSpeed) {
-        if (windSpeed < 5) {
-            return 'Calm';
-        } else if (windSpeed >= 5 && windSpeed < 15) {
-            return 'Breezy';
-        } else if (windSpeed >= 15 && windSpeed < 30) {
-            return 'Windy';
-        } else if (windSpeed >= 30 && windSpeed < 50) {
-            return 'Very Windy';
-        } else {
-            return 'Stormy';
-        }
+// Function to categorize rainfall
+function categorizeRainfall(rainfall) {
+    if (rainfall === 0) {
+        return 'No Rain';
+    } else if (rainfall > 0 && rainfall <= 2.5) {
+        return 'Light Rain';
+    } else if (rainfall > 2.5 && rainfall <= 7.5) {
+        return 'Moderate Rain';
+    } else if (rainfall > 7.5 && rainfall <= 15) {
+        return 'Heavy Rain';
+    } else {
+        return 'Very Heavy Rain';
     }
-
-    // Function to categorize rainfall
-    function categorizeRainfall(rainfall) {
-        if (rainfall === 0) {
-            return 'No Rain';
-        } else if (rainfall > 0 && rainfall <= 2.5) {
-            return 'Light Rain';
-        } else if (rainfall > 2.5 && rainfall <= 7.5) {
-            return 'Moderate Rain';
-        } else if (rainfall > 7.5 && rainfall <= 15) {
-            return 'Heavy Rain';
-        } else {
-            return 'Very Heavy Rain';
-        }
-    }
+}
 
 //////////////////////////////////////////////////////////////////////////
 
