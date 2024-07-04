@@ -74,8 +74,8 @@ function getGDP(countryCode) {
 
 //////////////////////////////////////////////////////////////////////////
 
-      // Function to get weather data using latitude and longitude
-      function getWeatherF(latitude, longitude) {
+     // Function to get weather data using latitude and longitude
+     function getWeatherF(latitude, longitude) {
         var apiKey = '74cc8a3c199f63bb2998825eb67ca8db'; // Replace with your actual API key
         var apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
 
@@ -161,14 +161,6 @@ function getGDP(countryCode) {
             return 'Hujan Sangat Lebat';
         }
     }
-
-    // Example usage:
-    $(document).ready(function() {
-        // Replace with your desired latitude and longitude
-        var latitude = -6.200000;
-        var longitude = 106.816666;
-        getWeatherF(latitude, longitude);
-    });
 
 
 //////////////////////////////////////////////////////////////////////////
