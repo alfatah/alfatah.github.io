@@ -100,68 +100,67 @@ function getGDP(countryCode) {
         });
     }
 
-    // Function to categorize temperature
-    function categorizeTemperature(temp) {
+       // Function to categorize temperature
+       function categorizeTemperature(temp) {
         if (temp < 0) {
-            return 'Sangat Dingin';
+            return 'Very Cold';
         } else if (temp >= 0 && temp < 10) {
-            return 'Dingin';
+            return 'Cold';
         } else if (temp >= 10 && temp < 20) {
-            return 'Sejuk';
+            return 'Cool';
         } else if (temp >= 20 && temp < 30) {
-            return 'Hangat';
+            return 'Warm';
         } else if (temp >= 30 && temp < 40) {
-            return 'Panas';
+            return 'Hot';
         } else {
-            return 'Sangat Panas';
+            return 'Very Hot';
         }
     }
 
     // Function to categorize humidity
     function categorizeHumidity(humidity) {
         if (humidity < 20) {
-            return 'Sangat Kering';
+            return 'Very Dry';
         } else if (humidity >= 20 && humidity < 40) {
-            return 'Kering';
+            return 'Dry';
         } else if (humidity >= 40 && humidity < 60) {
             return 'Normal';
         } else if (humidity >= 60 && humidity < 80) {
-            return 'Lembap';
+            return 'Humid';
         } else {
-            return 'Sangat Lembap';
+            return 'Very Humid';
         }
     }
 
     // Function to categorize wind speed
     function categorizeWindSpeed(windSpeed) {
         if (windSpeed < 5) {
-            return 'Tenang';
+            return 'Calm';
         } else if (windSpeed >= 5 && windSpeed < 15) {
-            return 'Sejuk';
+            return 'Breezy';
         } else if (windSpeed >= 15 && windSpeed < 30) {
-            return 'Berangin';
+            return 'Windy';
         } else if (windSpeed >= 30 && windSpeed < 50) {
-            return 'Sangat Berangin';
+            return 'Very Windy';
         } else {
-            return 'Badai';
+            return 'Stormy';
         }
     }
 
     // Function to categorize rainfall
     function categorizeRainfall(rainfall) {
         if (rainfall === 0) {
-            return 'Tidak Ada Hujan';
+            return 'No Rain';
         } else if (rainfall > 0 && rainfall <= 2.5) {
-            return 'Hujan Ringan';
+            return 'Light Rain';
         } else if (rainfall > 2.5 && rainfall <= 7.5) {
-            return 'Hujan Sedang';
+            return 'Moderate Rain';
         } else if (rainfall > 7.5 && rainfall <= 15) {
-            return 'Hujan Lebat';
+            return 'Heavy Rain';
         } else {
-            return 'Hujan Sangat Lebat';
+            return 'Very Heavy Rain';
         }
     }
-
 
 //////////////////////////////////////////////////////////////////////////
 
