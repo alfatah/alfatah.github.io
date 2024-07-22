@@ -61,7 +61,7 @@ function getGDP(countryCode) {
             // Find the GDP value for the previous year
             var gdpData = data[1].find(entry => entry.date == previousYear);
             if (gdpData && gdpData.value) {
-                var gdp = parseFloat(gdpData.value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                var gdp = parseFloat(gdpData.value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
                 $("#gdp").html(`GDP Country (${previousYear}) : $${gdp}`);
             } else {
                 $("#gdp").html(`GDP Country (${previousYear}) : Data not available for this country`);
@@ -71,6 +71,7 @@ function getGDP(countryCode) {
         }
     });
 }
+
 
 //////////////////////////////////////////////////////////////////////////
 
