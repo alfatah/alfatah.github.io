@@ -52,7 +52,7 @@ $(document).ready(function() {
     
 // Function to get GDP data of a country using country code
 function getGDP(countryCode) {
-    // Get the current year and subtract one to get the previous year
+    // Get the current year and subtract two to get the previous year
     var currentYear = new Date().getFullYear();
     var previousYear = currentYear - 2;
 
@@ -61,8 +61,10 @@ function getGDP(countryCode) {
             // Find the GDP value for the previous year
             var gdpData = data[1].find(entry => entry.date == previousYear);
             if (gdpData && gdpData.value) {
-                var gdp = parseFloat(gdpData.value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-                $("#gdp").html(`GDP Country (${previousYear}) : $${gdp}`);
+                var gdp = parseFloat(gdpData.value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                var gdpPerCapita = parseFloat(gdpData.value / 1000000).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                var evolution = getEvolution(gdpPerCapita);
+                $("#gdp").html(`GDP Country (${previousYear}) : $${gdp}<br>${evolution}`);
             } else {
                 $("#gdp").html(`GDP Country (${previousYear}) : Data not available for this country`);
             }
@@ -70,6 +72,21 @@ function getGDP(countryCode) {
             $("#gdp").html(`GDP Country (${previousYear}) : Data not available for this country`);
         }
     });
+}
+
+// Function to get the evolution description based on GDP per capita
+function getEvolution(gdpPerCapita) {
+    if (gdpPerCapita < 1000) {
+        return "Government Evolution: Focus on basic infrastructure development, poverty alleviation programs, and improving basic healthcare.";
+    } else if (gdpPerCapita >= 1000 && gdpPerCapita < 10000) {
+        return "Government Evolution: Major investments in infrastructure, policy reforms to support SMEs, enhancement of social welfare programs, and initiation of environmental policies.";
+    } else if (gdpPerCapita >= 10000 && gdpPerCapita < 30000) {
+        return "Government Evolution: Investment in research and development (R&D), international trade policies, development of stricter and sustainable environmental policies, and enhancement of universal social and healthcare programs.";
+    } else if (gdpPerCapita >= 30000) {
+        return "Government Evolution: Major investments in higher education and scientific research, development of policies to support the digital economy and Industry 4.0, very strict and sustainable environmental policies, and enhancement of advanced and efficient public services.";
+    } else {
+        return "Government Evolution: Data not available or invalid.";
+    }
 }
 
 
