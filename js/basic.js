@@ -72,13 +72,14 @@ function getGDP(countryCode) {
 
 // Function to get the evolution description based on GDP per capita
 function getEvolution(gdpPerCapita) {
+    gdpPerCapita = parseFloat(gdpPerCapita.replace(/,/g, '')); // Remove commas for comparison
     if (gdpPerCapita < 1000) {
         return "Government Evolution: Focus on basic infrastructure development, poverty alleviation programs, and improving basic healthcare.";
-    } else if (gdpPerCapita >= 1000 && gdpPerCapita < 10000) {
+    } else if (gdpPerCapita >= 1000 && gdpPerCapita < 5000) {
         return "Government Evolution: Major investments in infrastructure, policy reforms to support SMEs, enhancement of social welfare programs, and initiation of environmental policies.";
-    } else if (gdpPerCapita >= 10000 && gdpPerCapita < 30000) {
+    } else if (gdpPerCapita >= 5000 && gdpPerCapita < 15000) {
         return "Government Evolution: Investment in research and development (R&D), international trade policies, development of stricter and sustainable environmental policies, and enhancement of universal social and healthcare programs.";
-    } else if (gdpPerCapita >= 30000) {
+    } else if (gdpPerCapita >= 15000) {
         return "Government Evolution: Major investments in higher education and scientific research, development of policies to support the digital economy and Industry 4.0, very strict and sustainable environmental policies, and enhancement of advanced and efficient public services.";
     } else {
         return "Government Evolution: Data not available or invalid.";
