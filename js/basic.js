@@ -1,16 +1,15 @@
 $(document).ready(function() {
-
     getLocationF();
 
     function getLocationF() {
         $.getJSON("https://ipapi.co/json/", function(ip) {
             console.log(ip);
             $("#ip-address").html("Your IP : " + ip.ip + "," + " " + ip.org + " " + ip.asn);
-            $("#location-data").html(ip.latitude + "," + ip.longitude  +  " " + ip.city + ", " + ip.region + " " + ip.postal + " " + ip.country_name);
+            $("#location-data").html(ip.latitude + "," + ip.longitude + " " + ip.city + ", " + ip.region + " " + ip.postal + " " + ip.country_name);
             var formattedPopulation = ip.country_population.toLocaleString(); // Menambahkan tiga titik sebagai pemisah ribuan
             $("#population").html("Population Country : " + formattedPopulation + " ");
             $("#currency_name").html("Currency : " + ip.currency_name + " ");
-            
+
             // Create Google Maps link
             var mapsLink = "https://www.google.com/maps?authuser=0&q=" + ip.latitude + "," + ip.longitude;
             $("#maps-link").html('Location : <a href="' + mapsLink + '" target="_blank">View on Google Maps</a>');
@@ -38,9 +37,6 @@ $(document).ready(function() {
 
             // Get country economic status
             getCountryEconomicStatus(countryCode);
-              
-            // Fetch and display economic system
-            getEconomicSystem(countryName);
 
             getUnemploymentRate(countryCode);
         });
@@ -603,38 +599,6 @@ async function main() {
 }
 
 main();
-
-
-//////////////////////////////////////////////////////////////////////////
-
-function getEconomicSystem(countryName) {
-    const apiUrl = "https://raw.githubusercontent.com/alfatah/alfatah.github.io/master/API/economicSystem.json";
-
-    // Lakukan request GET menggunakan fetch untuk mengambil data dari API
-    fetch(apiUrl)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Cari sistem ekonomi berdasarkan nama negara
-            const economicSystem = data.countries.find(country => country.name === countryName);
-            
-            if (economicSystem) {
-                const economicHtml = `Economic System : ${economicSystem.economic_system}`;
-                $("#economic-system").html(economicHtml);
-            } else {
-                $("#economic-system").html("Economic System: Data not found");
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
-            $("#economic-system").html("Failed to fetch data from the API");
-        });
-}
-
 
 
 //////////////////////////////////////////////////////////////////////////
