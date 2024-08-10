@@ -606,7 +606,7 @@ main();
 
 async function getUnemploymentRate(countryCode) {
     if (!countryCode) {
-        alert('Country code not found.');
+        alert('Country code not provided.');
         return;
     }
 
@@ -618,7 +618,11 @@ async function getUnemploymentRate(countryCode) {
             throw new Error('Network response was not ok ' + response.statusText);
         }
         const data = await response.json();
-        displayData(data);
+        if (data && data[1] && Array.isArray(data[1])) {
+            displayData(data[1]);
+        } else {
+            throw new Error('Unexpected data format.');
+        }
     } catch (error) {
         console.error('There has been a problem with your fetch operation:', error);
         document.getElementById('unemploymentData').innerHTML = '<p>Failed to fetch data.</p>';
@@ -629,43 +633,35 @@ function displayData(data) {
     const unemploymentDataDiv = document.getElementById('unemploymentData');
     const unemploymentCategoryDiv = document.getElementById('unemploymentCategory');
     
-    if (data.length > 1 && data[1].length > 0) {
-        let latestData = null;
-        for (let i = 0; i < data[1].length; i++) {
-            if (data[1][i].value !== null) {
-                latestData = data[1][i];
-                break;
-            }
-        }
+    let latestData = data.find(item => item.value !== null);
 
-        if (latestData) {
-            const year = latestData.date;
-            const value = latestData.value;
-            unemploymentDataDiv.innerHTML = `The unemployment rate in ${year} is ${value.toFixed(2)}%.`;
-            classifyUnemploymentRate(value, unemploymentCategoryDiv);
-        } else {
-            unemploymentDataDiv.innerHTML = 'Unemployment rate data is not available.';
-        }
+    if (latestData) {
+        const year = latestData.date;
+        const value = latestData.value;
+        unemploymentDataDiv.innerHTML = `The unemployment rate in ${year} is ${value.toFixed(2)}%.`;
+        classifyUnemploymentRate(value, unemploymentCategoryDiv);
     } else {
-        unemploymentDataDiv.innerHTML = 'Data not available.';
+        unemploymentDataDiv.innerHTML = 'Unemployment rate data is not available.';
     }
 }
 
 function classifyUnemploymentRate(rate, categoryDiv) {
     let category;
     if (rate < 2) {
-        category = "Very Low: Less than 2% <br> This indicates a very robust labor market with minimal unemployment.";
+        category = "Very Low: Less than 2% <br> This indicates an extremely healthy labor market with minimal unemployment. It suggests that most people who want to work are able to find jobs easily.";
     } else if (rate >= 2 && rate <= 5) {
-        category = "Low: Between 2% to 5% <br> This is still considered a low unemployment rate with a majority of the workforce employed.";
+        category = "Low: Between 2% and 5% <br> This level of unemployment is still quite low. It typically means that the job market is strong and that most people who are looking for work can find employment relatively easily.";
     } else if (rate > 5 && rate <= 10) {
-        category = "Moderate: Between 5% to 10% <br> This range is common in many countries, reflecting a mix of available jobs and individuals seeking employment.";
+        category = "Moderate: Between 5% and 10% <br> This range is common in many countries and indicates a balanced job market where there are some job seekers who may have difficulty finding work, but overall, there are opportunities available.";
     } else if (rate > 10 && rate <= 20) {
-        category = "High: Between 10% to 20% <br> This indicates a high level of unemployment, often occurring in unstable economic conditions or during economic crises.";
+        category = "High: Between 10% and 20% <br> This level of unemployment is considered high. It often reflects economic difficulties, such as recessions or periods of economic instability, where finding a job is more challenging.";
     } else {
-        category = "Very High: More than 20% <br> This signifies an extremely high unemployment rate, typically associated with severe economic crises.";
+        category = "Very High: More than 20% <br> This signifies an extremely high unemployment rate, which is usually associated with severe economic crises. It indicates that a large proportion of the labor force is unable to find work, leading to widespread economic hardship.";
     }
-    categoryDiv.innerHTML = `Unemployment Rate Category :<br>${category}`;
+    categoryDiv.innerHTML = `Unemployment Rate Category:<br>${category}`;
 }
+
+
 
 
 //////////////////////////////////////////////////////////////////////////
