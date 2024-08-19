@@ -142,23 +142,26 @@ function getWeatherF(latitude, longitude) {
 
     $.getJSON(apiUrl, function(weatherData) {
         const temperature = weatherData.main.temp;
-        const humidity = weatherData.main.humidity;
+        const humidity  = weatherData.main.humidity;
         const windSpeed = weatherData.wind.speed;
         const weatherDescription = weatherData.weather[0].description;
         const rainfall = weatherData.rain ? weatherData.rain['1h'] || 0 : 0;
+        const visibility = weatherData.visibility / 1000; // Visibility in km
 
         // Determine the categories
         const temperatureCategory = categorizeTemperature(temperature);
         const humidityCategory = categorizeHumidity(humidity);
         const windSpeedCategory = categorizeWindSpeed(windSpeed);
         const rainfallCategory = categorizeRainfall(rainfall);
+        const weatherCategory = categorizeWeather(weatherDescription, visibility);
 
         // Display the weather data with categories
         $("#temperature").html(`Temperature: ${temperature}°C (${temperatureCategory})`);
-        $("#weather").html(`Weather: ${weatherDescription}`);
+        $("#weather").html(`Weather: ${weatherDescription} (${weatherCategory})`);
         $("#category").html(`Humidity: ${humidity}% (${humidityCategory})<br>` +
                             `Wind Speed: ${windSpeed} m/s (${windSpeedCategory})<br>` +
-                            `Rainfall: ${rainfall} mm (${rainfallCategory})`);
+                            `Rainfall: ${rainfall} mm (${rainfallCategory})<br>` +
+                            `Visibility: ${visibility} km`);
 
         // Get and display agricultural information based on the climate
         const climateInfo = getAgricultureInfo(temperature);
@@ -230,6 +233,25 @@ function categorizeRainfall(rainfall) {
     }
 }
 
+// Function to categorize weather
+function categorizeWeather(description, visibility) {
+    if (description.includes('fog')) {
+        return `Fog (Visibility: < 1 km)`;
+    } else if (description.includes('smog')) {
+        return `Smog (Visibility: Very Low)`;
+    } else if (description.includes('smoke')) {
+        return `Smoke (Visibility: Varies)`;
+    } else if (description.includes('clouds')) {
+        return `Cloudy (Cloud Cover: Varies)`;
+    } else if (description.includes('dust')) {
+        return `Dust Storm (Visibility: Very Low)`;
+    } else if (description.includes('snow')) {
+        return `Snow (Visibility: Low)`;
+    } else {
+        return `Clear or Other Conditions`;
+    }
+}
+
 // Function to get agricultural information based on temperature
 function getAgricultureInfo(temperature) {
     if (temperature >= 20 && temperature <= 35) {
@@ -270,6 +292,7 @@ function getAgricultureInfo(temperature) {
         };
     }
 }
+
 
 //////////////////////////////////////////////////////////////////////////
 
