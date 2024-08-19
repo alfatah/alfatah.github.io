@@ -19,6 +19,9 @@ $(document).ready(function() {
             var latitude = ip.latitude;
             var longitude = ip.longitude;
 
+            // Display Country Calling Code
+            $("#country-code").html("Country Calling Code : " + ip.country_calling_code);
+
             getGDP(countryCode);
             getWeatherF(latitude, longitude); // Pass latitude and longitude to the weather function
             displaySeason(countryName); // Call function to display current season based on country
