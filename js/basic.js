@@ -39,6 +39,9 @@ $(document).ready(function() {
             getCountryEconomicStatus(countryCode);
 
             getUnemploymentRate(countryCode);
+
+             // Fetch and display holidays using Calendarific API
+             fetchHolidays(countryCode);
         });
     }
 });
@@ -717,6 +720,28 @@ function classifyUnemploymentRate(rate, categoryDiv) {
 }
 
 
+//////////////////////////////////////////////////////////////////////////
 
+// Function to fetch holidays using Calendarific API
+function fetchHolidays(countryCode) {
+    const API_KEY = 'baa9dc110aa712sd3a9fa2a3dwb6c01d4c875950dc32vs'; // Ganti dengan API key Anda
+    const year = new Date().getFullYear(); // Mengambil tahun saat ini
+    const url = `https://calendarific.com/api/v2/holidays?api_key=${API_KEY}&country=${countryCode}&year=${year}`;
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            const holidays = data.response.holidays;
+
+            let holidaysHtml = '<h3>Holidays:</h3><ul>';
+            holidays.forEach(holiday => {
+                holidaysHtml += `<li>${holiday.name} (${holiday.date.iso}): ${holiday.description}</li>`;
+            });
+            holidaysHtml += '</ul>';
+
+            $("#holidays").html(holidaysHtml); // Menampilkan data hari libur dalam elemen dengan ID holidays
+        })
+        .catch(error => console.error('Error fetching holidays:', error));
+}
 
 //////////////////////////////////////////////////////////////////////////
