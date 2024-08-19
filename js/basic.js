@@ -4,50 +4,50 @@ $(document).ready(function() {
     function getLocationF() {
         $.getJSON("https://ipapi.co/json/", function(ip) {
             console.log(ip);
-            $("#ip-address").html("IP Anda : " + ip.ip + ", " + ip.org + ", " + ip.asn);
+            $("#ip-address").html("Your IP: " + ip.ip + ", " + ip.org + ", " + ip.asn);
             $("#location-data").html(ip.latitude + "," + ip.longitude + ", " + ip.timezone + ", " + ip.city + ", " + ip.region + ", " + ip.postal + ", " + ip.country_name);
-            var formattedPopulation = ip.country_population.toLocaleString(); // Menambahkan tiga titik sebagai pemisah ribuan
-            $("#population").html("Populasi Negara : " + formattedPopulation + " ");
-            $("#currency_name").html("Mata Uang : " + ip.currency_name + " ");
+            var formattedPopulation = ip.country_population.toLocaleString(); // Adds commas as thousands separator
+            $("#population").html("Country Population: " + formattedPopulation + " ");
+            $("#currency_name").html("Currency: " + ip.currency_name + " ");
 
             var countryCode = ip.country;
             var countryName = ip.country_name;
             var latitude = ip.latitude;
             var longitude = ip.longitude;
 
-            // Menampilkan Kode Panggilan Negara
-            $("#country-code").html("Kode Panggilan Negara : " + ip.country_calling_code);
+            // Display Country Calling Code
+            $("#country-code").html("Country Calling Code: " + ip.country_calling_code);
 
-            // Mengoper latitude dan longitude ke fungsi
+            // Pass latitude and longitude to function
             getGDP(countryCode);
-            getWeatherF(latitude, longitude); // Mengoper latitude dan longitude ke fungsi cuaca
-            displaySeason(countryName); // Memanggil fungsi untuk menampilkan musim saat ini berdasarkan negara
+            getWeatherF(latitude, longitude); // Pass latitude and longitude to weather function
+            displaySeason(countryName); // Call function to display the current season based on the country
 
-            // Mengambil harga emas
+            // Fetch gold prices
             fetchGoldPrices();
 
-            // Mengambil data gempa
+            // Fetch earthquake data
             fetchEarthquakeData(latitude, longitude, countryName);
 
-            // Mendapatkan data kualitas udara menggunakan latitude dan longitude
+            // Get air quality data using latitude and longitude
             getAirQuality(latitude, longitude);
 
-            // Mengambil dan menampilkan sistem pemerintahan
+            // Fetch and display government system
             getGovernmentSystem(countryName);
 
-            // Mendapatkan status ekonomi negara
+            // Get the country's economic status
             getCountryEconomicStatus(countryCode);
 
             getUnemploymentRate(countryCode);
 
-            // Mengambil dan menampilkan hari libur menggunakan API Calendarific
+            // Fetch and display holidays using Calendarific API
             fetchHolidays(countryCode);
 
-            // Secara otomatis mendapatkan lokasi pengguna
+            // Automatically get the user's location
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition, showError);
             } else {
-                document.getElementById('location').innerText = "Geolocation tidak didukung oleh browser ini.";
+                document.getElementById('location').innerText = "Geolocation is not supported by this browser.";
             }
         });
     }
@@ -56,27 +56,27 @@ $(document).ready(function() {
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
 
-        // Menampilkan latitude dan longitude
-        document.getElementById('location').innerText = "Latitude, Longitude : " + `${latitude},${longitude}`;
+        // Display latitude and longitude
+        document.getElementById('location').innerText = "Latitude, Longitude: " + `${latitude},${longitude}`;
 
-        // Membuat tautan Google Maps
+        // Create a Google Maps link
         var mapsLink = "https://www.google.com/maps?authuser=0&q=" + latitude + "," + longitude;
-        document.getElementById('maps-link').innerHTML = 'Lokasi: <a href="' + mapsLink + '" target="_blank">Lihat di Google Maps</a>';
+        document.getElementById('maps-link').innerHTML = 'Location: <a href="' + mapsLink + '" target="_blank">View on Google Maps</a>';
     }
 
     function showError(error) {
         switch(error.code) {
             case error.PERMISSION_DENIED:
-                document.getElementById('location').innerText = "Pengguna menolak permintaan untuk Geolocation.";
+                document.getElementById('location').innerText = "User denied the request for Geolocation.";
                 break;
             case error.POSITION_UNAVAILABLE:
-                document.getElementById('location').innerText = "Informasi lokasi tidak tersedia.";
+                document.getElementById('location').innerText = "Location information is unavailable.";
                 break;
             case error.TIMEOUT:
-                document.getElementById('location').innerText = "Permintaan untuk mendapatkan lokasi pengguna telah habis waktu.";
+                document.getElementById('location').innerText = "The request to get user location timed out.";
                 break;
             case error.UNKNOWN_ERROR:
-                document.getElementById('location').innerText = "Terjadi kesalahan yang tidak dikenal.";
+                document.getElementById('location').innerText = "An unknown error occurred.";
                 break;
         }
     }
