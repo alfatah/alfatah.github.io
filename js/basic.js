@@ -258,69 +258,93 @@ function getCurrentPeriod(hours) {
     }
   }
   
-  // Function to display current season based on location
-  function displaySeason(countryName) {
+// Function to display current season based on location
+function displaySeason(countryName) {
     var now = new Date();
     var month = now.getMonth() + 1; // Months are zero indexed, so add 1
-  
+    
     var season;
+    var features;
     if (countryName === "Indonesia") {
       if (month >= 12 || month <= 2) {
         season = "Rainy Season";
+        features = "High rainfall, increased humidity, and potential flooding.";
       } else if (month >= 6 && month <= 9) {
         season = "Dry Season";
+        features = "Low rainfall, high temperatures, and dry conditions.";
       } else {
         season = "Transition Season";
+        features = "Fluctuating weather patterns with occasional rain.";
       }
     } else if (countryName === "Asia" || countryName === "Europe") {
       if (month >= 3 && month <= 5) {
         season = "Spring";
+        features = "Mild temperatures, blooming flowers, and rejuvenating plant life.";
       } else if (month >= 6 && month <= 8) {
         season = "Summer";
+        features = "Hot temperatures, longer days, and increased outdoor activities.";
       } else if (month >= 9 && month <= 11) {
         season = "Autumn";
+        features = "Cooler temperatures, falling leaves, and harvest season.";
       } else {
         season = "Winter";
+        features = "Cold temperatures, snow in some regions, and shorter days.";
       }
     } else if (countryName === "Africa") {
       if (month >= 6 && month <= 8) {
         season = "Winter";
+        features = "Mild temperatures, dry conditions, and shorter days.";
       } else if (month >= 9 && month <= 11) {
         season = "Spring";
+        features = "Rising temperatures, blooming flowers, and occasional rain.";
       } else {
         season = "Summer";
+        features = "Hot temperatures and sometimes heavy rainfall in certain regions.";
       }
     } else if (countryName === "North America" || countryName === "South America") {
       if (month >= 3 && month <= 5) {
         season = "Spring";
+        features = "Mild temperatures, blossoming flowers, and new plant growth.";
       } else if (month >= 6 && month <= 8) {
         season = "Summer";
+        features = "Hot temperatures, longer daylight hours, and summer vacations.";
       } else if (month >= 9 && month <= 11) {
         season = "Autumn";
+        features = "Cooling temperatures, vibrant foliage, and harvest time.";
       } else {
         season = "Winter";
+        features = "Cold temperatures, possible snow, and holiday season.";
       }
     } else if (countryName === "Australia" || countryName === "Oceania") {
       if (month >= 3 && month <= 5) {
         season = "Autumn";
+        features = "Cooling temperatures, changing leaf colors, and harvest time.";
       } else if (month >= 6 && month <= 8) {
         season = "Winter";
+        features = "Cooler temperatures, shorter days, and snow in some areas.";
       } else if (month >= 9 && month <= 11) {
         season = "Spring";
+        features = "Warming temperatures, blooming flowers, and new life.";
       } else {
         season = "Summer";
+        features = "Hot temperatures, beach weather, and longer days.";
       }
     } else if (countryName === "Antarctica") {
       if (month >= 3 && month <= 10) {
         season = "Summer";
+        features = "Relatively warmer temperatures, 24-hour daylight, and ice melting.";
       } else {
         season = "Winter";
+        features = "Extremely cold temperatures, 24-hour darkness, and heavy snowfall.";
       }
     } else {
       season = "Unknown Location";
+      features = "No seasonal information available.";
     }
-    $("#season").html("Season: " + season);
+  
+    $("#season").html("Season: " + season + "<br>Features: " + features);
   }
+  
   
   // JavaScript to display current date, time, day, and period of the day
   $(document).ready(function() {
