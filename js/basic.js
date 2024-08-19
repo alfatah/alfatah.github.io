@@ -96,29 +96,36 @@ function getEvolution(gdpPerCapita) {
 
 //////////////////////////////////////////////////////////////////////////
 
-   // Function to get weather data using latitude and longitude
-   function getWeatherF(latitude, longitude) {
-    var apiKey = '74cc8a3c199f63bb2998825eb67ca8db'; // Replace with your actual API key
-    var apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
+// Function to get weather data using latitude and longitude
+function getWeatherF(latitude, longitude) {
+    const apiKey = '74cc8a3c199f63bb2998825eb67ca8db'; // Replace with your actual API key
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
 
     $.getJSON(apiUrl, function(weatherData) {
-        var temperature = weatherData.main.temp;
-        var humidity = weatherData.main.humidity;
-        var windSpeed = weatherData.wind.speed;
-        var weatherDescription = weatherData.weather[0].description;
-        var rainfall = weatherData.rain ? weatherData.rain['1h'] || 0 : 0;
+        const temperature = weatherData.main.temp;
+        const humidity = weatherData.main.humidity;
+        const windSpeed = weatherData.wind.speed;
+        const weatherDescription = weatherData.weather[0].description;
+        const rainfall = weatherData.rain ? weatherData.rain['1h'] || 0 : 0;
 
         // Determine the categories
-        var temperatureCategory = categorizeTemperature(temperature);
-        var humidityCategory = categorizeHumidity(humidity);
-        var windSpeedCategory = categorizeWindSpeed(windSpeed);
-        var rainfallCategory = categorizeRainfall(rainfall);
+        const temperatureCategory = categorizeTemperature(temperature);
+        const humidityCategory = categorizeHumidity(humidity);
+        const windSpeedCategory = categorizeWindSpeed(windSpeed);
+        const rainfallCategory = categorizeRainfall(rainfall);
 
-        $("#temperature").html("Temperature: " + temperature + "°C (" + temperatureCategory + ")");
-        $("#weather").html("Weather: " + weatherDescription);
-        $("#category").html("Humidity: " + humidity + "% (" + humidityCategory + ")<br>" +
-                            "Wind Speed: " + windSpeed + " m/s (" + windSpeedCategory + ")<br>" +
-                            "Rainfall: " + rainfall + " mm (" + rainfallCategory + ")");
+        // Display the weather data with categories
+        $("#temperature").html(`Temperature: ${temperature}°C (${temperatureCategory})`);
+        $("#weather").html(`Weather: ${weatherDescription}`);
+        $("#category").html(`Humidity: ${humidity}% (${humidityCategory})<br>` +
+                            `Wind Speed: ${windSpeed} m/s (${windSpeedCategory})<br>` +
+                            `Rainfall: ${rainfall} mm (${rainfallCategory})`);
+
+        // Get and display agricultural information based on the climate
+        const climateInfo = getAgricultureInfo(temperature);
+        $("#agriculture").html(`Agriculture in this climate:<br>` +
+                               `Main Crops: ${climateInfo.mainCrops.join(", ")}<br>` +
+                               `Influence: ${climateInfo.influence}`);
     });
 }
 
@@ -181,6 +188,47 @@ function categorizeRainfall(rainfall) {
         return 'Heavy Rain';
     } else {
         return 'Very Heavy Rain';
+    }
+}
+
+// Function to get agricultural information based on temperature
+function getAgricultureInfo(temperature) {
+    if (temperature >= 20 && temperature <= 35) {
+        return {
+            name: "Tropical",
+            mainCrops: ["Rice", "Corn", "Bananas", "Palm Oil", "Cocoa", "Coffee"],
+            influence: "Warm temperatures year-round allow for continuous farming without winter constraints. However, high rainfall must be managed to prevent flooding or plant diseases."
+        };
+    } else if (temperature >= 10 && temperature <= 40) {
+        return {
+            name: "Subtropical",
+            mainCrops: ["Wheat", "Oranges", "Olives", "Cotton", "Tea"],
+            influence: "Varied temperatures enable specific growing seasons. Mild winters allow some crops to continue growing, though long summers can cause drought."
+        };
+    } else if (temperature >= 5 && temperature <= 45) {
+        return {
+            name: "Desert",
+            mainCrops: ["Dates", "Wheat (with irrigation)", "Certain vegetables"],
+            influence: "Crops in desert areas require good irrigation techniques due to very low rainfall. High daytime temperatures and low nighttime temperatures can stress plants."
+        };
+    } else if (temperature >= -20 && temperature <= 35) {
+        return {
+            name: "Continental",
+            mainCrops: ["Wheat", "Corn", "Soybeans", "Potatoes"],
+            influence: "Long, harsh winters limit the growing season, but fertile soil supports high agricultural production during the growing season."
+        };
+    } else if (temperature >= -50 && temperature <= 10) {
+        return {
+            name: "Arctic",
+            mainCrops: ["Greenhouse vegetables"],
+            influence: "Crops struggle to grow in Arctic climates due to extreme temperatures and very short growing seasons. Farming is usually done in greenhouses or using special techniques like hydroponics."
+        };
+    } else {
+        return {
+            name: "Unknown",
+            mainCrops: [],
+            influence: "No information is available for this climate."
+        };
     }
 }
 
