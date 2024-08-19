@@ -5,7 +5,7 @@ $(document).ready(function() {
         $.getJSON("https://ipapi.co/json/", function(ip) {
             console.log(ip);
             $("#ip-address").html("Your IP : " + ip.ip + ", " + ip.org + ", " + ip.asn);
-            $("#location-data").html(ip.latitude + "," + ip.longitude + ", " + ip.city + ", " + ip.region + ", " + ip.postal + ", " + ip.country_name);
+            $("#location-data").html(ip.latitude + "," + ip.longitude + ", " + ip.timezone + ", " + ip.city + ", " + ip.region + ", " + ip.postal + ", " + ip.country_name);
             var formattedPopulation = ip.country_population.toLocaleString(); // Menambahkan tiga titik sebagai pemisah ribuan
             $("#population").html("Population Country : " + formattedPopulation + " ");
             $("#currency_name").html("Currency : " + ip.currency_name + " ");
