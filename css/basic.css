@@ -85,7 +85,7 @@ body {
 
     #toolsTable, #toolsTable tr, #toolsTable td {
         display: block;
-        width: 100%;
+        width: auto;
     }
 
     #toolsTable td {
