@@ -1,3 +1,4 @@
+
 $(document).ready(function() {
     getLocationF();
 
@@ -6,9 +7,14 @@ $(document).ready(function() {
             console.log(ip);
             $("#ip-address").html("Your IP: " + ip.ip + ", " + ip.org + ", " + ip.asn);
             $("#location-data").html(ip.latitude + "," + ip.longitude + ", " + ip.timezone + ", " + ip.city + ", " + ip.region + ", " + ip.postal + ", " + ip.country_name);
+            
             var formattedPopulation = ip.country_population.toLocaleString(); // Adds commas as thousands separator
             $("#population").html("Country Population: " + formattedPopulation + " ");
             $("#currency_name").html("Currency: " + ip.currency_name + " ");
+
+            // Get population features
+            var populationFeatures = getCountryFeaturesByPopulation(ip.country_population);
+            $("#population-features").html("Category: " + populationFeatures.category + "<br>Description: " + populationFeatures.description);
 
             var countryCode = ip.country;
             var countryName = ip.country_name;
@@ -20,30 +26,16 @@ $(document).ready(function() {
 
             // Pass latitude and longitude to function
             getGDP(countryCode);
-            getWeatherF(latitude, longitude); // Pass latitude and longitude to weather function
-            displaySeason(countryName); // Call function to display the current season based on the country
-
-            // Fetch gold prices
+            getWeatherF(latitude, longitude);
+            displaySeason(countryName);
             fetchGoldPrices();
-
-            // Fetch earthquake data
             fetchEarthquakeData(latitude, longitude, countryName);
-
-            // Get air quality data using latitude and longitude
             getAirQuality(latitude, longitude);
-
-            // Fetch and display government system
             getGovernmentSystem(countryName);
-
-            // Get the country's economic status
             getCountryEconomicStatus(countryCode);
-
             getUnemploymentRate(countryCode);
-
-            // Fetch and display holidays using Calendarific API
             fetchHolidays(countryCode);
 
-            // Automatically get the user's location
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition, showError);
             } else {
@@ -56,10 +48,7 @@ $(document).ready(function() {
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
 
-        // Display latitude and longitude
         document.getElementById('location').innerText = "Latitude, Longitude: " + `${latitude},${longitude}`;
-
-        // Create a Google Maps link
         var mapsLink = "https://www.google.com/maps?authuser=0&q=" + latitude + "," + longitude;
         document.getElementById('maps-link').innerHTML = 'Location: <a href="' + mapsLink + '" target="_blank">View on Google Maps</a>';
     }
@@ -81,6 +70,7 @@ $(document).ready(function() {
         }
     }
 });
+
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -834,3 +824,35 @@ function fetchHolidays(countryCode) {
 
 //////////////////////////////////////////////////////////////////////////
 
+function getCountryFeaturesByPopulation(population) {
+    let features = {};
+    if (population < 1_000_000) {
+        features = {
+            category: "Negara dengan Populasi Kecil",
+            description: "Homogen dengan sedikit keragaman etnis atau budaya. Ekonomi terbatas."
+        };
+    } else if (population < 10_000_000) {
+        features = {
+            category: "Negara dengan Populasi Sedang",
+            description: "Beberapa keragaman etnis dan budaya. Infrastruktur berkembang."
+        };
+    } else if (population < 100_000_000) {
+        features = {
+            category: "Negara dengan Populasi Besar",
+            description: "Sangat beragam dengan ekonomi yang beragam. Infrastruktur kompleks."
+        };
+    } else if (population < 1_000_000_000) {
+        features = {
+            category: "Negara dengan Populasi Sangat Besar",
+            description: "Tantangan dalam pengelolaan keragaman. Ekonomi besar."
+        };
+    } else {
+        features = {
+            category: "Negara dengan Populasi Terbesar",
+            description: "Populasi sangat besar dengan ekonomi yang signifikan di panggung global."
+        };
+    }
+    return features;
+}
+
+//////////////////////////////////////////////////////////////////////////
