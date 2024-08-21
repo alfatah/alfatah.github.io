@@ -1,47 +1,9 @@
 
 $(document).ready(function() {
-    getLocationF();
-
-    function getLocationF() {
-        $.getJSON("https://ipapi.co/json/", function(ip) {
-            console.log(ip);
-            $("#ip-address").html("Your IP: " + ip.ip + ", " + ip.org + ", " + ip.asn);
-            $("#location-data").html(ip.latitude + "," + ip.longitude + ", " + ip.timezone + ", " + ip.city + ", " + ip.region + ", " + ip.postal + ", " + ip.country_name);
-            
-            var formattedPopulation = ip.country_population.toLocaleString(); // Adds commas as thousands separator
-            $("#population").html("Country Population: " + formattedPopulation + " ");
-            $("#currency_name").html("Currency: " + ip.currency_name + " ");
-
-            // Get population features
-            var populationFeatures = getCountryFeaturesByPopulation(ip.country_population);
-            $("#population-features").html("Category: " + populationFeatures.category + "<br>Description: " + populationFeatures.description);
-
-            var countryCode = ip.country;
-            var countryName = ip.country_name;
-            var latitude = ip.latitude;
-            var longitude = ip.longitude;
-
-            // Display Country Calling Code
-            $("#country-code").html("Country Calling Code: " + ip.country_calling_code);
-
-            // Pass latitude and longitude to function
-            getGDP(countryCode);
-            getWeatherF(latitude, longitude);
-            displaySeason(countryName);
-            fetchGoldPrices();
-            fetchEarthquakeData(latitude, longitude, countryName);
-            getAirQuality(latitude, longitude);
-            getGovernmentSystem(countryName);
-            getCountryEconomicStatus(countryCode);
-            getUnemploymentRate(countryCode);
-            fetchHolidays(countryCode);
-
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition, showError);
-            } else {
-                document.getElementById('location').innerText = "Geolocation is not supported by this browser.";
-            }
-        });
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
+    } else {
+        document.getElementById('location').innerText = "Geolocation is not supported by this browser.";
     }
 
     function showPosition(position) {
@@ -51,6 +13,8 @@ $(document).ready(function() {
         document.getElementById('location').innerText = "Latitude, Longitude: " + `${latitude},${longitude}`;
         var mapsLink = "https://www.google.com/maps?authuser=0&q=" + latitude + "," + longitude;
         document.getElementById('maps-link').innerHTML = 'Location: <a href="' + mapsLink + '" target="_blank">View on Google Maps</a>';
+
+        getLocationF(latitude, longitude);
     }
 
     function showError(error) {
@@ -69,7 +33,42 @@ $(document).ready(function() {
                 break;
         }
     }
+
+    function getLocationF(latitude, longitude) {
+        $.getJSON("https://ipapi.co/json/", function(ip) {
+            console.log(ip);
+            $("#ip-address").html("Your IP: " + ip.ip + ", " + ip.org + ", " + ip.asn);
+            $("#location-data").html(ip.latitude + "," + ip.longitude + ", " + ip.timezone + ", " + ip.city + ", " + ip.region + ", " + ip.postal + ", " + ip.country_name);
+            
+            var formattedPopulation = ip.country_population.toLocaleString(); // Adds commas as thousands separator
+            $("#population").html("Country Population: " + formattedPopulation + " ");
+            $("#currency_name").html("Currency: " + ip.currency_name + " ");
+
+            // Get population features
+            var populationFeatures = getCountryFeaturesByPopulation(ip.country_population);
+            $("#population-features").html("Category: " + populationFeatures.category + "<br>Description: " + populationFeatures.description);
+
+            var countryCode = ip.country;
+            var countryName = ip.country_name;
+
+            // Display Country Calling Code
+            $("#country-code").html("Country Calling Code: " + ip.country_calling_code);
+
+            // Pass latitude and longitude to functions
+            getGDP(countryCode);
+            getWeatherF(latitude, longitude);
+            displaySeason(countryName);
+            fetchGoldPrices();
+            fetchEarthquakeData(latitude, longitude, countryName);
+            getAirQuality(latitude, longitude);
+            getGovernmentSystem(countryName);
+            getCountryEconomicStatus(countryCode);
+            getUnemploymentRate(countryCode);
+            fetchHolidays(countryCode);
+        });
+    }
 });
+
 
 
 
