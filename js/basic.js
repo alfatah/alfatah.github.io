@@ -135,7 +135,7 @@ function getWeatherF(latitude, longitude) {
         const humidity  = weatherData.main.humidity;
         const windSpeed = weatherData.wind.speed;
         const weatherDescription = weatherData.weather[0].description;
-        const rainfall = weatherData.rain ? weatherData.rain['1h'] || 0 : 0;
+        const rainfall = weatherData.rain ? (weatherData.rain['1h'] || 0) : 0;
         const visibility = weatherData.visibility / 1000; // Visibility in km
 
         // Determine the categories
@@ -157,6 +157,7 @@ function getWeatherF(latitude, longitude) {
         const climateInfo = getAgricultureInfo(temperature);
         $("#agriculture").html(`Agriculture in this climate:<br>` +
                                `Main Crops: ${climateInfo.mainCrops.join(", ")}<br>` +
+                               `Hydroponic Crops: ${climateInfo.hydroponicCrops.join(", ")}<br>` +
                                `Influence: ${climateInfo.influence}`);
     });
 }
@@ -223,7 +224,7 @@ function categorizeRainfall(rainfall) {
     }
 }
 
-// Function to categorize weather
+// Function to categorize weather based on description and visibility
 function categorizeWeather(description, visibility) {
     if (description.includes('fog')) {
         return `Fog (Visibility: < 1 km)`;
@@ -272,7 +273,7 @@ function getAgricultureInfo(temperature) {
             hydroponicCrops: ["Leafy Greens", "Herbs", "Tomatoes", "Strawberries"],
             influence: "Long, harsh winters limit the growing season, but fertile soil supports high agricultural production during the growing season."
         };
-    } else if (temperature >= -50 and temperature <= 10) {
+    } else if (temperature >= -50 && temperature <= 10) {
         return {
             name: "Arctic",
             mainCrops: ["Greenhouse vegetables"],
@@ -288,9 +289,6 @@ function getAgricultureInfo(temperature) {
         };
     }
 }
-
-
-
 
 
 //////////////////////////////////////////////////////////////////////////
