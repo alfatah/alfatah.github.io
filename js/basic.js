@@ -252,46 +252,55 @@ function categorizeWeather(description, visibility) {
     }
 }
 
-// Function to get agricultural information based on temperature
+// Function to get both traditional agricultural and hydroponic information based on temperature
 function getAgricultureInfo(temperature) {
     if (temperature >= 20 && temperature <= 35) {
         return {
             name: "Tropical",
             mainCrops: ["Rice", "Corn", "Bananas", "Palm Oil", "Cocoa", "Coffee"],
+            hydroponicCrops: ["Lettuce", "Spinach", "Basil", "Cucumbers", "Tomatoes", "Peppers"],
             influence: "Warm temperatures year-round allow for continuous farming without winter constraints. However, high rainfall must be managed to prevent flooding or plant diseases."
         };
     } else if (temperature >= 10 && temperature <= 40) {
         return {
             name: "Subtropical",
             mainCrops: ["Wheat", "Oranges", "Olives", "Cotton", "Tea"],
+            hydroponicCrops: ["Lettuce", "Herbs", "Peppers", "Strawberries"],
             influence: "Varied temperatures enable specific growing seasons. Mild winters allow some crops to continue growing, though long summers can cause drought."
         };
     } else if (temperature >= 5 && temperature <= 45) {
         return {
             name: "Desert",
             mainCrops: ["Dates", "Wheat (with irrigation)", "Certain vegetables"],
+            hydroponicCrops: ["Lettuce", "Tomatoes", "Cucumbers", "Peppers"],
             influence: "Crops in desert areas require good irrigation techniques due to very low rainfall. High daytime temperatures and low nighttime temperatures can stress plants."
         };
     } else if (temperature >= -20 && temperature <= 35) {
         return {
             name: "Continental",
             mainCrops: ["Wheat", "Corn", "Soybeans", "Potatoes"],
+            hydroponicCrops: ["Leafy Greens", "Herbs", "Tomatoes", "Strawberries"],
             influence: "Long, harsh winters limit the growing season, but fertile soil supports high agricultural production during the growing season."
         };
-    } else if (temperature >= -50 && temperature <= 10) {
+    } else if (temperature >= -50 and temperature <= 10) {
         return {
             name: "Arctic",
             mainCrops: ["Greenhouse vegetables"],
+            hydroponicCrops: ["Leafy Greens", "Herbs"],
             influence: "Crops struggle to grow in Arctic climates due to extreme temperatures and very short growing seasons. Farming is usually done in greenhouses or using special techniques like hydroponics."
         };
     } else {
         return {
             name: "Unknown",
             mainCrops: [],
+            hydroponicCrops: [],
             influence: "No information is available for this climate."
         };
     }
 }
+
+
+
 
 
 //////////////////////////////////////////////////////////////////////////
