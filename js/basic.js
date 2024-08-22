@@ -129,34 +129,58 @@ function getWeatherF(latitude, longitude) {
     const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
 
     $.getJSON(apiUrl, function(weatherData) {
-        const temperature = weatherData.main.temp;
-        const humidity  = weatherData.main.humidity;
-        const windSpeed = weatherData.wind.speed;
-        const weatherDescription = weatherData.weather[0].description;
-        const rainfall = weatherData.rain ? (weatherData.rain['1h'] || 0) : 0;
-        const visibility = weatherData.visibility / 1000; // Visibility in km
+        try {
+            const temperature = weatherData.main.temp;
+            const humidity = weatherData.main.humidity;
+            const windSpeed = weatherData.wind.speed;
+            const weatherDescription = weatherData.weather[0].description;
+            const rainfall = weatherData.rain ? (weatherData.rain['1h'] || 0) : 0;
+            const visibility = weatherData.visibility / 1000; // Visibility in km
 
-        // Determine the categories
-        const temperatureCategory = categorizeTemperature(temperature);
-        const humidityCategory = categorizeHumidity(humidity);
-        const windSpeedCategory = categorizeWindSpeed(windSpeed);
-        const rainfallCategory = categorizeRainfall(rainfall);
-        const weatherCategory = categorizeWeather(weatherDescription, visibility);
+            // Determine the categories
+            const temperatureCategory = categorizeTemperature(temperature);
+            const humidityCategory = categorizeHumidity(humidity);
+            const windSpeedCategory = categorizeWindSpeed(windSpeed);
+            const rainfallCategory = categorizeRainfall(rainfall);
+            const weatherCategory = categorizeWeather(weatherDescription, visibility);
 
-        // Display the weather data with categories
-        $("#temperature").html(`Temperature: ${temperature}°C (${temperatureCategory})`);
-        $("#weather").html(`Weather: ${weatherDescription} (${weatherCategory})`);
-        $("#category").html(`Humidity: ${humidity}% (${humidityCategory})<br>` +
-                            `Wind Speed: ${windSpeed} m/s (${windSpeedCategory})<br>` +
-                            `Rainfall: ${rainfall} mm (${rainfallCategory})<br>` +
-                            `Visibility: ${visibility} km`);
+            // Display the weather data with categories
+            $("#temperature").html(`Temperature: ${temperature}°C (${temperatureCategory})`);
+            $("#weather").html(`Weather: ${weatherDescription} (${weatherCategory})`);
+            $("#category").html(`Humidity: ${humidity}% (${humidityCategory})<br>` +
+                                `Wind Speed: ${windSpeed} m/s (${windSpeedCategory})<br>` +
+                                `Rainfall: ${rainfall} mm (${rainfallCategory})<br>` +
+                                `Visibility: ${visibility} km`);
 
-        // Get and display agricultural information based on the climate
-        const climateInfo = getAgricultureInfo(temperature);
-        $("#agriculture").html(`Agriculture in this climate:<br>` +
-                               `Main Crops: ${climateInfo.mainCrops.join(", ")}<br>` +
-                               `Hydroponic Crops: ${climateInfo.hydroponicCrops.join(", ")}<br>` +
-                               `Influence: ${climateInfo.influence}`);
+            // Get and display agricultural information based on the climate
+            const climateInfo = getAgricultureInfo(temperature, humidity);
+            $("#agriculture").html(`Agriculture in this climate:<br>` +
+                                    `Main Crops: ${climateInfo.mainCrops.join(", ")}<br>` +
+                                    `Hydroponic Crops: ${climateInfo.hydroponicCrops.join(", ")}<br>` +
+                                    `Influence: ${climateInfo.influence}`);
+
+            // Get and display livestock information based on the climate
+            const livestockInfo = getLivestockInfo(temperature, humidity);
+            $("#livestock").html(`Livestock in this climate:<br>` +
+                                 `Animal: ${livestockInfo.animal}<br>` +
+                                 `Ideal Temperature: ${livestockInfo.idealTemperature}<br>` +
+                                 `Ideal Humidity: ${livestockInfo.idealHumidity}<br>` +
+                                 `Impact: ${livestockInfo.impact}`);
+        } catch (error) {
+            console.error("Error processing weather data:", error);
+            $("#temperature").html("Error retrieving weather data.");
+            $("#weather").html("Error retrieving weather data.");
+            $("#category").html("Error retrieving weather data.");
+            $("#agriculture").html("Error retrieving agriculture data.");
+            $("#livestock").html("Error retrieving livestock data.");
+        }
+    }).fail(function() {
+        console.error("Error fetching data from the API.");
+        $("#temperature").html("Error retrieving weather data.");
+        $("#weather").html("Error retrieving weather data.");
+        $("#category").html("Error retrieving weather data.");
+        $("#agriculture").html("Error retrieving agriculture data.");
+        $("#livestock").html("Error retrieving livestock data.");
     });
 }
 
@@ -236,54 +260,91 @@ function categorizeWeather(description, visibility) {
         return `Dust Storm (Visibility: Very Low)`;
     } else if (description.includes('snow')) {
         return `Snow (Visibility: Low)`;
+    } else if (visibility < 1) {
+        return `Visibility: Very Low`;
+    } else if (visibility < 5) {
+        return `Visibility: Low`;
     } else {
         return `Clear or Other Conditions`;
     }
 }
 
-// Function to get both traditional agricultural and hydroponic information based on temperature
-function getAgricultureInfo(temperature) {
-    if (temperature >= 20 && temperature <= 35) {
+// Function to get agricultural information based on temperature and humidity
+function getAgricultureInfo(temperature, humidity) {
+    if (temperature >= 20 && temperature <= 35 && humidity >= 60) {
         return {
             name: "Tropical",
             mainCrops: ["Rice", "Corn", "Bananas", "Palm Oil", "Cocoa", "Coffee"],
             hydroponicCrops: ["Lettuce", "Spinach", "Basil", "Cucumbers", "Tomatoes", "Peppers"],
-            influence: "Warm temperatures year-round allow for continuous farming without winter constraints. However, high rainfall must be managed to prevent flooding or plant diseases."
+            influence: "Warm temperatures and high humidity allow for continuous farming. However, high humidity can lead to fungal diseases, so proper crop management is crucial."
         };
-    } else if (temperature >= 10 && temperature <= 40) {
+    } else if (temperature >= 10 && temperature <= 40 && humidity >= 40 && humidity < 60) {
         return {
             name: "Subtropical",
             mainCrops: ["Wheat", "Oranges", "Olives", "Cotton", "Tea"],
             hydroponicCrops: ["Lettuce", "Herbs", "Peppers", "Strawberries"],
-            influence: "Varied temperatures enable specific growing seasons. Mild winters allow some crops to continue growing, though long summers can cause drought."
+            influence: "Moderate humidity and temperatures allow for a wide variety of crops. Drought-resistant crops are recommended during dry spells."
         };
-    } else if (temperature >= 5 && temperature <= 45) {
+    } else if (temperature >= 5 && temperature <= 45 && humidity < 40) {
         return {
             name: "Desert",
             mainCrops: ["Dates", "Wheat (with irrigation)", "Certain vegetables"],
             hydroponicCrops: ["Lettuce", "Tomatoes", "Cucumbers", "Peppers"],
-            influence: "Crops in desert areas require good irrigation techniques due to very low rainfall. High daytime temperatures and low nighttime temperatures can stress plants."
+            influence: "Low humidity and high temperatures require effective irrigation. Humidity control is essential in greenhouses to prevent plant stress."
         };
-    } else if (temperature >= -20 && temperature <= 35) {
+    } else if (temperature >= -20 && temperature <= 35 && humidity >= 40 && humidity < 60) {
         return {
             name: "Continental",
             mainCrops: ["Wheat", "Corn", "Soybeans", "Potatoes"],
             hydroponicCrops: ["Leafy Greens", "Herbs", "Tomatoes", "Strawberries"],
-            influence: "Long, harsh winters limit the growing season, but fertile soil supports high agricultural production during the growing season."
+            influence: "Moderate humidity combined with long, harsh winters shortens the growing season. Fertile soil and humidity management are key for successful yields."
         };
-    } else if (temperature >= -50 && temperature <= 10) {
+    } else if (temperature >= -50 && temperature <= 10 && humidity >= 60) {
         return {
             name: "Arctic",
             mainCrops: ["Greenhouse vegetables"],
             hydroponicCrops: ["Leafy Greens", "Herbs"],
-            influence: "Crops struggle to grow in Arctic climates due to extreme temperatures and very short growing seasons. Farming is usually done in greenhouses or using special techniques like hydroponics."
+            influence: "High humidity and extremely cold temperatures limit traditional farming. Greenhouses and hydroponics are vital for successful crop growth."
         };
     } else {
         return {
             name: "Unknown",
             mainCrops: [],
             hydroponicCrops: [],
-            influence: "No information is available for this climate."
+            influence: "No information is available for this climate and humidity combination."
+        };
+    }
+}
+
+// Function to get livestock information based on temperature and humidity
+function getLivestockInfo(temperature, humidity) {
+    if (temperature >= 10 && temperature <= 25 && humidity >= 50 && humidity <= 70) {
+        return {
+            animal: "Cattle, Goats, Sheep",
+            idealTemperature: "10-25°C",
+            idealHumidity: "50-70%",
+            impact: "Cattle, Goats, and Sheep are comfortable within this temperature and humidity range. Conditions outside this range can affect their health and productivity."
+        };
+    } else if (temperature >= 18 && temperature <= 24 && humidity >= 50 && humidity <= 60) {
+        return {
+            animal: "Chickens, Rabbits",
+            idealTemperature: "18-24°C",
+            idealHumidity: "50-60%",
+            impact: "Chickens and Rabbits require stable temperature and humidity. Improper conditions can lead to health problems and decreased productivity."
+        };
+    } else if (temperature >= 15 && temperature <= 25 && humidity >= 60 && humidity <= 70) {
+        return {
+            animal: "Ducks",
+            idealTemperature: "15-25°C",
+            idealHumidity: "60-70%",
+            impact: "Ducks need a cool, humid environment to prevent stress and maintain health."
+        };
+    } else {
+        return {
+            animal: "Unknown",
+            idealTemperature: "Unknown",
+            idealHumidity: "Unknown",
+            impact: "No information is available for this combination of temperature and humidity."
         };
     }
 }
