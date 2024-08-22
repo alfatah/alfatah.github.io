@@ -37,6 +37,54 @@ $(document).ready(function() {
         $.getJSON("https://ipapi.co/json/", function(ip) {
             console.log(ip);
             $("#ip-address").html("Your IP: " + ip.ip + ", " + ip.org + ", " + ip.asn);
+
+// Daftar penyedia layanan internet dan nomor AS mereka
+$("#provider-info").html(getProviderInfo(ip.asn));
+
+function getProviderInfo(asn) {
+    let provider = {};
+
+    if (asn === 'AS4761') {
+        provider = {
+            url: "https://www.indosatooredoo.com/",
+            name: "Indosat Ooredoo Hutchison",
+            additionalUrl: "https://bima.tri.co.id/",
+            additionalName: "Tri"
+        };
+    } else if (asn === 'AS5413') {
+        provider = {
+            url: "https://www.xl.co.id/",
+            name: "XL Axiata"
+        };
+    } else if (asn === 'AS9583') {
+        provider = {
+            url: "https://www.telkomsel.com/",
+            name: "Telkom Indonesia (IndiHome)"
+        };
+    } else if (asn === 'AS134453') {
+        provider = {
+            url: "https://www.smartfren.com/",
+            name: "Smartfren"
+        };
+    } else {
+        provider = {
+            name: `ASN: ${asn}`,
+            description: "Information not available"
+        };
+    }
+
+    // Generate HTML
+    let providerHtml = `
+
+    Provider : <a class="ajib" href="${provider.url || '#'}" target="_blank">${provider.name}${provider.additionalUrl ? ' <br><a class="ajib" href="' + provider.additionalUrl + '" target="_blank">' + provider.additionalName + '</a>' : ''}</a>
+
+    `;
+
+    return providerHtml;
+}
+
+
+
             $("#location-data").html(ip.latitude + "," + ip.longitude + ", " + ip.timezone + ", " + ip.city + ", " + ip.region + ", " + ip.postal + ", " + ip.country_name);
             
             var formattedPopulation = ip.country_population.toLocaleString(); // Adds commas as thousands separator
@@ -914,5 +962,10 @@ function getCountryFeaturesByPopulation(population) {
     }
     return features;
 }
+
+//////////////////////////////////////////////////////////////////////////
+
+
+
 
 //////////////////////////////////////////////////////////////////////////
