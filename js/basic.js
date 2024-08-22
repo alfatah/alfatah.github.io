@@ -279,7 +279,7 @@ function getAgricultureInfo(temperature, humidity) {
             hydroponicCrops: ["Lettuce", "Spinach", "Basil", "Cucumbers", "Tomatoes", "Peppers"],
             influence: "Warm temperatures and high humidity allow for continuous farming. However, high humidity can lead to fungal diseases, so proper crop management is crucial."
         };
-    } else if (temperature >= 10 && temperature <= 40 && humidity >= 40 && humidity < 60) {
+    } else if (temperature >= 10 && temperature <= 30 && humidity >= 40 && humidity < 60) {
         return {
             name: "Subtropical",
             mainCrops: ["Wheat", "Oranges", "Olives", "Cotton", "Tea"],
@@ -316,6 +316,7 @@ function getAgricultureInfo(temperature, humidity) {
         };
     }
 }
+
 
 // Function to get livestock information based on temperature and humidity
 function getLivestockInfo(temperature, humidity) {
