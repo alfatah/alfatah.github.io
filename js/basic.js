@@ -269,6 +269,7 @@ function categorizeWeather(description, visibility) {
     }
 }
 
+
 // Function to get agricultural information based on temperature and humidity
 function getAgricultureInfo(temperature, humidity) {
     if (temperature >= 20 && temperature <= 35 && humidity >= 60) {
