@@ -936,28 +936,28 @@ function getCountryFeaturesByPopulation(population) {
     let features = {};
     if (population < 1_000_000) {
         features = {
-            category: "Negara dengan Populasi Kecil",
-            description: "Homogen dengan sedikit keragaman etnis atau budaya. Ekonomi terbatas."
+            category: "Small Population Country",
+            description: "Homogeneous with little ethnic or cultural diversity. Limited economy."
         };
     } else if (population < 10_000_000) {
         features = {
-            category: "Negara dengan Populasi Sedang",
-            description: "Beberapa keragaman etnis dan budaya. Infrastruktur berkembang."
+            category: "Medium Population Country",
+            description: "Some ethnic and cultural diversity. Developing infrastructure."
         };
     } else if (population < 100_000_000) {
         features = {
-            category: "Negara dengan Populasi Besar",
-            description: "Sangat beragam dengan ekonomi yang beragam. Infrastruktur kompleks."
+            category: "Large Population Country",
+            description: "Highly diverse with a varied economy. Complex infrastructure."
         };
     } else if (population < 1_000_000_000) {
         features = {
-            category: "Negara dengan Populasi Sangat Besar",
-            description: "Tantangan dalam pengelolaan keragaman. Ekonomi besar."
+            category: "Very Large Population Country",
+            description: "Challenges in managing diversity. Large economy."
         };
     } else {
         features = {
-            category: "Negara dengan Populasi Terbesar",
-            description: "Populasi sangat besar dengan ekonomi yang signifikan di panggung global."
+            category: "Largest Population Country",
+            description: "Extremely large population with a significant economy on the global stage."
         };
     }
     return features;
