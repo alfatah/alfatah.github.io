@@ -413,8 +413,6 @@ function getLivestockInfo(temperature, humidity) {
 }
 
 
-
-
 //////////////////////////////////////////////////////////////////////////
 
  // Function to determine current period of the day
