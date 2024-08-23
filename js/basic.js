@@ -366,7 +366,6 @@ function getAgricultureInfo(temperature, humidity) {
 }
 
 
-// Function to get livestock information based on temperature and humidity
 function getLivestockInfo(temperature, humidity) {
     if (temperature >= 10 && temperature <= 25 && humidity >= 50 && humidity <= 70) {
         return {
@@ -389,6 +388,20 @@ function getLivestockInfo(temperature, humidity) {
             idealHumidity: "60-70%",
             impact: "Ducks need a cool, humid environment to prevent stress and maintain health."
         };
+    } else if (temperature >= 15 && temperature <= 25 && humidity >= 40 && humidity <= 60) {
+        return {
+            animal: "Turkeys",
+            idealTemperature: "15-25°C",
+            idealHumidity: "40-60%",
+            impact: "Turkeys prefer moderate temperatures and humidity. They are more tolerant of a wider range of humidity but require moderate temperatures for optimal health."
+        };
+    } else if (temperature >= 30 && temperature <= 50 && humidity >= 10 && humidity <= 30) {
+        return {
+            animal: "Camels",
+            idealTemperature: "30-50°C",
+            idealHumidity: "10-30%",
+            impact: "Camels are well-adapted to hot, dry climates. They can survive and remain productive in conditions that are too harsh for most other livestock."
+        };
     } else {
         return {
             animal: "Unknown",
@@ -398,6 +411,7 @@ function getLivestockInfo(temperature, humidity) {
         };
     }
 }
+
 
 
 
