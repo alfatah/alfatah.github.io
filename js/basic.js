@@ -58,7 +58,7 @@ function getProviderInfo(asn) {
         };
     } else if (asn === 'AS9583') {
         provider = {
-            url: "https://www.telkomsel.com/",
+            url: "https://my.telkomsel.com/web",
             name: "Telkom Indonesia (IndiHome)"
         };
     } else if (asn === 'AS134453') {
