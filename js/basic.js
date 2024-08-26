@@ -402,6 +402,13 @@ function getLivestockInfo(temperature, humidity) {
             idealHumidity: "40-60%",
             impact: "Pigs prefer cooler temperatures and moderate humidity levels. Extreme temperatures or humidity can cause stress and affect their growth and health."
         };
+    } else if (temperature >= 20 && temperature <= 30 && humidity >= 50 && humidity <= 70) {
+        return {
+            animal: "Pigeons",
+            idealTemperature: "20-30°C",
+            idealHumidity: "50-70%",
+            impact: "Pigeons thrive in warmer temperatures with moderate humidity. They require good ventilation and can tolerate a range of humidity levels, but prefer conditions that are neither too dry nor too wet."
+        };
     } else if (temperature >= 30 && temperature <= 50 && humidity >= 10 && humidity <= 30) {
         return {
             animal: "Camels",
