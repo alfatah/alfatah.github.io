@@ -409,6 +409,13 @@ function getLivestockInfo(temperature, humidity) {
             idealHumidity: "50-70%",
             impact: "Pigeons thrive in warmer temperatures with moderate humidity. They require good ventilation and can tolerate a range of humidity levels, but prefer conditions that are neither too dry nor too wet."
         };
+    } else if (temperature >= 10 && temperature <= 30 && humidity >= 40 && humidity <= 60) {
+        return {
+            animal: "Horses",
+            idealTemperature: "10-30°C",
+            idealHumidity: "40-60%",
+            impact: "Horses are adaptable to a range of temperatures from cool to warm and prefer moderate humidity. They need protection from extreme weather conditions to maintain health and performance."
+        };
     } else if (temperature >= 30 && temperature <= 50 && humidity >= 10 && humidity <= 30) {
         return {
             animal: "Camels",
