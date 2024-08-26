@@ -456,7 +456,7 @@ function getLivestockInfo(temperature, humidity) {
     }
 }
 
-<<<<<<< HEAD
+
 // Function to check outdoor temperature comfort
 function checkOutdoorTemperature(temperature, humidity) {
     const minComfortTemp = 15;
@@ -489,9 +489,6 @@ function checkOutdoorTemperature(temperature, humidity) {
     return "The outdoor temperature is comfortable and within the ideal range.";
 }
 
-
-=======
->>>>>>> 9dc6775c90368945e359a00d88d1b770891507b1
 //////////////////////////////////////////////////////////////////////////
 
  // Function to determine current period of the day
