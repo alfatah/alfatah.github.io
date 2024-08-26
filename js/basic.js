@@ -416,6 +416,13 @@ function getLivestockInfo(temperature, humidity) {
             idealHumidity: "40-60%",
             impact: "Horses are adaptable to a range of temperatures from cool to warm and prefer moderate humidity. They need protection from extreme weather conditions to maintain health and performance."
         };
+    } else if (temperature >= 18 && temperature <= 28 && humidity >= 50 && humidity <= 65) {
+        return {
+            animal: "Quails",
+            idealTemperature: "18-28°C",
+            idealHumidity: "50-65%",
+            impact: "Quails prefer warm temperatures and moderate humidity. They thrive in environments that are neither too cold nor too hot and require good ventilation to stay healthy."
+        };
     } else if (temperature >= 30 && temperature <= 50 && humidity >= 10 && humidity <= 30) {
         return {
             animal: "Camels",
@@ -432,7 +439,6 @@ function getLivestockInfo(temperature, humidity) {
         };
     }
 }
-
 
 //////////////////////////////////////////////////////////////////////////
 
