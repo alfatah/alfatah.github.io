@@ -58,7 +58,7 @@ function getProviderInfo(asn) {
         };
     } else if (asn === 'AS9583') {
         provider = {
-            url: "https://www.telkomsel.com/",
+            url: "https://my.telkomsel.com/web",
             name: "Telkom Indonesia (IndiHome)"
         };
     } else if (asn === 'AS134453') {
@@ -404,6 +404,41 @@ function getLivestockInfo(temperature, humidity) {
             idealHumidity: "40-60%",
             impact: "Turkeys prefer moderate temperatures and humidity. They are more tolerant of a wider range of humidity but require moderate temperatures for optimal health."
         };
+    } else if (temperature >= 16 && temperature <= 24 && humidity >= 40 && humidity <= 60) {
+        return {
+            animal: "Pigs",
+            idealTemperature: "16-24°C",
+            idealHumidity: "40-60%",
+            impact: "Pigs prefer cooler temperatures and moderate humidity levels. Extreme temperatures or humidity can cause stress and affect their growth and health."
+        };
+    } else if (temperature >= 20 && temperature <= 30 && humidity >= 50 && humidity <= 70) {
+        return {
+            animal: "Pigeons",
+            idealTemperature: "20-30°C",
+            idealHumidity: "50-70%",
+            impact: "Pigeons thrive in warmer temperatures with moderate humidity. They require good ventilation and can tolerate a range of humidity levels, but prefer conditions that are neither too dry nor too wet."
+        };
+    } else if (temperature >= 10 && temperature <= 30 && humidity >= 40 && humidity <= 60) {
+        return {
+            animal: "Horses",
+            idealTemperature: "10-30°C",
+            idealHumidity: "40-60%",
+            impact: "Horses are adaptable to a range of temperatures from cool to warm and prefer moderate humidity. They need protection from extreme weather conditions to maintain health and performance."
+        };
+    } else if (temperature >= 18 && temperature <= 28 && humidity >= 50 && humidity <= 65) {
+        return {
+            animal: "Quails",
+            idealTemperature: "18-28°C",
+            idealHumidity: "50-65%",
+            impact: "Quails prefer warm temperatures and moderate humidity. They thrive in environments that are neither too cold nor too hot and require good ventilation to stay healthy."
+        };
+    } else if (temperature >= 25 && temperature <= 30 && humidity >= 70 && humidity <= 90) {
+        return {
+            animal: "Catfish",
+            idealTemperature: "25-30°C",
+            idealHumidity: "70-90%",
+            impact: "Catfish thrive in warm water temperatures with high humidity. They require clean water and stable conditions to maintain good health and growth."
+        };
     } else if (temperature >= 30 && temperature <= 50 && humidity >= 10 && humidity <= 30) {
         return {
             animal: "Camels",
@@ -421,6 +456,7 @@ function getLivestockInfo(temperature, humidity) {
     }
 }
 
+<<<<<<< HEAD
 // Function to check outdoor temperature comfort
 function checkOutdoorTemperature(temperature, humidity) {
     const minComfortTemp = 15;
@@ -454,6 +490,8 @@ function checkOutdoorTemperature(temperature, humidity) {
 }
 
 
+=======
+>>>>>>> 9dc6775c90368945e359a00d88d1b770891507b1
 //////////////////////////////////////////////////////////////////////////
 
  // Function to determine current period of the day
