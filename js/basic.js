@@ -395,6 +395,13 @@ function getLivestockInfo(temperature, humidity) {
             idealHumidity: "40-60%",
             impact: "Turkeys prefer moderate temperatures and humidity. They are more tolerant of a wider range of humidity but require moderate temperatures for optimal health."
         };
+    } else if (temperature >= 16 && temperature <= 24 && humidity >= 40 && humidity <= 60) {
+        return {
+            animal: "Pigs",
+            idealTemperature: "16-24°C",
+            idealHumidity: "40-60%",
+            impact: "Pigs prefer cooler temperatures and moderate humidity levels. Extreme temperatures or humidity can cause stress and affect their growth and health."
+        };
     } else if (temperature >= 30 && temperature <= 50 && humidity >= 10 && humidity <= 30) {
         return {
             animal: "Camels",
