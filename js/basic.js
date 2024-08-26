@@ -423,6 +423,13 @@ function getLivestockInfo(temperature, humidity) {
             idealHumidity: "50-65%",
             impact: "Quails prefer warm temperatures and moderate humidity. They thrive in environments that are neither too cold nor too hot and require good ventilation to stay healthy."
         };
+    } else if (temperature >= 25 && temperature <= 30 && humidity >= 70 && humidity <= 90) {
+        return {
+            animal: "Catfish",
+            idealTemperature: "25-30°C",
+            idealHumidity: "70-90%",
+            impact: "Catfish thrive in warm water temperatures with high humidity. They require clean water and stable conditions to maintain good health and growth."
+        };
     } else if (temperature >= 30 && temperature <= 50 && humidity >= 10 && humidity <= 30) {
         return {
             animal: "Camels",
