@@ -629,7 +629,7 @@ function displaySeason(countryName) {
     $("#current-period").html("Current Period: " + currentPeriod);
   
     // Example: display season for Indonesia
-    displaySeason("Indonesia");
+    // displaySeason("Indonesia");
   });
   
 
@@ -1053,7 +1053,3 @@ function getCountryFeaturesByPopulation(population) {
 
 //////////////////////////////////////////////////////////////////////////
 
-
-
-
-//////////////////////////////////////////////////////////////////////////
