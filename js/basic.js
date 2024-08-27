@@ -171,11 +171,12 @@ function getEvolution(gdpPerCapita) {
 
 //////////////////////////////////////////////////////////////////////////
 
-// Function to get weather data using latitude and longitude
+// Function to get weather data and UV index using latitude and longitude
 function getWeatherF(latitude, longitude) {
     const apiKey = '74cc8a3c199f63bb2998825eb67ca8db'; // Replace with your actual API key
     const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
 
+    // Fetch weather data
     $.getJSON(apiUrl, function(weatherData) {
         try {
             const temperature = weatherData.main.temp;
@@ -220,6 +221,16 @@ function getWeatherF(latitude, longitude) {
                                  `Ideal Temperature: ${livestockInfo.idealTemperature}<br>` +
                                  `Ideal Humidity: ${livestockInfo.idealHumidity}<br>` +
                                  `Impact: ${livestockInfo.impact}`);
+            
+            // Fetch and display UV index
+            const uvUrl = `https://api.openweathermap.org/data/2.5/uvi?lat=${latitude}&lon=${longitude}&appid=${apiKey}`;
+            $.getJSON(uvUrl, function(uvData) {
+                const uvIndex = uvData.value;
+                $("#uvIndex").html(`UV Index: ${uvIndex} (${categorizeUV(uvIndex)})`);
+            }).fail(function() {
+                $("#uvIndex").html("Error retrieving UV index.");
+            });
+
         } catch (error) {
             console.error("Error processing weather data:", error);
             $("#temperature").html("Error retrieving weather data.");
@@ -228,6 +239,7 @@ function getWeatherF(latitude, longitude) {
             $("#agriculture").html("Error retrieving agriculture data.");
             $("#livestock").html("Error retrieving livestock data.");
             $("#comfortMessage").html("Error retrieving comfort message.");
+            $("#uvIndex").html("Error retrieving UV index.");
         }
     }).fail(function() {
         console.error("Error fetching data from the API.");
@@ -237,7 +249,23 @@ function getWeatherF(latitude, longitude) {
         $("#agriculture").html("Error retrieving agriculture data.");
         $("#livestock").html("Error retrieving livestock data.");
         $("#comfortMessage").html("Error retrieving comfort message.");
+        $("#uvIndex").html("Error retrieving UV index.");
     });
+}
+
+// Function to categorize UV index
+function categorizeUV(uvIndex) {
+    if (uvIndex < 3) {
+        return "Low";
+    } else if (uvIndex < 6) {
+        return "Moderate";
+    } else if (uvIndex < 8) {
+        return "High";
+    } else if (uvIndex < 11) {
+        return "Very High";
+    } else {
+        return "Extreme";
+    }
 }
 
 
