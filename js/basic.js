@@ -439,6 +439,13 @@ function getLivestockInfo(temperature, humidity) {
             idealHumidity: "70-90%",
             impact: "Catfish thrive in warm water temperatures with high humidity. They require clean water and stable conditions to maintain good health and growth."
         };
+    } else if (temperature >= 15 && temperature <= 35 && humidity >= 50 && humidity <= 70) {
+        return {
+            animal: "Beekeeping",
+            idealTemperature: "15-35°C",
+            idealHumidity: "50-70%",
+            impact: "Bees prefer warm temperatures and moderate humidity for optimal honey production. They are active in temperatures above 15°C and need access to flowers and clean water."
+        };
     } else if (temperature >= 30 && temperature <= 50 && humidity >= 10 && humidity <= 30) {
         return {
             animal: "Camels",
@@ -455,7 +462,6 @@ function getLivestockInfo(temperature, humidity) {
         };
     }
 }
-
 
 // Function to check outdoor temperature comfort
 function checkOutdoorTemperature(temperature, humidity) {
