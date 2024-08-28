@@ -450,7 +450,6 @@ function getAgricultureInfo(temperature, humidity) {
 }
 
 
-
 // Function to get livestock information based on climate
 function getLivestockInfo(temperature, humidity) {
     let animal;
