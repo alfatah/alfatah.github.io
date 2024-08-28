@@ -412,23 +412,43 @@ function getAgricultureInfo(temperature, humidity) {
     let mainCrops;
     let hydroponicCrops;
     let influence;
+    let climateZone;
 
-    if (temperature > 25 && humidity > 60) {
+    if (temperature > 30 && humidity > 60) {
+        climateZone = "Tropical";
         mainCrops = ["Rice", "Sugarcane", "Tropical Fruits"];
         hydroponicCrops = ["Lettuce", "Tomatoes", "Cucumbers"];
         influence = "High temperature and humidity favor tropical crop growth and hydroponics.";
+    } else if (temperature > 25 && humidity > 60) {
+        climateZone = "Subtropical";
+        mainCrops = ["Cotton", "Citrus Fruits", "Sweet Potatoes"];
+        hydroponicCrops = ["Lettuce", "Tomatoes", "Peppers"];
+        influence = "Warm temperatures and high humidity are suitable for subtropical crops and hydroponics.";
+    } else if (temperature > 35 && humidity < 30) {
+        climateZone = "Desert";
+        mainCrops = ["Dates", "Cacti", "Barley"];
+        hydroponicCrops = ["Lettuce", "Tomatoes"];
+        influence = "High temperatures and low humidity are suitable for drought-resistant crops and controlled hydroponics.";
     } else if (temperature < 20 && humidity < 50) {
+        climateZone = "Continental";
         mainCrops = ["Wheat", "Barley", "Potatoes"];
         hydroponicCrops = ["Herbs", "Spinach"];
-        influence = "Cooler temperatures and lower humidity are suitable for temperate crops and some hydroponics.";
+        influence = "Cooler temperatures and lower humidity favor temperate crops and some hydroponics.";
+    } else if (temperature < 10 && humidity < 50) {
+        climateZone = "Arctic";
+        mainCrops = ["Moss", "Lichen", "Cold-Resistant Vegetables"];
+        hydroponicCrops = ["Leafy Greens"];
+        influence = "Cold temperatures and low humidity are challenging for most crops; hydroponics can support cold-resistant plants.";
     } else {
+        climateZone = "Mixed";
         mainCrops = ["Mixed"];
         hydroponicCrops = ["Mixed"];
-        influence = "Varied climate influences crop growth.";
+        influence = "Varied climate influences crop growth and hydroponics.";
     }
 
-    return { mainCrops: mainCrops, hydroponicCrops: hydroponicCrops, influence: influence };
+    return { climateZone: climateZone, mainCrops: mainCrops, hydroponicCrops: hydroponicCrops, influence: influence };
 }
+
 
 // Function to get livestock information based on climate
 function getLivestockInfo(temperature, humidity) {
@@ -437,25 +457,86 @@ function getLivestockInfo(temperature, humidity) {
     let idealHumidity;
     let impact;
 
-    if (temperature > 25 && humidity > 60) {
+    if (temperature > 30 && humidity > 70) {
         animal = "Cattle";
         idealTemperature = "20-30°C";
         idealHumidity = "50-70%";
         impact = "High temperature and humidity are suitable for cattle but may require cooling systems.";
+    } else if (temperature > 25 && humidity > 60) {
+        animal = "Goats";
+        idealTemperature = "20-25°C";
+        idealHumidity = "50-60%";
+        impact = "Warm temperatures with moderate humidity are ideal for goats.";
     } else if (temperature < 20 && humidity < 50) {
         animal = "Sheep";
         idealTemperature = "10-20°C";
         idealHumidity = "40-60%";
         impact = "Cooler temperatures and lower humidity are suitable for sheep and may reduce heat stress.";
+    } else if (temperature < 20 && humidity > 60) {
+        animal = "Pigs";
+        idealTemperature = "15-25°C";
+        idealHumidity = "50-70%";
+        impact = "Pigs prefer cooler temperatures with moderate humidity and may need ventilation in high humidity.";
+    } else if (temperature > 25 && humidity < 50) {
+        animal = "Chickens";
+        idealTemperature = "18-25°C";
+        idealHumidity = "50-60%";
+        impact = "Chickens do well in warm temperatures with low humidity but need adequate ventilation.";
+    } else if (temperature > 20 && humidity < 50) {
+        animal = "Rabbits";
+        idealTemperature = "15-25°C";
+        idealHumidity = "50-60%";
+        impact = "Rabbits thrive in moderate temperatures with low humidity.";
+    } else if (temperature > 20 && humidity > 70) {
+        animal = "Ducks";
+        idealTemperature = "15-25°C";
+        idealHumidity = "60-80%";
+        impact = "Ducks enjoy warmer temperatures with higher humidity.";
+    } else if (temperature > 15 && humidity > 60) {
+        animal = "Turkeys";
+        idealTemperature = "15-25°C";
+        idealHumidity = "50-70%";
+        impact = "Turkeys prefer moderate temperatures and higher humidity but need protection from extreme conditions.";
+    } else if (temperature > 20 && humidity < 50) {
+        animal = "Quails";
+        idealTemperature = "20-25°C";
+        idealHumidity = "40-60%";
+        impact = "Quails are suited for warm temperatures with lower humidity.";
+    } else if (temperature < 15 && humidity < 50) {
+        animal = "Pigeons";
+        idealTemperature = "10-20°C";
+        idealHumidity = "40-60%";
+        impact = "Pigeons prefer cooler temperatures and lower humidity.";
+    } else if (temperature > 30 && humidity < 50) {
+        animal = "Horses";
+        idealTemperature = "15-25°C";
+        idealHumidity = "40-60%";
+        impact = "Horses can tolerate higher temperatures but require access to shade and water.";
+    } else if (temperature < 25 && humidity < 60) {
+        animal = "Catfish";
+        idealTemperature = "20-28°C";
+        idealHumidity = "Varies";
+        impact = "Catfish prefer warmer water temperatures but humidity is less critical for them.";
+    } else if (temperature > 20 && humidity > 60) {
+        animal = "Beekeeping";
+        idealTemperature = "15-25°C";
+        idealHumidity = "50-70%";
+        impact = "Bees thrive in moderate temperatures and humidity but may need extra management in extreme conditions.";
+    } else if (temperature > 30 && humidity < 40) {
+        animal = "Camels";
+        idealTemperature = "25-35°C";
+        idealHumidity = "20-40%";
+        impact = "Camels are well-suited for hot, dry conditions but may need access to water and shade.";
     } else {
         animal = "Mixed";
         idealTemperature = "Varies";
         idealHumidity = "Varies";
-        impact = "Climate may affect livestock differently.";
+        impact = "Climate may affect livestock differently; additional management may be required.";
     }
 
     return { animal: animal, idealTemperature: idealTemperature, idealHumidity: idealHumidity, impact: impact };
 }
+
 
 
 //////////////////////////////////////////////////////////////////////////
