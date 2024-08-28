@@ -416,28 +416,28 @@ function getAgricultureInfo(temperature, humidity) {
 
     if (temperature > 30 && humidity > 60) {
         climateZone = "Tropical";
-        mainCrops = ["Rice", "Sugarcane", "Tropical Fruits"];
-        hydroponicCrops = ["Lettuce", "Tomatoes", "Cucumbers"];
+        mainCrops = ["Rice", "Sugarcane", "Tropical Fruits", "Bananas", "Pineapples", "Cassava"];
+        hydroponicCrops = ["Lettuce", "Tomatoes", "Cucumbers", "Bell Peppers", "Herbs"];
         influence = "High temperature and humidity favor tropical crop growth and hydroponics.";
     } else if (temperature > 25 && humidity > 60) {
         climateZone = "Subtropical";
-        mainCrops = ["Cotton", "Citrus Fruits", "Sweet Potatoes"];
-        hydroponicCrops = ["Lettuce", "Tomatoes", "Peppers"];
+        mainCrops = ["Cotton", "Citrus Fruits", "Sweet Potatoes", "Avocados", "Olives", "Pomegranates"];
+        hydroponicCrops = ["Lettuce", "Tomatoes", "Peppers", "Basil", "Mint"];
         influence = "Warm temperatures and high humidity are suitable for subtropical crops and hydroponics.";
     } else if (temperature > 35 && humidity < 30) {
         climateZone = "Desert";
-        mainCrops = ["Dates", "Cacti", "Barley"];
-        hydroponicCrops = ["Lettuce", "Tomatoes"];
+        mainCrops = ["Dates", "Cacti", "Barley", "Pistachios", "Alfalfa", "Quinoa"];
+        hydroponicCrops = ["Lettuce", "Tomatoes", "Radishes", "Kale"];
         influence = "High temperatures and low humidity are suitable for drought-resistant crops and controlled hydroponics.";
     } else if (temperature < 20 && humidity < 50) {
         climateZone = "Continental";
-        mainCrops = ["Wheat", "Barley", "Potatoes"];
-        hydroponicCrops = ["Herbs", "Spinach"];
+        mainCrops = ["Wheat", "Barley", "Potatoes", "Corn", "Rye", "Sunflowers"];
+        hydroponicCrops = ["Herbs", "Spinach", "Arugula", "Chard"];
         influence = "Cooler temperatures and lower humidity favor temperate crops and some hydroponics.";
     } else if (temperature < 10 && humidity < 50) {
         climateZone = "Arctic";
-        mainCrops = ["Moss", "Lichen", "Cold-Resistant Vegetables"];
-        hydroponicCrops = ["Leafy Greens"];
+        mainCrops = ["Moss", "Lichen", "Cold-Resistant Vegetables", "Potatoes", "Kale", "Turnips"];
+        hydroponicCrops = ["Leafy Greens", "Microgreens", "Radishes"];
         influence = "Cold temperatures and low humidity are challenging for most crops; hydroponics can support cold-resistant plants.";
     } else {
         climateZone = "Mixed";
@@ -448,6 +448,7 @@ function getAgricultureInfo(temperature, humidity) {
 
     return { climateZone: climateZone, mainCrops: mainCrops, hydroponicCrops: hydroponicCrops, influence: influence };
 }
+
 
 
 // Function to get livestock information based on climate
