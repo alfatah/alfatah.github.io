@@ -177,7 +177,8 @@ function getWeatherF(latitude, longitude) {
     const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
 
     // Fetch weather data
-    $.getJSON(apiUrl, function(weatherData) {
+    $.getJSON(apiUrl)
+    .done(function (weatherData) {
         try {
             const temperature = weatherData.main.temp;
             const humidity = weatherData.main.humidity;
@@ -203,16 +204,16 @@ function getWeatherF(latitude, longitude) {
                                 `Wind Speed: ${windSpeed} m/s (${windSpeedCategory})<br>` +
                                 `Rainfall: ${rainfall} mm (${rainfallCategory})<br>` +
                                 `Visibility: ${visibility} km`);
-            
+
             // Display comfort message
             $("#comfortMessage").html(`Comfort Message: ${comfortMessage}`);
 
             // Get and display agricultural information based on the climate
             const climateInfo = getAgricultureInfo(temperature, humidity);
             $("#agriculture").html(`Agriculture in this climate:<br>` +
-                                    `Main Crops: ${climateInfo.mainCrops.join(", ")}<br>` +
-                                    `Hydroponic Crops: ${climateInfo.hydroponicCrops.join(", ")}<br>` +
-                                    `Influence: ${climateInfo.influence}`);
+                                   `Main Crops: ${climateInfo.mainCrops.join(", ")}<br>` +
+                                   `Hydroponic Crops: ${climateInfo.hydroponicCrops.join(", ")}<br>` +
+                                   `Influence: ${climateInfo.influence}`);
 
             // Get and display livestock information based on the climate
             const livestockInfo = getLivestockInfo(temperature, humidity);
@@ -221,37 +222,40 @@ function getWeatherF(latitude, longitude) {
                                  `Ideal Temperature: ${livestockInfo.idealTemperature}<br>` +
                                  `Ideal Humidity: ${livestockInfo.idealHumidity}<br>` +
                                  `Impact: ${livestockInfo.impact}`);
-            
-            // Fetch and display UV index
-const uvUrl = `https://api.openweathermap.org/data/2.5/uvi?lat=${latitude}&lon=${longitude}&appid=${apiKey}`;
-$.getJSON(uvUrl, function(uvData) {
-    const uvIndex = uvData.value;
-    const uvInfo = categorizeUV(uvIndex); // Use the updated categorizeUV function
-    $("#uvIndex").html(`UV Index: ${uvIndex} (${uvInfo.category})<br>${uvInfo.advice}`);
-}).fail(function() {
-    $("#uvIndex").html("Error retrieving UV index.");
-});
 
-} catch (error) {
-    console.error("Error processing weather data:", error);
-    $("#temperature").html("Error retrieving weather data.");
-    $("#weather").html("Error retrieving weather data.");
-    $("#category").html("Error retrieving weather data.");
-    $("#agriculture").html("Error retrieving agriculture data.");
-    $("#livestock").html("Error retrieving livestock data.");
-    $("#comfortMessage").html("Error retrieving comfort message.");
-    $("#uvIndex").html("Error retrieving UV index.");
-}
-}).fail(function() {
-    console.error("Error fetching data from the API.");
-    $("#temperature").html("Error retrieving weather data.");
-    $("#weather").html("Error retrieving weather data.");
-    $("#category").html("Error retrieving weather data.");
-    $("#agriculture").html("Error retrieving agriculture data.");
-    $("#livestock").html("Error retrieving livestock data.");
-    $("#comfortMessage").html("Error retrieving comfort message.");
-    $("#uvIndex").html("Error retrieving UV index.");
-});
+            // Fetch and display UV index
+            const uvUrl = `https://api.openweathermap.org/data/2.5/uvi?lat=${latitude}&lon=${longitude}&appid=${apiKey}`;
+            $.getJSON(uvUrl)
+            .done(function (uvData) {
+                const uvIndex = uvData.value;
+                const uvInfo = categorizeUV(uvIndex);
+                $("#uvIndex").html(`UV Index: ${uvIndex} (${uvInfo.category})<br>${uvInfo.advice}`);
+            })
+            .fail(function () {
+                $("#uvIndex").html("Error retrieving UV index.");
+            });
+
+        } catch (error) {
+            console.error("Error processing weather data:", error);
+            $("#temperature").html("Error retrieving weather data.");
+            $("#weather").html("Error retrieving weather data.");
+            $("#category").html("Error retrieving weather data.");
+            $("#agriculture").html("Error retrieving agriculture data.");
+            $("#livestock").html("Error retrieving livestock data.");
+            $("#comfortMessage").html("Error retrieving comfort message.");
+            $("#uvIndex").html("Error retrieving UV index.");
+        }
+    })
+    .fail(function () {
+        console.error("Error fetching data from the API.");
+        $("#temperature").html("Error retrieving weather data.");
+        $("#weather").html("Error retrieving weather data.");
+        $("#category").html("Error retrieving weather data.");
+        $("#agriculture").html("Error retrieving agriculture data.");
+        $("#livestock").html("Error retrieving livestock data.");
+        $("#comfortMessage").html("Error retrieving comfort message.");
+        $("#uvIndex").html("Error retrieving UV index.");
+    });
 }
 
 // Function to categorize UV index with more than 12 ranges and provide health advice
@@ -306,18 +310,18 @@ function categorizeUV(uvIndex) {
     return { category: category, advice: advice };
 }
 
-
+// Additional helper functions
 // Function to categorize temperature
 function categorizeTemperature(temp) {
     if (temp < 0) {
         return 'Very Cold';
-    } else if (temp >= 0 && temp < 10) {
+    } else if (temp < 10) {
         return 'Cold';
-    } else if (temp >= 10 && temp < 20) {
+    } else if (temp < 20) {
         return 'Cool';
-    } else if (temp >= 20 && temp < 30) {
+    } else if (temp < 30) {
         return 'Warm';
-    } else if (temp >= 30 && temp < 40) {
+    } else if (temp < 40) {
         return 'Hot';
     } else {
         return 'Very Hot';
@@ -328,11 +332,11 @@ function categorizeTemperature(temp) {
 function categorizeHumidity(humidity) {
     if (humidity < 20) {
         return 'Very Dry';
-    } else if (humidity >= 20 && humidity < 40) {
+    } else if (humidity < 40) {
         return 'Dry';
-    } else if (humidity >= 40 && humidity < 60) {
+    } else if (humidity < 60) {
         return 'Normal';
-    } else if (humidity >= 60 && humidity < 80) {
+    } else if (humidity < 80) {
         return 'Humid';
     } else {
         return 'Very Humid';
@@ -343,11 +347,11 @@ function categorizeHumidity(humidity) {
 function categorizeWindSpeed(windSpeed) {
     if (windSpeed < 5) {
         return 'Calm';
-    } else if (windSpeed >= 5 && windSpeed < 15) {
+    } else if (windSpeed < 15) {
         return 'Breezy';
-    } else if (windSpeed >= 15 && windSpeed < 30) {
+    } else if (windSpeed < 30) {
         return 'Windy';
-    } else if (windSpeed >= 30 && windSpeed < 50) {
+    } else if (windSpeed < 50) {
         return 'Very Windy';
     } else {
         return 'Stormy';
@@ -358,11 +362,11 @@ function categorizeWindSpeed(windSpeed) {
 function categorizeRainfall(rainfall) {
     if (rainfall === 0) {
         return 'No Rain';
-    } else if (rainfall > 0 && rainfall <= 2.5) {
+    } else if (rainfall <= 2.5) {
         return 'Light Rain';
-    } else if (rainfall > 2.5 && rainfall <= 7.5) {
+    } else if (rainfall <= 7.5) {
         return 'Moderate Rain';
-    } else if (rainfall > 7.5 && rainfall <= 15) {
+    } else if (rainfall <= 15) {
         return 'Heavy Rain';
     } else {
         return 'Very Heavy Rain';
@@ -381,184 +385,76 @@ function categorizeWeather(description, visibility) {
         return `Cloudy (Cloud Cover: Varies)`;
     } else if (description.includes('dust')) {
         return `Dust Storm (Visibility: Very Low)`;
-    } else if (description.includes('snow')) {
-        return `Snow (Visibility: Low)`;
+    } else if (description.includes('rain') && visibility < 2) {
+        return `Heavy Rain (Visibility: Low)`;
+    } else if (description.includes('snow') && visibility < 2) {
+        return `Heavy Snow (Visibility: Low)`;
     } else if (visibility < 1) {
-        return `Visibility: Very Low`;
-    } else if (visibility < 5) {
-        return `Visibility: Low`;
+        return `Very Poor Visibility`;
     } else {
-        return `Clear or Other Conditions`;
+        return `Clear or Partially Cloudy`;
     }
 }
 
+// Function to check outdoor temperature comfort based on humidity
+function checkOutdoorTemperature(temp, humidity) {
+    if (temp > 30 && humidity > 70) {
+        return "It's very hot and humid outside. Stay hydrated and cool.";
+    } else if (temp < 10 && humidity < 30) {
+        return "It's cold and dry outside. Dress warmly and stay hydrated.";
+    } else {
+        return "Weather conditions are moderate.";
+    }
+}
 
-// Function to get agricultural information based on temperature and humidity
+// Function to get agricultural information based on climate
 function getAgricultureInfo(temperature, humidity) {
-    if (temperature >= 20 && temperature <= 35 && humidity >= 60) {
-        return {
-            name: "Tropical",
-            mainCrops: ["Rice", "Corn", "Bananas", "Palm Oil", "Cocoa", "Coffee"],
-            hydroponicCrops: ["Lettuce", "Spinach", "Basil", "Cucumbers", "Tomatoes", "Peppers"],
-            influence: "Warm temperatures and high humidity allow for continuous farming. However, high humidity can lead to fungal diseases, so proper crop management is crucial."
-        };
-    } else if (temperature >= 10 && temperature <= 30 && humidity >= 40 && humidity < 60) {
-        return {
-            name: "Subtropical",
-            mainCrops: ["Wheat", "Oranges", "Olives", "Cotton", "Tea"],
-            hydroponicCrops: ["Lettuce", "Herbs", "Peppers", "Strawberries"],
-            influence: "Moderate humidity and temperatures allow for a wide variety of crops. Drought-resistant crops are recommended during dry spells."
-        };
-    } else if (temperature >= 5 && temperature <= 45 && humidity < 40) {
-        return {
-            name: "Desert",
-            mainCrops: ["Dates", "Wheat (with irrigation)", "Certain vegetables"],
-            hydroponicCrops: ["Lettuce", "Tomatoes", "Cucumbers", "Peppers"],
-            influence: "Low humidity and high temperatures require effective irrigation. Humidity control is essential in greenhouses to prevent plant stress."
-        };
-    } else if (temperature >= -20 && temperature <= 35 && humidity >= 40 && humidity < 60) {
-        return {
-            name: "Continental",
-            mainCrops: ["Wheat", "Corn", "Soybeans", "Potatoes"],
-            hydroponicCrops: ["Leafy Greens", "Herbs", "Tomatoes", "Strawberries"],
-            influence: "Moderate humidity combined with long, harsh winters shortens the growing season. Fertile soil and humidity management are key for successful yields."
-        };
-    } else if (temperature >= -50 && temperature <= 10 && humidity >= 60) {
-        return {
-            name: "Arctic",
-            mainCrops: ["Greenhouse vegetables"],
-            hydroponicCrops: ["Leafy Greens", "Herbs"],
-            influence: "High humidity and extremely cold temperatures limit traditional farming. Greenhouses and hydroponics are vital for successful crop growth."
-        };
+    let mainCrops;
+    let hydroponicCrops;
+    let influence;
+
+    if (temperature > 25 && humidity > 60) {
+        mainCrops = ["Rice", "Sugarcane", "Tropical Fruits"];
+        hydroponicCrops = ["Lettuce", "Tomatoes", "Cucumbers"];
+        influence = "High temperature and humidity favor tropical crop growth and hydroponics.";
+    } else if (temperature < 20 && humidity < 50) {
+        mainCrops = ["Wheat", "Barley", "Potatoes"];
+        hydroponicCrops = ["Herbs", "Spinach"];
+        influence = "Cooler temperatures and lower humidity are suitable for temperate crops and some hydroponics.";
     } else {
-        return {
-            name: "Unknown",
-            mainCrops: [],
-            hydroponicCrops: [],
-            influence: "No information is available for this climate and humidity combination."
-        };
+        mainCrops = ["Mixed"];
+        hydroponicCrops = ["Mixed"];
+        influence = "Varied climate influences crop growth.";
     }
+
+    return { mainCrops: mainCrops, hydroponicCrops: hydroponicCrops, influence: influence };
 }
 
-
+// Function to get livestock information based on climate
 function getLivestockInfo(temperature, humidity) {
-    if (temperature >= 10 && temperature <= 25 && humidity >= 50 && humidity <= 70) {
-        return {
-            animal: "Cattle, Goats, Sheep",
-            idealTemperature: "10-25°C",
-            idealHumidity: "50-70%",
-            impact: "Cattle, Goats, and Sheep are comfortable within this temperature and humidity range. Conditions outside this range can affect their health and productivity."
-        };
-    } else if (temperature >= 18 && temperature <= 24 && humidity >= 50 && humidity <= 60) {
-        return {
-            animal: "Chickens, Rabbits",
-            idealTemperature: "18-24°C",
-            idealHumidity: "50-60%",
-            impact: "Chickens and Rabbits require stable temperature and humidity. Improper conditions can lead to health problems and decreased productivity."
-        };
-    } else if (temperature >= 15 && temperature <= 25 && humidity >= 60 && humidity <= 70) {
-        return {
-            animal: "Ducks",
-            idealTemperature: "15-25°C",
-            idealHumidity: "60-70%",
-            impact: "Ducks need a cool, humid environment to prevent stress and maintain health."
-        };
-    } else if (temperature >= 15 && temperature <= 25 && humidity >= 40 && humidity <= 60) {
-        return {
-            animal: "Turkeys",
-            idealTemperature: "15-25°C",
-            idealHumidity: "40-60%",
-            impact: "Turkeys prefer moderate temperatures and humidity. They are more tolerant of a wider range of humidity but require moderate temperatures for optimal health."
-        };
-    } else if (temperature >= 16 && temperature <= 24 && humidity >= 40 && humidity <= 60) {
-        return {
-            animal: "Pigs",
-            idealTemperature: "16-24°C",
-            idealHumidity: "40-60%",
-            impact: "Pigs prefer cooler temperatures and moderate humidity levels. Extreme temperatures or humidity can cause stress and affect their growth and health."
-        };
-    } else if (temperature >= 20 && temperature <= 30 && humidity >= 50 && humidity <= 70) {
-        return {
-            animal: "Pigeons",
-            idealTemperature: "20-30°C",
-            idealHumidity: "50-70%",
-            impact: "Pigeons thrive in warmer temperatures with moderate humidity. They require good ventilation and can tolerate a range of humidity levels, but prefer conditions that are neither too dry nor too wet."
-        };
-    } else if (temperature >= 10 && temperature <= 30 && humidity >= 40 && humidity <= 60) {
-        return {
-            animal: "Horses",
-            idealTemperature: "10-30°C",
-            idealHumidity: "40-60%",
-            impact: "Horses are adaptable to a range of temperatures from cool to warm and prefer moderate humidity. They need protection from extreme weather conditions to maintain health and performance."
-        };
-    } else if (temperature >= 18 && temperature <= 28 && humidity >= 50 && humidity <= 65) {
-        return {
-            animal: "Quails",
-            idealTemperature: "18-28°C",
-            idealHumidity: "50-65%",
-            impact: "Quails prefer warm temperatures and moderate humidity. They thrive in environments that are neither too cold nor too hot and require good ventilation to stay healthy."
-        };
-    } else if (temperature >= 25 && temperature <= 30 && humidity >= 70 && humidity <= 90) {
-        return {
-            animal: "Catfish",
-            idealTemperature: "25-30°C",
-            idealHumidity: "70-90%",
-            impact: "Catfish thrive in warm water temperatures with high humidity. They require clean water and stable conditions to maintain good health and growth."
-        };
-    } else if (temperature >= 15 && temperature <= 35 && humidity >= 50 && humidity <= 70) {
-        return {
-            animal: "Beekeeping",
-            idealTemperature: "15-35°C",
-            idealHumidity: "50-70%",
-            impact: "Bees prefer warm temperatures and moderate humidity for optimal honey production. They are active in temperatures above 15°C and need access to flowers and clean water."
-        };
-    } else if (temperature >= 30 && temperature <= 50 && humidity >= 10 && humidity <= 30) {
-        return {
-            animal: "Camels",
-            idealTemperature: "30-50°C",
-            idealHumidity: "10-30%",
-            impact: "Camels are well-adapted to hot, dry climates. They can survive and remain productive in conditions that are too harsh for most other livestock."
-        };
+    let animal;
+    let idealTemperature;
+    let idealHumidity;
+    let impact;
+
+    if (temperature > 25 && humidity > 60) {
+        animal = "Cattle";
+        idealTemperature = "20-30°C";
+        idealHumidity = "50-70%";
+        impact = "High temperature and humidity are suitable for cattle but may require cooling systems.";
+    } else if (temperature < 20 && humidity < 50) {
+        animal = "Sheep";
+        idealTemperature = "10-20°C";
+        idealHumidity = "40-60%";
+        impact = "Cooler temperatures and lower humidity are suitable for sheep and may reduce heat stress.";
     } else {
-        return {
-            animal: "Unknown",
-            idealTemperature: "Unknown",
-            idealHumidity: "Unknown",
-            impact: "No information is available for this combination of temperature and humidity."
-        };
-    }
-}
-
-// Function to check outdoor temperature comfort
-function checkOutdoorTemperature(temperature, humidity) {
-    const minComfortTemp = 15;
-    const maxComfortTemp = 25;
-
-    if (temperature > maxComfortTemp) {
-        if (humidity > 70) {
-            return "The temperature and humidity are very high. The risk of dehydration and heat stroke is greatly increased. It is highly recommended to stay indoors, drink plenty of water, and avoid heavy physical activities.";
-        } else if (humidity > 60) {
-            return "The temperature and humidity are high. The risk of dehydration and heat stroke is increased. Drink plenty of water and avoid direct sunlight.";
-        } else if (humidity > 40) {
-            return "High temperature with moderate humidity. There is a risk of heat exhaustion and dehydration. Make sure to stay hydrated and wear light clothing.";
-        } else {
-            return "High temperature with low humidity. The risk of dehydration is high. Drink plenty of water and avoid direct sunlight.";
-        }
+        animal = "Mixed";
+        idealTemperature = "Varies";
+        idealHumidity = "Varies";
+        impact = "Climate may affect livestock differently.";
     }
 
-    if (temperature < minComfortTemp) {
-        if (humidity > 70) {
-            return "Low temperature with very high humidity. The risk of hypothermia and cold is increased. Wear warm, waterproof clothing and avoid prolonged exposure outside.";
-        } else if (humidity > 60) {
-            return "Low temperature with high humidity. The risk of hypothermia is increased. Wear warm clothing and ensure to stay dry.";
-        } else if (humidity > 40) {
-            return "Low temperature with moderate humidity. There is a risk of cold and hypothermia. Wear warm clothing and avoid prolonged exposure outside.";
-        } else {
-            return "Low temperature with low humidity. The risk of dry skin and hypothermia. Wear layered clothing and avoid prolonged exposure outside.";
-        }
-    }
-
-    return "The outdoor temperature is comfortable and within the ideal range.";
+    return { animal: animal, idealTemperature: idealTemperature, idealHumidity: idealHumidity, impact: impact };
 }
 
 
