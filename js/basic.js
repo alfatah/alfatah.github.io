@@ -455,7 +455,6 @@ function getAgricultureInfo(temperature, humidity) {
 }
 
 
-
 // Function to get livestock information based on climate
 function getLivestockInfo(temperature, humidity) {
     if (temperature >= 20 && temperature <= 30 && humidity >= 60 && humidity <= 80) {
