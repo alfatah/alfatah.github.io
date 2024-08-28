@@ -455,6 +455,7 @@ function getAgricultureInfo(temperature, humidity) {
 }
 
 
+// Function to get livestock information based on climate
 function getLivestockInfo(temperature, humidity) {
     if (temperature >= 10 && temperature <= 25 && humidity >= 50 && humidity <= 70) {
         return {
@@ -470,18 +471,18 @@ function getLivestockInfo(temperature, humidity) {
             idealHumidity: "50-60%",
             impact: "Chickens and Rabbits require stable temperature and humidity. Improper conditions can lead to health problems and decreased productivity."
         };
-    } else if (temperature >= 15 && temperature <= 25 && humidity >= 60 && humidity <= 70) {
+    } else if (temperature >= 15 && temperature <= 25 && humidity > 70 && humidity <= 80) {
         return {
             animal: "Ducks",
             idealTemperature: "15-25°C",
-            idealHumidity: "60-70%",
+            idealHumidity: "70-80%",
             impact: "Ducks need a cool, humid environment to prevent stress and maintain health."
         };
-    } else if (temperature >= 15 && temperature <= 25 && humidity >= 40 && humidity <= 60) {
+    } else if (temperature >= 15 && temperature <= 25 && humidity >= 40 && humidity < 50) {
         return {
             animal: "Turkeys",
             idealTemperature: "15-25°C",
-            idealHumidity: "40-60%",
+            idealHumidity: "40-50%",
             impact: "Turkeys prefer moderate temperatures and humidity. They are more tolerant of a wider range of humidity but require moderate temperatures for optimal health."
         };
     } else if (temperature >= 16 && temperature <= 24 && humidity >= 40 && humidity <= 60) {
@@ -491,11 +492,11 @@ function getLivestockInfo(temperature, humidity) {
             idealHumidity: "40-60%",
             impact: "Pigs prefer cooler temperatures and moderate humidity levels. Extreme temperatures or humidity can cause stress and affect their growth and health."
         };
-    } else if (temperature >= 20 && temperature <= 30 && humidity >= 50 && humidity <= 70) {
+    } else if (temperature >= 20 && temperature <= 30 && humidity > 60 && humidity <= 70) {
         return {
             animal: "Pigeons",
             idealTemperature: "20-30°C",
-            idealHumidity: "50-70%",
+            idealHumidity: "60-70%",
             impact: "Pigeons thrive in warmer temperatures with moderate humidity. They require good ventilation and can tolerate a range of humidity levels, but prefer conditions that are neither too dry nor too wet."
         };
     } else if (temperature >= 10 && temperature <= 30 && humidity >= 40 && humidity <= 60) {
@@ -512,11 +513,11 @@ function getLivestockInfo(temperature, humidity) {
             idealHumidity: "50-65%",
             impact: "Quails prefer warm temperatures and moderate humidity. They thrive in environments that are neither too cold nor too hot and require good ventilation to stay healthy."
         };
-    } else if (temperature >= 25 && temperature <= 30 && humidity >= 70 && humidity <= 90) {
+    } else if (temperature >= 25 && temperature <= 30 && humidity > 80 && humidity <= 90) {
         return {
             animal: "Catfish",
             idealTemperature: "25-30°C",
-            idealHumidity: "70-90%",
+            idealHumidity: "80-90%",
             impact: "Catfish thrive in warm water temperatures with high humidity. They require clean water and stable conditions to maintain good health and growth."
         };
     } else if (temperature >= 15 && temperature <= 35 && humidity >= 50 && humidity <= 70) {
@@ -533,6 +534,13 @@ function getLivestockInfo(temperature, humidity) {
             idealHumidity: "10-30%",
             impact: "Camels are well-adapted to hot, dry climates. They can survive and remain productive in conditions that are too harsh for most other livestock."
         };
+    } else if (temperature >= 22 && temperature <= 28 && humidity >= 70 && humidity <= 90) {
+        return {
+            animal: "Ornamental Fish",
+            idealTemperature: "22-28°C",
+            idealHumidity: "70-90%",
+            impact: "Ornamental fish thrive in warm water temperatures with high humidity, suitable for maintaining aquarium environments. Water quality and stable conditions are crucial for their health."
+        };
     } else {
         return {
             animal: "Unknown",
@@ -542,6 +550,7 @@ function getLivestockInfo(temperature, humidity) {
         };
     }
 }
+
 
 //////////////////////////////////////////////////////////////////////////
 
