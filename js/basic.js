@@ -223,49 +223,87 @@ function getWeatherF(latitude, longitude) {
                                  `Impact: ${livestockInfo.impact}`);
             
             // Fetch and display UV index
-            const uvUrl = `https://api.openweathermap.org/data/2.5/uvi?lat=${latitude}&lon=${longitude}&appid=${apiKey}`;
-            $.getJSON(uvUrl, function(uvData) {
-                const uvIndex = uvData.value;
-                $("#uvIndex").html(`UV Index: ${uvIndex} (${categorizeUV(uvIndex)})`);
-            }).fail(function() {
-                $("#uvIndex").html("Error retrieving UV index.");
-            });
+const uvUrl = `https://api.openweathermap.org/data/2.5/uvi?lat=${latitude}&lon=${longitude}&appid=${apiKey}`;
+$.getJSON(uvUrl, function(uvData) {
+    const uvIndex = uvData.value;
+    const uvInfo = categorizeUV(uvIndex); // Use the updated categorizeUV function
+    $("#uvIndex").html(`UV Index: ${uvIndex} (${uvInfo.category})<br>${uvInfo.advice}`);
+}).fail(function() {
+    $("#uvIndex").html("Error retrieving UV index.");
+});
 
-        } catch (error) {
-            console.error("Error processing weather data:", error);
-            $("#temperature").html("Error retrieving weather data.");
-            $("#weather").html("Error retrieving weather data.");
-            $("#category").html("Error retrieving weather data.");
-            $("#agriculture").html("Error retrieving agriculture data.");
-            $("#livestock").html("Error retrieving livestock data.");
-            $("#comfortMessage").html("Error retrieving comfort message.");
-            $("#uvIndex").html("Error retrieving UV index.");
-        }
-    }).fail(function() {
-        console.error("Error fetching data from the API.");
-        $("#temperature").html("Error retrieving weather data.");
-        $("#weather").html("Error retrieving weather data.");
-        $("#category").html("Error retrieving weather data.");
-        $("#agriculture").html("Error retrieving agriculture data.");
-        $("#livestock").html("Error retrieving livestock data.");
-        $("#comfortMessage").html("Error retrieving comfort message.");
-        $("#uvIndex").html("Error retrieving UV index.");
-    });
+} catch (error) {
+    console.error("Error processing weather data:", error);
+    $("#temperature").html("Error retrieving weather data.");
+    $("#weather").html("Error retrieving weather data.");
+    $("#category").html("Error retrieving weather data.");
+    $("#agriculture").html("Error retrieving agriculture data.");
+    $("#livestock").html("Error retrieving livestock data.");
+    $("#comfortMessage").html("Error retrieving comfort message.");
+    $("#uvIndex").html("Error retrieving UV index.");
+}
+}).fail(function() {
+    console.error("Error fetching data from the API.");
+    $("#temperature").html("Error retrieving weather data.");
+    $("#weather").html("Error retrieving weather data.");
+    $("#category").html("Error retrieving weather data.");
+    $("#agriculture").html("Error retrieving agriculture data.");
+    $("#livestock").html("Error retrieving livestock data.");
+    $("#comfortMessage").html("Error retrieving comfort message.");
+    $("#uvIndex").html("Error retrieving UV index.");
+});
 }
 
-// Function to categorize UV index
+// Function to categorize UV index with more than 12 ranges and provide health advice
 function categorizeUV(uvIndex) {
-    if (uvIndex < 3) {
-        return "Low";
+    let category;
+    let advice;
+
+    if (uvIndex < 1) {
+        category = "Minimal";
+        advice = "No protection needed. You can safely stay outside.";
+    } else if (uvIndex < 2) {
+        category = "Very Low";
+        advice = "Low risk. Little precautions needed, but wear sunglasses on bright days.";
+    } else if (uvIndex < 3) {
+        category = "Low";
+        advice = "Minimal risk. Wear sunglasses on bright days.";
+    } else if (uvIndex < 4) {
+        category = "Moderate Low";
+        advice = "Moderate risk. Wear sunglasses and use sunscreen.";
+    } else if (uvIndex < 5) {
+        category = "Moderate";
+        advice = "Moderate risk. Wear protective clothing, sunglasses, and use sunscreen.";
     } else if (uvIndex < 6) {
-        return "Moderate";
+        category = "Moderate High";
+        advice = "Moderate to high risk. Limit sun exposure and wear protective clothing.";
+    } else if (uvIndex < 7) {
+        category = "High Low";
+        advice = "High risk. Avoid prolonged sun exposure. Wear protective clothing and sunscreen.";
     } else if (uvIndex < 8) {
-        return "High";
+        category = "High";
+        advice = "High risk. Limit time in the sun, especially between 10 AM and 4 PM.";
+    } else if (uvIndex < 9) {
+        category = "Very High Low";
+        advice = "Very high risk. Avoid sun exposure during midday hours.";
+    } else if (uvIndex < 10) {
+        category = "Very High";
+        advice = "Very high risk. Seek shade and wear protective clothing.";
     } else if (uvIndex < 11) {
-        return "Very High";
+        category = "Very High Extreme";
+        advice = "Extreme risk. Avoid being outside during midday hours.";
+    } else if (uvIndex < 12) {
+        category = "Extreme Low";
+        advice = "Extreme risk. Stay indoors and avoid direct sun exposure.";
+    } else if (uvIndex < 13) {
+        category = "Extreme";
+        advice = "Extreme risk. Take all precautions, including wearing sunglasses, sunscreen, and protective clothing.";
     } else {
-        return "Extreme";
+        category = "Beyond Extreme";
+        advice = "Dangerous levels of UV radiation. Stay indoors and avoid sun exposure completely.";
     }
+
+    return { category: category, advice: advice };
 }
 
 
@@ -523,6 +561,7 @@ function checkOutdoorTemperature(temperature, humidity) {
     return "The outdoor temperature is comfortable and within the ideal range.";
 }
 
+
 //////////////////////////////////////////////////////////////////////////
 
  // Function to determine current period of the day
@@ -662,8 +701,6 @@ function displaySeason(countryName) {
     $("#current-day").html("Day: " + dayOfWeek);
     $("#current-period").html("Current Period: " + currentPeriod);
   
-    // Example: display season for Indonesia
-    // displaySeason("Indonesia");
   });
   
 
