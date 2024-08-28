@@ -551,6 +551,37 @@ function getLivestockInfo(temperature, humidity) {
     }
 }
 
+// Function to check outdoor temperature comfort
+function checkOutdoorTemperature(temperature, humidity) {
+    const minComfortTemp = 15;
+    const maxComfortTemp = 25;
+
+    if (temperature > maxComfortTemp) {
+        if (humidity > 70) {
+            return "The temperature and humidity are very high. The risk of dehydration and heat stroke is greatly increased. It is highly recommended to stay indoors, drink plenty of water, and avoid heavy physical activities.";
+        } else if (humidity > 60) {
+            return "The temperature and humidity are high. The risk of dehydration and heat stroke is increased. Drink plenty of water and avoid direct sunlight.";
+        } else if (humidity > 40) {
+            return "High temperature with moderate humidity. There is a risk of heat exhaustion and dehydration. Make sure to stay hydrated and wear light clothing.";
+        } else {
+            return "High temperature with low humidity. The risk of dehydration is high. Drink plenty of water and avoid direct sunlight.";
+        }
+    }
+
+    if (temperature < minComfortTemp) {
+        if (humidity > 70) {
+            return "Low temperature with very high humidity. The risk of hypothermia and cold is increased. Wear warm, waterproof clothing and avoid prolonged exposure outside.";
+        } else if (humidity > 60) {
+            return "Low temperature with high humidity. The risk of hypothermia is increased. Wear warm clothing and ensure to stay dry.";
+        } else if (humidity > 40) {
+            return "Low temperature with moderate humidity. There is a risk of cold and hypothermia. Wear warm clothing and avoid prolonged exposure outside.";
+        } else {
+            return "Low temperature with low humidity. The risk of dry skin and hypothermia. Wear layered clothing and avoid prolonged exposure outside.";
+        }
+    }
+
+    return "The outdoor temperature is comfortable and within the ideal range.";
+}
 
 //////////////////////////////////////////////////////////////////////////
 
