@@ -447,8 +447,8 @@ function getAgricultureInfo(temperature, humidity) {
     } else {
         return {
             name: "Unknown",
-            mainCrops: [],
-            hydroponicCrops: [],
+            mainCrops: ["Unknown"],
+            hydroponicCrops: ["Unknown"],
             influence: "No information is available for this climate and humidity combination."
         };
     }
