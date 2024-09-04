@@ -809,8 +809,8 @@ function fetchGoldPrices() {
 
 
 function fetchEarthquakeData(latitude, longitude, userCountryName) {
-    const usgsApiUrl = https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson;
-    const bmkgApiUrl = https://data.bmkg.go.id/DataMKG/TEWS/autogempa.xml;
+    const usgsApiUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
+    const bmkgApiUrl = "https://data.bmkg.go.id/DataMKG/TEWS/autogempa.xml";
 
     // Fetch USGS data
     $.get(usgsApiUrl, function(usgsData) {
@@ -821,39 +821,50 @@ function fetchEarthquakeData(latitude, longitude, userCountryName) {
             dataType: 'xml',
             success: function(bmkgData) {
                 displayEarthquakeData(usgsData, bmkgData, latitude, longitude, userCountryName);
+            },
+            error: function() {
+                console.error("Failed to fetch BMKG data");
+                displayEarthquakeData(usgsData, null, latitude, longitude, userCountryName);
             }
         });
+    }).fail(function() {
+        console.error("Failed to fetch USGS data");
+        // Optionally, handle the case where both data sources fail.
     });
 }
 
 function displayEarthquakeData(usgsData, bmkgData, latitude, longitude, userCountryName) {
     const usgsEarthquakes = usgsData.features;
 
-    // Parse BMKG XML data
+    // Parse BMKG XML data if available
     const bmkgEarthquakes = [];
-    $(bmkgData).find('gempa').each(function() {
-        const time = $(this).find('DateTime').text();
-        const magnitude = parseFloat($(this).find('Magnitude').text());
-        const coordinates = [
-            parseFloat($(this).find('Lintang').text().replace(' LS', '')) * (($(this).find('Lintang').text().includes('LS')) ? -1 : 1),
-            parseFloat($(this).find('Bujur').text().replace(' BT', '')) * (($(this).find('Bujur').text().includes('BT')) ? -1 : 1)
-        ];
-        const place = $(this).find('Wilayah').text();
+    if (bmkgData) {
+        $(bmkgData).find('gempa').each(function() {
+            const time = $(this).find('DateTime').text();
+            const magnitude = parseFloat($(this).find('Magnitude').text());
+            const latText = $(this).find('Lintang').text();
+            const lonText = $(this).find('Bujur').text();
+            const coordinates = [
+                parseFloat(latText.replace(' LS', '').replace(' LU', '')) * (latText.includes('LS') ? -1 : 1),
+                parseFloat(lonText.replace(' BT', '').replace(' BB', '')) * (lonText.includes('BT') ? -1 : 1)
+            ];
+            const place = $(this).find('Wilayah').text();
 
-        bmkgEarthquakes.push({
-            time: new Date(time).getTime(),
-            magnitude: magnitude,
-            coordinates: coordinates,
-            place: place,
-            source: 'BMKG'
+            bmkgEarthquakes.push({
+                time: new Date(time).getTime(),
+                magnitude: magnitude,
+                coordinates: coordinates,
+                place: place,
+                source: 'BMKG'
+            });
         });
-    });
+    }
 
     // Combine and sort by time
     const combinedEarthquakes = usgsEarthquakes.map(eq => ({
         time: eq.properties.time,
         magnitude: eq.properties.mag,
-        coordinates: eq.geometry.coordinates,
+        coordinates: [eq.geometry.coordinates[1], eq.geometry.coordinates[0]], // Adjust coordinate order
         place: eq.properties.place,
         source: 'USGS'
     })).concat(bmkgEarthquakes).sort((a, b) => b.time - a.time);
@@ -905,6 +916,7 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
         (1 - Math.cos(dLon))/2;
     return R * 2 * Math.asin(Math.sqrt(a));
 }
+
 
 //////////////////////////////////////////////////////////////////////////
 
