@@ -808,8 +808,9 @@ function fetchGoldPrices() {
 //////////////////////////////////////////////////////////////////////////
 
 function fetchEarthquakeData(latitude, longitude, userCountryName) {
-    const usgsApiUrl = `https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson`;
-    const bmkgApiUrl = `https://data.bmkg.go.id/DataMKG/TEWS/autogempa.xml`;
+    const usgsApiUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
+    const bmkgApiUrl = "https://data.bmkg.go.id/DataMKG/TEWS/autogempa.xml";
+    const emscApiUrl = "https://www.seismicportal.eu/fdsnws/event/1/query?format=geojson&limit=50"; // EMSC API
 
     // Fetch USGS data
     $.get(usgsApiUrl, function(usgsData) {
@@ -819,13 +820,16 @@ function fetchEarthquakeData(latitude, longitude, userCountryName) {
             method: 'GET',
             dataType: 'xml',
             success: function(bmkgData) {
-                displayEarthquakeData(usgsData, bmkgData, latitude, longitude, userCountryName);
+                // Fetch EMSC data
+                $.get(emscApiUrl, function(emscData) {
+                    displayEarthquakeData(usgsData, bmkgData, emscData, latitude, longitude, userCountryName);
+                });
             }
         });
     });
 }
 
-function displayEarthquakeData(usgsData, bmkgData, latitude, longitude, userCountryName) {
+function displayEarthquakeData(usgsData, bmkgData, emscData, latitude, longitude, userCountryName) {
     const usgsEarthquakes = usgsData.features;
 
     // Parse BMKG XML data
@@ -848,14 +852,23 @@ function displayEarthquakeData(usgsData, bmkgData, latitude, longitude, userCoun
         });
     });
 
+    // Parse EMSC data
+    const emscEarthquakes = emscData.features.map(eq => ({
+        time: new Date(eq.properties.time).getTime(),
+        magnitude: eq.properties.mag,
+        coordinates: [eq.geometry.coordinates[1], eq.geometry.coordinates[0]], // EMSC uses [longitude, latitude]
+        place: eq.properties.place || 'Unknown Location',
+        source: 'EMSC'
+    }));
+
     // Combine and sort by time
     const combinedEarthquakes = usgsEarthquakes.map(eq => ({
         time: eq.properties.time,
         magnitude: eq.properties.mag,
-        coordinates: eq.geometry.coordinates,
+        coordinates: [eq.geometry.coordinates[1], eq.geometry.coordinates[0]],
         place: eq.properties.place,
         source: 'USGS'
-    })).concat(bmkgEarthquakes).sort((a, b) => b.time - a.time);
+    })).concat(bmkgEarthquakes, emscEarthquakes).sort((a, b) => b.time - a.time);
 
     if (combinedEarthquakes.length === 0) {
         $('#earthquake-data').html('<p>No recent earthquakes found.</p>');
@@ -870,7 +883,7 @@ function displayEarthquakeData(usgsData, bmkgData, latitude, longitude, userCoun
     const time = new Date(latestEarthquake.time).toLocaleString();
     const coordinates = latestEarthquake.coordinates;
     const distance = calculateDistance(latitude, longitude, coordinates[0], coordinates[1]);
-    const countryName = (latestEarthquake.source === 'USGS') ? extractCountryFromPlace(place) : userCountryName;
+    const countryName = (latestEarthquake.source === 'USGS' || latestEarthquake.source === 'EMSC') ? extractCountryFromPlace(place) : userCountryName;
 
     const earthquakeHtml = `
         <a class="list-group-item list-group-item-action flex-column align-items-start">
@@ -886,23 +899,6 @@ function displayEarthquakeData(usgsData, bmkgData, latitude, longitude, userCoun
         </a>`;
 
     $('#earthquake-data').html(earthquakeHtml);
-}
-
-function extractCountryFromPlace(place) {
-    // Extract country from the place string. This is a simple heuristic and might need improvement.
-    const parts = place.split(',');
-    return parts.length > 1 ? parts[parts.length - 1].trim() : 'Unknown';
-}
-
-function calculateDistance(lat1, lon1, lat2, lon2) {
-    const R = 6371; // Radius of the Earth in kilometers
-    const dLat = (lat2 - lat1) * Math.PI / 180;
-    const dLon = (lon2 - lon1) * Math.PI / 180;
-    const a = 
-        0.5 - Math.cos(dLat)/2 + 
-        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
-        (1 - Math.cos(dLon))/2;
-    return R * 2 * Math.asin(Math.sqrt(a));
 }
 
 //////////////////////////////////////////////////////////////////////////
