@@ -112,6 +112,7 @@ function getProviderInfo(asn) {
             getCountryEconomicStatus(countryCode);
             getUnemploymentRate(countryCode);
             fetchHolidays(countryCode);
+            getWeatherAndUVIndex(latitude, longitude);
         });
     }
 });
@@ -1158,3 +1159,17 @@ function getCountryFeaturesByPopulation(population) {
 
 //////////////////////////////////////////////////////////////////////////
 
+function getWeatherAndUVIndex(latitude, longitude) {
+    // Menyusun URL dengan koordinat yang diberikan
+    var baseURL = "https://chat.openai.com/?q=";
+    var query = "Berapa suhu udara saat ini, dan berapa tingkat sinar UV? Selain itu, apa rentang yang dianggap sehat untuk paparan sinar UV dan suhu udara?";
+    var fullURL = baseURL + encodeURIComponent("koordinat:" + latitude + "," + longitude + ", " + query);
+
+    // Memperbarui konten elemen dengan ID 'basechatgpt'
+    $("#basechatgpt").html(`<a href="${fullURL}" target="_blank">Ask about current temperature and UV index</a>`);
+
+    return fullURL;
+}
+
+
+//////////////////////////////////////////////////////////////////////////
