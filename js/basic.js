@@ -126,7 +126,7 @@ function getProviderInfo(asn) {
 function getGDP(countryCode) {
     // Get the current year and subtract two to get the previous year
     var currentYear = new Date().getFullYear();
-    var previousYear = currentYear - 2;
+    var previousYear = currentYear - 1;
 
     $.getJSON(`https://api.worldbank.org/v2/country/${countryCode}/indicator/NY.GDP.MKTP.CD?format=json`, function(data) {
         if (data[1] && data[1].length > 0) {
