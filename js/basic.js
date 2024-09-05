@@ -1215,6 +1215,4 @@ function getWeatherAndUVIndex(latitude, longitude, countryCode) {
     return fullURL;
 }
 
-
-
 //////////////////////////////////////////////////////////////////////////
