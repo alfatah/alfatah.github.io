@@ -1179,11 +1179,17 @@ function getWeatherAndUVIndex(latitude, longitude, countryCode) {
     // Get the query based on the country code, default to English (US) if not found
     var query = queries[countryCode] || queries["US"];
 
-    // Construct the full URL
+    // Construct the full URL for the chatbot query
     var fullURL = baseURL + encodeURIComponent("Current time: " + now + " Coordinates: " + latitude + "," + longitude + ", " + query);
 
+    // URL for AccuWeather
+    var accuweatherURL = "https://www.accuweather.com/en/id/jakarta/208971/hourly-weather-forecast/208971";
+
     // Update the content of the element with the ID 'basechatgpt'
-    $("#basechatgpt").html(`<a href="${fullURL}" target="_blank">Ask about current temperature, UV index, and healthy ranges</a>`);
+    $("#basechatgpt").html(`
+        <p><a href="${fullURL}" target="_blank">Ask about current temperature, UV index, and healthy ranges</a></p>
+        <p><a href="${accuweatherURL}" target="_blank">View AccuWeather hourly forecast for Jakarta</a></p>
+    `);
 
     return fullURL;
 }
