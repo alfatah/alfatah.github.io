@@ -328,6 +328,7 @@ function categorizeUV(uvIndex) {
 
     return { category: category, advice: advice };
 }
+
 // Additional helper functions
 // Function to categorize temperature
 function categorizeTemperature(temp) {
