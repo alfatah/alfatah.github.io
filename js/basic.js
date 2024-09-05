@@ -259,11 +259,29 @@ function getWeatherF(latitude, longitude) {
     });
 }
 
+// Function to get the current hour
+function getCurrentHour() {
+    const now = new Date();
+    return now.getHours();
+}
+
 // Function to categorize UV index with more than 12 ranges and provide health advice
 function categorizeUV(uvIndex) {
     let category;
     let advice;
+    
+    // Get the current hour
+    const hour = getCurrentHour();
 
+    // If the time is before 7 AM or after 6 PM, UV radiation is considered non-existent
+    if (hour < 7 || hour > 18) {
+        return {
+            category: "No UV",
+            advice: "There is no UV radiation at this time. You can safely stay outside."
+        };
+    }
+
+    // Categorize UV index if within UV active hours
     if (uvIndex < 1) {
         category = "Minimal";
         advice = "No protection needed. You can safely stay outside.";
@@ -310,7 +328,6 @@ function categorizeUV(uvIndex) {
 
     return { category: category, advice: advice };
 }
-
 // Additional helper functions
 // Function to categorize temperature
 function categorizeTemperature(temp) {
