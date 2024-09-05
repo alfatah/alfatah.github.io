@@ -1162,28 +1162,32 @@ function getCountryFeaturesByPopulation(population) {
 function getWeatherAndUVIndex(latitude, longitude, countryCode) {
     var baseURL = "https://chat.openai.com/?q=";
 
+    // Get the current time in ISO format
+    var now = new Date().toISOString();
+
     // Dictionary of queries mapped by country codes
     var queries = {
-        "US": "What is the current temperature, and what is the UV index? Also, what is considered a healthy range for UV exposure and air temperature?", // United States
-        "ID": "Berapa suhu saat ini, dan berapa indeks UV? Selain itu, berapa rentang aman untuk paparan UV dan suhu udara?", // Indonesia
-        "ES": "¿Cuál es la temperatura actual y cuál es el índice UV? Además, ¿cuál es el rango saludable de exposición a UV y temperatura del aire?", // Spain
-        "FR": "Quelle est la température actuelle et quel est l'indice UV ? De plus, quelle est la plage saine pour l'exposition aux UV et la température de l'air ?", // France
-        "DE": "Wie ist die aktuelle Temperatur und wie hoch ist der UV-Index? Außerdem, was gilt als gesunder Bereich für UV-Belastung und Lufttemperatur?", // Germany
-        "CN": "目前的气温是多少，紫外线指数是多少？另外，什么是紫外线暴露和空气温度的健康范围？", // China
-        "JP": "現在の気温とUV指数は何ですか？また、UV暴露と気温の健康的な範囲は何ですか？" // Japan
+        "US": "What is the current temperature, and what is the UV index? Also, what is considered a healthy range for UV exposure and air temperature?",
+        "ID": "Berapa suhu saat ini, dan berapa indeks UV? Selain itu, berapa rentang aman untuk paparan UV dan suhu udara?",
+        "ES": "¿Cuál es la temperatura actual y cuál es el índice UV? Además, ¿cuál es el rango saludable de exposición a UV y temperatura del aire?",
+        "FR": "Quelle est la température actuelle et quel est l'indice UV ? De plus, quelle est la plage saine pour l'exposition aux UV et la température de l'air ?",
+        "DE": "Wie ist die aktuelle Temperatur und wie hoch ist der UV-Index? Außerdem, was gilt als gesunder Bereich für UV-Belastung und Lufttemperatur?",
+        "CN": "目前的气温是多少，紫外线指数是多少？另外，什么是紫外线暴露和空气温度的健康范围？",
+        "JP": "現在の気温とUV指数は何ですか？また、UV暴露と気温の健康的な範囲は何ですか？"
     };
 
     // Get the query based on the country code, default to English (US) if not found
     var query = queries[countryCode] || queries["US"];
-    
+
     // Construct the full URL
-    var fullURL = baseURL + encodeURIComponent("coordinates: " + latitude + "," + longitude + ", " + query);
+    var fullURL = baseURL + encodeURIComponent("Current time: " + now + " Coordinates: " + latitude + "," + longitude + ", " + query);
 
     // Update the content of the element with the ID 'basechatgpt'
-    $("#basechatgpt").html(`<a href="${fullURL}" target="_blank">Ask about current temperature and UV index</a>`);
+    $("#basechatgpt").html(`<a href="${fullURL}" target="_blank">Ask about current temperature, UV index, and healthy ranges</a>`);
 
     return fullURL;
 }
+
 
 
 
