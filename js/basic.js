@@ -1187,8 +1187,8 @@ function getWeatherAndUVIndex(latitude, longitude, countryCode) {
 
     // Update the content of the element with the ID 'basechatgpt'
     $("#basechatgpt").html(`
-        <p><a href="${fullURL}" target="_blank">Ask about current temperature, UV index, and healthy ranges</a></p>
-        <p><a href="${accuweatherURL}" target="_blank">View AccuWeather hourly forecast</a></p>
+        <a href="${fullURL}" target="_blank">Ask about current temperature, UV index, and healthy ranges</a>
+        <br><a href="${accuweatherURL}" target="_blank">View AccuWeather hourly forecast</a>
     `);
 
     return fullURL;
