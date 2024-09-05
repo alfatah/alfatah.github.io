@@ -1204,9 +1204,12 @@ function getWeatherAndUVIndex(latitude, longitude, countryCode) {
     var accuweatherURL = "https://www.accuweather.com/en/id/jakarta/208971/hourly-weather-forecast/208971";
 
     // Update the content of the element with the ID 'basechatgpt'
-    $("#basechatgpt").html(`
+    $("#basechatgpt1").html(`
         <a href="${fullURL}" target="_blank">Ask about current temperature, UV index, and healthy ranges</a>
-        <br><a href="${accuweatherURL}" target="_blank">View AccuWeather hourly forecast</a>
+    `);
+
+    $("#basechatgpt2").html(`
+        <a href="${accuweatherURL}" target="_blank">View AccuWeather hourly forecast</a>
     `);
 
     return fullURL;
