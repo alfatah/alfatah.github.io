@@ -751,13 +751,22 @@ function getAirQuality(latitude, longitude) {
     var apiKey = 'a01ca450-9bc6-4163-84dc-e37f7128b4f2'; // Ganti dengan kunci API AirVisual Anda
     var apiUrl = `https://api.airvisual.com/v2/nearest_city?lat=${latitude}&lon=${longitude}&key=${apiKey}`;
 
-    $.getJSON(apiUrl, function(airData) {
-        var airQualityIndex = airData.data.current.pollution.aqius;
-        var airQualityCategory = getAirQualityCategory(airQualityIndex);
+    $.getJSON(apiUrl)
+        .done(function(airData) {
+            var airQualityIndex = airData.data.current.pollution.aqius;
+            var airQualityCategory = getAirQualityCategory(airQualityIndex);
+            var healthRecommendations = getHealthRecommendations(airQualityIndex);
 
-        $("#air-quality-index").html("Air Quality Index : " + airQualityIndex);
-        $("#air-quality-category").html("Air Quality Category : " + airQualityCategory);
-    });
+            $("#air-quality-index").html("Air Quality Index: " + airQualityIndex);
+            $("#air-quality-category").html("Air Quality Category: " + airQualityCategory);
+            $("#health-recommendations").html("Health Recommendations: " + healthRecommendations);
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+            console.error("Error fetching air quality data: " + textStatus, errorThrown);
+            $("#air-quality-index").html("Error fetching air quality data");
+            $("#air-quality-category").html("");
+            $("#health-recommendations").html("");
+        });
 }
 
 // Function to determine air quality category based on air quality index (AQI)
@@ -777,10 +786,49 @@ function getAirQualityCategory(aqi) {
     }
 }
 
-// Panggil fungsi getLocationF di dalam $(document).ready
+// Function to provide health recommendations based on air quality category
+function getHealthRecommendations(aqi) {
+    if (aqi <= 50) {
+        return "Air quality is good. No health risks.";
+    } else if (aqi <= 100) {
+        return "Air is acceptable, but sensitive groups should limit prolonged outdoor activities.";
+    } else if (aqi <= 150) {
+        return "Sensitive groups should reduce prolonged or heavy outdoor exertion.";
+    } else if (aqi <= 200) {
+        return "Everyone should reduce outdoor activities. Sensitive groups should avoid outdoor exertion.";
+    } else if (aqi <= 300) {
+        return "Avoid all outdoor exertion. Stay indoors with clean air.";
+    } else {
+        return "Stay indoors, avoid physical activities outdoors. Use air purifiers if available.";
+    }
+}
+
+// Function to get the user's location and fetch air quality data
+function getLocationF() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+            getAirQuality(latitude, longitude);
+        }, function(error) {
+            console.error("Geolocation error: " + error.message);
+            $("#air-quality-index").html("Unable to retrieve location.");
+            $("#air-quality-category").html("");
+            $("#health-recommendations").html("");
+        });
+    } else {
+        console.error("Geolocation is not supported by this browser.");
+        $("#air-quality-index").html("Geolocation is not supported by this browser.");
+        $("#air-quality-category").html("");
+        $("#health-recommendations").html("");
+    }
+}
+
+// Call the getLocationF function inside $(document).ready
 $(document).ready(function() {
     getLocationF();
 });
+
 
 
 //////////////////////////////////////////////////////////////////////////
