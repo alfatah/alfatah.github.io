@@ -9,113 +9,86 @@ $(document).ready(function() {
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
 
-        document.getElementById('location').innerText = "Latitude, Longitude: " + `${latitude},${longitude}`;
-        var mapsLink = "https://www.google.com/maps?authuser=0&q=" + latitude + "," + longitude;
-        document.getElementById('maps-link').innerHTML = 'Location: <a href="' + mapsLink + '" target="_blank">View on Google Maps</a>';
+        document.getElementById('location').innerText = `Latitude, Longitude: ${latitude}, ${longitude}`;
+        const mapsLink = `https://www.google.com/maps?authuser=0&q=${latitude},${longitude}`;
+        document.getElementById('maps-link').innerHTML = `Location: <a href="${mapsLink}" target="_blank">View on Google Maps</a>`;
 
         getLocationF(latitude, longitude);
     }
 
     function showError(error) {
-        switch(error.code) {
-            case error.PERMISSION_DENIED:
-                document.getElementById('location').innerText = "User denied the request for Geolocation.";
-                break;
-            case error.POSITION_UNAVAILABLE:
-                document.getElementById('location').innerText = "Location information is unavailable.";
-                break;
-            case error.TIMEOUT:
-                document.getElementById('location').innerText = "The request to get user location timed out.";
-                break;
-            case error.UNKNOWN_ERROR:
-                document.getElementById('location').innerText = "An unknown error occurred.";
-                break;
-        }
+        const errorMessages = {
+            1: "User denied the request for Geolocation.",
+            2: "Location information is unavailable.",
+            3: "The request to get user location timed out.",
+            0: "An unknown error occurred."
+        };
+        document.getElementById('location').innerText = errorMessages[error.code] || "An unknown error occurred.";
     }
 
     function getLocationF(latitude, longitude) {
         $.getJSON("https://ipapi.co/json/", function(ip) {
-            console.log(ip);
-            $("#ip-address").html("Your IP: " + ip.ip + ", " + ip.org + ", " + ip.asn);
+            $("#ip-address").html(`Your IP: ${ip.ip}, ${ip.org}, ${ip.asn}`);
 
-// Daftar penyedia layanan internet dan nomor AS mereka
-$("#provider-info").html(getProviderInfo(ip.asn));
+            // Provider information based on ASN
+            const providerInfo = getProviderInfo(ip.asn);
+            $("#provider-info").html(providerInfo);
 
-function getProviderInfo(asn) {
-    let provider = {};
+            // Display location data
+            const locationData = `${ip.latitude},${ip.longitude}, ${ip.timezone}, ${ip.city}, ${ip.region}, ${ip.postal}, ${ip.country_name}`;
+            $("#location-data").html(locationData);
 
-    if (asn === 'AS4761') {
-        provider = {
-            url: "https://www.indosatooredoo.com/",
-            name: "Indosat Ooredoo Hutchison",
-            additionalUrl: "https://bima.tri.co.id/",
-            additionalName: "Tri"
-        };
-    } else if (asn === 'AS5413') {
-        provider = {
-            url: "https://www.xl.co.id/",
-            name: "XL Axiata"
-        };
-    } else if (asn === 'AS9583') {
-        provider = {
-            url: "https://my.telkomsel.com/web",
-            name: "Telkom Indonesia (IndiHome)"
-        };
-    } else if (asn === 'AS134453') {
-        provider = {
-            url: "https://www.smartfren.com/",
-            name: "Smartfren"
-        };
-    } else {
-        provider = {
-            name: `ASN: ${asn}`,
-            description: "Information not available"
-        };
-    }
-
-    // Generate HTML
-    let providerHtml = `
-
-    Provider : <a class="ajib" href="${provider.url || '#'}" target="_blank">${provider.name}${provider.additionalUrl ? ' <br><a class="ajib" href="' + provider.additionalUrl + '" target="_blank">' + provider.additionalName + '</a>' : ''}</a>
-
-    `;
-
-    return providerHtml;
-}
-
-
-
-            $("#location-data").html(ip.latitude + "," + ip.longitude + ", " + ip.timezone + ", " + ip.city + ", " + ip.region + ", " + ip.postal + ", " + ip.country_name);
-            
-            var formattedPopulation = ip.country_population.toLocaleString(); // Adds commas as thousands separator
-            $("#population").html("Country Population: " + formattedPopulation + " ");
-            $("#currency_name").html("Currency: " + ip.currency_name + " ");
+            // Display formatted population and currency
+            const formattedPopulation = Number(ip.country_population).toLocaleString();
+            $("#population").html(`Country Population: ${formattedPopulation}`);
+            $("#currency_name").html(`Currency: ${ip.currency_name}`);
 
             // Get population features
-            var populationFeatures = getCountryFeaturesByPopulation(ip.country_population);
-            $("#population-features").html("Category: " + populationFeatures.category + "<br>Description: " + populationFeatures.description);
-
-            var countryCode = ip.country;
-            var countryName = ip.country_name;
+            const populationFeatures = getCountryFeaturesByPopulation(ip.country_population);
+            $("#population-features").html(`Category: ${populationFeatures.category}<br>Description: ${populationFeatures.description}`);
 
             // Display Country Calling Code
-            $("#country-code").html("Country Calling Code: " + ip.country_calling_code);
+            $("#country-code").html(`Country Calling Code: ${ip.country_calling_code}`);
 
-            // Pass latitude and longitude to functions
-            getGDP(countryCode);
+            // Call functions with latitude, longitude, and country code
+            getGDP(ip.country);
             getWeatherF(latitude, longitude);
-            displaySeason(countryName);
+            displaySeason(ip.country_name);
             fetchGoldPrices();
-            fetchEarthquakeData(latitude, longitude, countryName);
+            fetchEarthquakeData(latitude, longitude, ip.country_name);
             getAirQuality(latitude, longitude);
-            getGovernmentSystem(countryName);
-            getCountryEconomicStatus(countryCode);
-            getUnemploymentRate(countryCode);
-            fetchHolidays(countryCode);
+            getGovernmentSystem(ip.country_name);
+            getCountryEconomicStatus(ip.country);
+            getUnemploymentRate(ip.country);
+            fetchHolidays(ip.country);
             getWeatherAndUVIndex(latitude, longitude);
         });
     }
+
+    // Helper function for provider info based on ASN
+    function getProviderInfo(asn) {
+        const providers = {
+            'AS4761': {
+                url: "https://www.indosatooredoo.com/",
+                name: "Indosat Ooredoo Hutchison",
+                additionalUrl: "https://bima.tri.co.id/",
+                additionalName: "Tri"
+            },
+            'AS5413': { url: "https://www.xl.co.id/", name: "XL Axiata" },
+            'AS9583': { url: "https://my.telkomsel.com/web", name: "Telkom Indonesia (IndiHome)" },
+            'AS134453': { url: "https://www.smartfren.com/", name: "Smartfren" }
+        };
+        const provider = providers[asn] || { name: `ASN: ${asn}`, description: "Information not available" };
+
+        return `
+            Provider: <a href="${provider.url || '#'}" target="_blank">${provider.name || provider.description}</a>
+            ${provider.additionalUrl ? `<br><a href="${provider.additionalUrl}" target="_blank">${provider.additionalName}</a>` : ''}
+        `;
+    }
+
+    // Add external helper functions for GDP, weather, season, etc. here...
 });
+
 
 
 
@@ -173,7 +146,7 @@ function getEvolution(gdpPerCapita) {
 //////////////////////////////////////////////////////////////////////////
 
 // Function to get weather data and UV index using latitude and longitude
-function getWeatherF(latitude, longitude) {
+function getWeatherF(latitude, longitude, plantingDate) {
     const apiKey = '74cc8a3c199f63bb2998825eb67ca8db'; // Replace with your actual API key
     const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
 
@@ -209,20 +182,12 @@ function getWeatherF(latitude, longitude) {
             // Display comfort message
             $("#comfortMessage").html(`Comfort Message: ${comfortMessage}`);
 
-            // Get and display agricultural information based on the climate
-            const climateInfo = getAgricultureInfo(temperature, humidity);
+            // Get and display agricultural information based on the climate and planting date
+            const climateInfo = getAgricultureInfo(temperature, humidity, plantingDate);
             $("#agriculture").html(`Agriculture in this climate:<br>` +
                                    `Main Crops: ${climateInfo.mainCrops.join(", ")}<br>` +
                                    `Hydroponic Crops: ${climateInfo.hydroponicCrops.join(", ")}<br>` +
                                    `Influence: ${climateInfo.influence}`);
-
-            // Get and display livestock information based on the climate
-            const livestockInfo = getLivestockInfo(temperature, humidity);
-            $("#livestock").html(`Livestock in this climate:<br>` +
-                                 `Animal: ${livestockInfo.animal}<br>` +
-                                 `Ideal Temperature: ${livestockInfo.idealTemperature}<br>` +
-                                 `Ideal Humidity: ${livestockInfo.idealHumidity}<br>` +
-                                 `Impact: ${livestockInfo.impact}`);
 
             // Fetch and display UV index
             const uvUrl = `https://api.openweathermap.org/data/2.5/uvi?lat=${latitude}&lon=${longitude}&appid=${apiKey}`;
@@ -242,7 +207,6 @@ function getWeatherF(latitude, longitude) {
             $("#weather").html("Error retrieving weather data.");
             $("#category").html("Error retrieving weather data.");
             $("#agriculture").html("Error retrieving agriculture data.");
-            $("#livestock").html("Error retrieving livestock data.");
             $("#comfortMessage").html("Error retrieving comfort message.");
             $("#uvIndex").html("Error retrieving UV index.");
         }
@@ -253,7 +217,6 @@ function getWeatherF(latitude, longitude) {
         $("#weather").html("Error retrieving weather data.");
         $("#category").html("Error retrieving weather data.");
         $("#agriculture").html("Error retrieving agriculture data.");
-        $("#livestock").html("Error retrieving livestock data.");
         $("#comfortMessage").html("Error retrieving comfort message.");
         $("#uvIndex").html("Error retrieving UV index.");
     });
@@ -457,7 +420,7 @@ function getAgricultureInfo(temperature, humidity, plantingDate) {
             hydroponicCrops: ["Lettuce", "Herbs", "Peppers", "Strawberries"],
             influence: "Moderate humidity and temperatures allow for a wide variety of crops. Drought-resistant crops are recommended during dry spells."
         };
-    } else if (temperature >= 5 and temperature <= 45 and humidity < 40) {
+    } else if (temperature >= 5 && temperature <= 45 && humidity < 40) {
         result = {
             name: "Desert",
             mainCrops: [
