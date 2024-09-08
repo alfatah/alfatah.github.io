@@ -91,8 +91,6 @@ $(document).ready(function() {
 
 
 
-
-
 //////////////////////////////////////////////////////////////////////////
     
 // Function to get GDP data of a country using country code
@@ -1259,6 +1257,5 @@ function getWeatherAndUVIndex(latitude, longitude, countryCode) {
 
     return fullURL;
 }
-
 
 //////////////////////////////////////////////////////////////////////////
