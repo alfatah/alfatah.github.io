@@ -184,10 +184,16 @@ function getWeatherF(latitude, longitude, plantingDate) {
 
             // Get and display agricultural information based on the climate and planting date
             const climateInfo = getAgricultureInfo(temperature, humidity, plantingDate);
+
+            // Format the main crops data to display the name and planting/harvest times
+            const mainCropsInfo = climateInfo.mainCrops.map(crop => `${crop.name} (Planting: ${crop.planting}, Harvest: ${crop.harvest})`).join("<br>");
+
+            // Display the agriculture information in the HTML
             $("#agriculture").html(`Agriculture in this climate:<br>` +
-                                   `Main Crops: ${climateInfo.mainCrops.join(", ")}<br>` +
-                                   `Hydroponic Crops: ${climateInfo.hydroponicCrops.join(", ")}<br>` +
-                                   `Influence: ${climateInfo.influence}`);
+                                `Main Crops:<br> ${mainCropsInfo}<br>` +
+                                `Hydroponic Crops: ${climateInfo.hydroponicCrops.join(", ")}<br>` +
+                                `Influence: ${climateInfo.influence}`);
+
 
             // Fetch and display UV index
             const uvUrl = `https://api.openweathermap.org/data/2.5/uvi?lat=${latitude}&lon=${longitude}&appid=${apiKey}`;
