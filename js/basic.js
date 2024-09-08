@@ -426,51 +426,79 @@ function checkOutdoorTemperature(temp, humidity) {
     }
 }
 
-// Function to get agricultural information based on temperature and humidity
-function getAgricultureInfo(temperature, humidity) {
+// Function to get agricultural information based on temperature, humidity, planting date, and harvest season
+function getAgricultureInfo(temperature, humidity, plantingDate) {
+    let result = {};
+
     if (temperature >= 20 && temperature <= 35 && humidity >= 60) {
-        return {
+        result = {
             name: "Tropical",
-            mainCrops: ["Rice", "Corn", "Bananas", "Palm Oil", "Cocoa", "Coffee"],
+            mainCrops: [
+                { name: "Rice", planting: "March-May", harvest: "July-November" },
+                { name: "Corn", planting: "March-May", harvest: "August-October" },
+                { name: "Bananas", planting: "Year-round", harvest: "Year-round" },
+                { name: "Palm Oil", planting: "May-June", harvest: "September-November" },
+                { name: "Cocoa", planting: "March-May", harvest: "October-December" },
+                { name: "Coffee", planting: "March-May", harvest: "September-December" }
+            ],
             hydroponicCrops: ["Lettuce", "Spinach", "Basil", "Cucumbers", "Tomatoes", "Peppers"],
             influence: "Warm temperatures and high humidity allow for continuous farming. However, high humidity can lead to fungal diseases, so proper crop management is crucial."
         };
     } else if (temperature >= 10 && temperature <= 30 && humidity >= 40 && humidity < 60) {
-        return {
+        result = {
             name: "Subtropical",
-            mainCrops: ["Wheat", "Oranges", "Olives", "Cotton", "Tea"],
+            mainCrops: [
+                { name: "Wheat", planting: "September-November", harvest: "April-June" },
+                { name: "Oranges", planting: "March-April", harvest: "October-January" },
+                { name: "Olives", planting: "October-November", harvest: "September-November" },
+                { name: "Cotton", planting: "March-May", harvest: "September-November" },
+                { name: "Tea", planting: "Year-round", harvest: "Year-round" }
+            ],
             hydroponicCrops: ["Lettuce", "Herbs", "Peppers", "Strawberries"],
             influence: "Moderate humidity and temperatures allow for a wide variety of crops. Drought-resistant crops are recommended during dry spells."
         };
-    } else if (temperature >= 5 && temperature <= 45 && humidity < 40) {
-        return {
+    } else if (temperature >= 5 and temperature <= 45 and humidity < 40) {
+        result = {
             name: "Desert",
-            mainCrops: ["Dates", "Wheat (with irrigation)", "Certain vegetables"],
+            mainCrops: [
+                { name: "Dates", planting: "April-June", harvest: "September-December" },
+                { name: "Wheat (with irrigation)", planting: "October-December", harvest: "March-May" },
+                { name: "Certain vegetables", planting: "Year-round", harvest: "Year-round" }
+            ],
             hydroponicCrops: ["Lettuce", "Tomatoes", "Cucumbers", "Peppers"],
             influence: "Low humidity and high temperatures require effective irrigation. Humidity control is essential in greenhouses to prevent plant stress."
         };
     } else if (temperature >= -20 && temperature <= 35 && humidity >= 40 && humidity < 60) {
-        return {
+        result = {
             name: "Continental",
-            mainCrops: ["Wheat", "Corn", "Soybeans", "Potatoes"],
+            mainCrops: [
+                { name: "Wheat", planting: "September-November", harvest: "June-August" },
+                { name: "Corn", planting: "April-June", harvest: "August-October" },
+                { name: "Soybeans", planting: "April-June", harvest: "September-November" },
+                { name: "Potatoes", planting: "March-May", harvest: "August-October" }
+            ],
             hydroponicCrops: ["Leafy Greens", "Herbs", "Tomatoes", "Strawberries"],
             influence: "Moderate humidity combined with long, harsh winters shortens the growing season. Fertile soil and humidity management are key for successful yields."
         };
     } else if (temperature >= -50 && temperature <= 10 && humidity >= 60) {
-        return {
+        result = {
             name: "Arctic",
-            mainCrops: ["Greenhouse vegetables"],
+            mainCrops: [
+                { name: "Greenhouse vegetables", planting: "Year-round", harvest: "Year-round" }
+            ],
             hydroponicCrops: ["Leafy Greens", "Herbs"],
             influence: "High humidity and extremely cold temperatures limit traditional farming. Greenhouses and hydroponics are vital for successful crop growth."
         };
     } else {
-        return {
+        result = {
             name: "Unknown",
             mainCrops: ["Unknown"],
             hydroponicCrops: ["Unknown"],
             influence: "No information is available for this climate and humidity combination."
         };
     }
+
+    return result;
 }
 
 
