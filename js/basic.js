@@ -192,6 +192,15 @@ function getWeatherF(latitude, longitude, plantingDate) {
                                 `Hydroponic Crops: ${climateInfo.hydroponicCrops.join(", ")}<br>` +
                                 `Influence: ${climateInfo.influence}`);
 
+            // Get and display livestock information based on the climate
+            const livestockInfo = getLivestockInfo(temperature, humidity);
+
+            // Display the livestock information in the HTML
+            $("#livestock").html(`Livestock in this climate:<br>` +
+                                 `Animal: ${livestockInfo.animal}<br>` +
+                                 `Ideal Temperature: ${livestockInfo.idealTemperature}°C<br>` +
+                                 `Ideal Humidity: ${livestockInfo.idealHumidity}%<br>` +
+                                 `Impact: ${livestockInfo.impact}`);
 
             // Fetch and display UV index
             const uvUrl = `https://api.openweathermap.org/data/2.5/uvi?lat=${latitude}&lon=${longitude}&appid=${apiKey}`;
@@ -211,6 +220,7 @@ function getWeatherF(latitude, longitude, plantingDate) {
             $("#weather").html("Error retrieving weather data.");
             $("#category").html("Error retrieving weather data.");
             $("#agriculture").html("Error retrieving agriculture data.");
+            $("#livestock").html("Error retrieving livestock data.");
             $("#comfortMessage").html("Error retrieving comfort message.");
             $("#uvIndex").html("Error retrieving UV index.");
         }
@@ -221,6 +231,7 @@ function getWeatherF(latitude, longitude, plantingDate) {
         $("#weather").html("Error retrieving weather data.");
         $("#category").html("Error retrieving weather data.");
         $("#agriculture").html("Error retrieving agriculture data.");
+        $("#livestock").html("Error retrieving livestock data.");
         $("#comfortMessage").html("Error retrieving comfort message.");
         $("#uvIndex").html("Error retrieving UV index.");
     });
