@@ -126,20 +126,23 @@ function getEvolution(gdpPerCapita) {
         return "Government Evolution: Data not available or invalid.";
     }
 
+    let grade = "";
     if (gdpPerCapita < 1000) {
-        return "Government Evolution: At this stage, the focus is on basic infrastructure development, poverty alleviation programs, and improving basic healthcare services.";
+        grade = "Grade: Low Income";
+        return `${grade}. Government Evolution: At this stage, the focus is on basic infrastructure development, poverty alleviation programs, and improving basic healthcare services.`;
     } else if (gdpPerCapita >= 1000 && gdpPerCapita < 5000) {
-        return "Government Evolution: Significant investments in infrastructure, policy reforms to support small and medium enterprises (SMEs), enhancement of social welfare programs, and initiation of environmental policies are emphasized.";
+        grade = "Grade: Lower-Middle Income";
+        return `${grade}. Government Evolution: Significant investments in infrastructure, policy reforms to support small and medium enterprises (SMEs), enhancement of social welfare programs, and initiation of environmental policies are emphasized.`;
     } else if (gdpPerCapita >= 5000 && gdpPerCapita < 15000) {
-        return "Government Evolution: Investment in research and development (R&D), formulation of international trade policies, stricter and sustainable environmental policies, and enhancement of universal social and healthcare programs are key priorities.";
+        grade = "Grade: Upper-Middle Income";
+        return `${grade}. Government Evolution: Investment in research and development (R&D), formulation of international trade policies, stricter and sustainable environmental policies, and enhancement of universal social and healthcare programs are key priorities.`;
     } else if (gdpPerCapita >= 15000) {
-        return "Government Evolution: Major investments are made in higher education and scientific research, development of policies to support the digital economy and Industry 4.0, implementation of very strict and sustainable environmental policies, and enhancement of advanced and efficient public services.";
+        grade = "Grade: High Income";
+        return `${grade}. Government Evolution: Major investments are made in higher education and scientific research, development of policies to support the digital economy and Industry 4.0, implementation of very strict and sustainable environmental policies, and enhancement of advanced and efficient public services.`;
     } else {
         return "Government Evolution: Data not available or invalid.";
     }
 }
-
-
 
 //////////////////////////////////////////////////////////////////////////
 
