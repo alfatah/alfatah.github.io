@@ -198,12 +198,14 @@ function getWeatherF(latitude, longitude, plantingDate) {
             // Get and display livestock information based on the climate
             const livestockInfo = getLivestockInfo(temperature, humidity);
 
-            // Display the livestock information in the HTML
-            $("#livestock").html(`Livestock in this climate:<br>` +
-                                 `Animal: ${livestockInfo.animal}<br>` +
-                                 `Ideal Temperature: ${livestockInfo.idealTemperature}°C<br>` +
-                                 `Ideal Humidity: ${livestockInfo.idealHumidity}%<br>` +
-                                 `Impact: ${livestockInfo.impact}`);
+        // Display the livestock information in the HTML
+        $("#livestock").html(`Livestock in this climate:<br>` +
+                             `Animal: ${livestockInfo.animal}<br>` +
+                             `Ideal Temperature: ${livestockInfo.idealTemperature}°C<br>` +
+                             `Ideal Humidity: ${livestockInfo.idealHumidity}%<br>` +
+                             `Impact: ${livestockInfo.impact}<br>` +
+                             `Breeding Season: ${livestockInfo.breedingSeason}<br>` +
+                             `Birthing Season: ${livestockInfo.birthingSeason}`);
 
             // Fetch and display UV index
             const uvUrl = `https://api.openweathermap.org/data/2.5/uvi?lat=${latitude}&lon=${longitude}&appid=${apiKey}`;
@@ -490,101 +492,130 @@ function getLivestockInfo(temperature, humidity) {
             animal: "Cattle, Goats, Sheep",
             idealTemperature: "10-25",
             idealHumidity: "50-70",
-            impact: "Cattle, Goats, and Sheep are comfortable within this temperature and humidity range. Conditions outside this range can affect their health and productivity."
+            impact: "Cattle, Goats, and Sheep are comfortable within this temperature and humidity range. Conditions outside this range can affect their health and productivity.",
+            breedingSeason: "Spring to early summer",
+            birthingSeason: "Spring to early summer"
         };
     } else if (temperature >= 18 && temperature <= 24 && humidity >= 50 && humidity <= 60) {
         return {
             animal: "Chickens, Rabbits",
             idealTemperature: "18-24",
             idealHumidity: "50-60",
-            impact: "Chickens and Rabbits require stable temperature and humidity. Improper conditions can lead to health problems and decreased productivity."
+            impact: "Chickens and Rabbits require stable temperature and humidity. Improper conditions can lead to health problems and decreased productivity.",
+            breedingSeason: "Spring and summer",
+            birthingSeason: "Spring and summer"
         };
     } else if (temperature >= 15 && temperature <= 25 && humidity > 70 && humidity <= 80) {
         return {
             animal: "Ducks",
             idealTemperature: "15-25",
             idealHumidity: "70-80",
-            impact: "Ducks need a cool, humid environment to prevent stress and maintain health."
+            impact: "Ducks need a cool, humid environment to prevent stress and maintain health.",
+            breedingSeason: "Spring to summer",
+            birthingSeason: "Spring to summer"
         };
     } else if (temperature >= 15 && temperature <= 25 && humidity >= 40 && humidity < 50) {
         return {
             animal: "Turkeys",
             idealTemperature: "15-25",
             idealHumidity: "40-50",
-            impact: "Turkeys prefer moderate temperatures and humidity. They are more tolerant of a wider range of humidity but require moderate temperatures for optimal health."
+            impact: "Turkeys prefer moderate temperatures and humidity. They are more tolerant of a wider range of humidity but require moderate temperatures for optimal health.",
+            breedingSeason: "Spring",
+            birthingSeason: "Summer"
         };
     } else if (temperature >= 16 && temperature <= 24 && humidity >= 40 && humidity <= 60) {
         return {
             animal: "Pigs",
             idealTemperature: "16-24",
             idealHumidity: "40-60",
-            impact: "Pigs prefer cooler temperatures and moderate humidity levels. Extreme temperatures or humidity can cause stress and affect their growth and health."
+            impact: "Pigs prefer cooler temperatures and moderate humidity levels. Extreme temperatures or humidity can cause stress and affect their growth and health.",
+            breedingSeason: "Year-round",
+            birthingSeason: "Year-round"
         };
     } else if (temperature >= 20 && temperature <= 30 && humidity > 60 && humidity <= 70) {
         return {
             animal: "Pigeons",
             idealTemperature: "20-30",
             idealHumidity: "60-70",
-            impact: "Pigeons thrive in warmer temperatures with moderate humidity. They require good ventilation and can tolerate a range of humidity levels, but prefer conditions that are neither too dry nor too wet."
+            impact: "Pigeons thrive in warmer temperatures with moderate humidity. They require good ventilation and can tolerate a range of humidity levels, but prefer conditions that are neither too dry nor too wet.",
+            breedingSeason: "Spring to summer",
+            birthingSeason: "Spring to summer"
         };
     } else if (temperature >= 10 && temperature <= 30 && humidity >= 40 && humidity <= 60) {
         return {
             animal: "Horses",
             idealTemperature: "10-30",
             idealHumidity: "40-60",
-            impact: "Horses are adaptable to a range of temperatures from cool to warm and prefer moderate humidity. They need protection from extreme weather conditions to maintain health and performance."
+            impact: "Horses are adaptable to a range of temperatures from cool to warm and prefer moderate humidity. They need protection from extreme weather conditions to maintain health and performance.",
+            breedingSeason: "Spring to early summer",
+            birthingSeason: "Spring to early summer"
         };
     } else if (temperature >= 18 && temperature <= 28 && humidity >= 50 && humidity <= 65) {
         return {
             animal: "Quails",
             idealTemperature: "18-28",
             idealHumidity: "50-65",
-            impact: "Quails prefer warm temperatures and moderate humidity. They thrive in environments that are neither too cold nor too hot and require good ventilation to stay healthy."
+            impact: "Quails prefer warm temperatures and moderate humidity. They thrive in environments that are neither too cold nor too hot and require good ventilation to stay healthy.",
+            breedingSeason: "Spring to summer",
+            birthingSeason: "Spring to summer"
         };
     } else if (temperature >= 25 && temperature <= 30 && humidity > 80 && humidity <= 90) {
         return {
             animal: "Catfish",
             idealTemperature: "25-30",
             idealHumidity: "80-90",
-            impact: "Catfish thrive in warm water temperatures with high humidity. They require clean water and stable conditions to maintain good health and growth."
+            impact: "Catfish thrive in warm water temperatures with high humidity. They require clean water and stable conditions to maintain good health and growth.",
+            breedingSeason: "Spring to summer",
+            birthingSeason: "Spring to summer"
         };
     } else if (temperature >= 15 && temperature <= 35 && humidity >= 50 && humidity <= 70) {
         return {
             animal: "Beekeeping",
             idealTemperature: "15-35",
             idealHumidity: "50-70",
-            impact: "Bees prefer warm temperatures and moderate humidity for optimal honey production. They are active in temperatures above 15°C and need access to flowers and clean water."
+            impact: "Bees prefer warm temperatures and moderate humidity for optimal honey production. They are active in temperatures above 15°C and need access to flowers and clean water.",
+            breedingSeason: "Spring to summer",
+            birthingSeason: "Spring to summer"
         };
     } else if (temperature >= 30 && temperature <= 50 && humidity >= 10 && humidity <= 30) {
         return {
             animal: "Camels",
             idealTemperature: "30-50",
             idealHumidity: "10-30",
-            impact: "Camels are well-adapted to hot, dry climates. They can survive and remain productive in conditions that are too harsh for most other livestock."
+            impact: "Camels are well-adapted to hot, dry climates. They can survive and remain productive in conditions that are too harsh for most other livestock.",
+            breedingSeason: "Winter",
+            birthingSeason: "Spring"
         };
     } else if (temperature >= 22 && temperature <= 28 && humidity >= 70 && humidity <= 90) {
         return {
             animal: "Ornamental Fish",
             idealTemperature: "22-28",
             idealHumidity: "70-90",
-            impact: "Ornamental fish thrive in warm water temperatures with high humidity, suitable for maintaining aquarium environments. Water quality and stable conditions are crucial for their health."
+            impact: "Ornamental fish thrive in warm water temperatures with high humidity, suitable for maintaining aquarium environments. Water quality and stable conditions are crucial for their health.",
+            breedingSeason: "Varies by species",
+            birthingSeason: "Varies by species"
         };
     } else if (temperature >= 20 && temperature <= 40 && humidity >= 30 && humidity <= 50) {
         return {
             animal: "Ostriches",
             idealTemperature: "20-40",
             idealHumidity: "30-50",
-            impact: "Ostriches thrive in warm, dry climates with moderate humidity. They can tolerate a range of temperatures but require stable conditions for optimal health and egg production."
+            impact: "Ostriches thrive in warm, dry climates with moderate humidity. They can tolerate a range of temperatures but require stable conditions for optimal health and egg production.",
+            breedingSeason: "Spring to summer",
+            birthingSeason: "Spring to summer"
         };
     } else {
         return {
             animal: "Unknown",
             idealTemperature: "Unknown",
             idealHumidity: "Unknown",
-            impact: "No information is available for this combination of temperature and humidity."
+            impact: "No information is available for this combination of temperature and humidity.",
+            breedingSeason: "Unknown",
+            birthingSeason: "Unknown"
         };
     }
 }
+
 
 // Function to check outdoor temperature comfort
 function checkOutdoorTemperature(temperature, humidity) {
