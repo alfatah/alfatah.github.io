@@ -555,12 +555,19 @@ function getLivestockInfo(temperature, humidity) {
             idealHumidity: "50-70",
             impact: "Bees prefer warm temperatures and moderate humidity for optimal honey production. They are active in temperatures above 15°C and need access to flowers and clean water."
         };
-    } else if (temperature >= 30 && temperature <= 50 dan humidity >= 10 && humidity <= 30) {
+    } else if (temperature >= 30 && temperature <= 50 && humidity >= 10 && humidity <= 30) {
         return {
             animal: "Camels",
             idealTemperature: "30-50",
             idealHumidity: "10-30",
             impact: "Camels are well-adapted to hot, dry climates. They can survive and remain productive in conditions that are too harsh for most other livestock."
+        };
+    } else if (temperature >= 22 && temperature <= 28 && humidity >= 70 && humidity <= 90) {
+        return {
+            animal: "Ornamental Fish",
+            idealTemperature: "22-28",
+            idealHumidity: "70-90",
+            impact: "Ornamental fish thrive in warm water temperatures with high humidity, suitable for maintaining aquarium environments. Water quality and stable conditions are crucial for their health."
         };
     } else if (temperature >= 20 && temperature <= 40 && humidity >= 30 && humidity <= 50) {
         return {
@@ -568,13 +575,6 @@ function getLivestockInfo(temperature, humidity) {
             idealTemperature: "20-40",
             idealHumidity: "30-50",
             impact: "Ostriches thrive in warm, dry climates with moderate humidity. They can tolerate a range of temperatures but require stable conditions for optimal health and egg production."
-        };
-    } else if (temperature >= 22 and temperature <= 28 dan humidity >= 70 dan humidity <= 90) {
-        return {
-            animal: "Ornamental Fish",
-            idealTemperature: "22-28",
-            idealHumidity: "70-90",
-            impact: "Ornamental fish thrive in warm water temperatures with high humidity, suitable for maintaining aquarium environments. Water quality and stable conditions are crucial for their health."
         };
     } else {
         return {
@@ -585,7 +585,6 @@ function getLivestockInfo(temperature, humidity) {
         };
     }
 }
-
 
 // Function to check outdoor temperature comfort
 function checkOutdoorTemperature(temperature, humidity) {
