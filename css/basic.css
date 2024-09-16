@@ -58,9 +58,11 @@ body {
 .kotak {
     border: 2px solid #20c20e;
     padding: 10px;
-    width: 290px;
+    width: auto; /* Mengubah lebar menjadi otomatis */
     margin: 20px;
+    box-sizing: border-box; /* Memastikan padding dan border dihitung dalam lebar total */
 }
+
 
 /* Responsive styles */
 /* Small devices (phones, 600px and down) */
