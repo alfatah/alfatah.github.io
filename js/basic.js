@@ -38,14 +38,8 @@ $(document).ready(function() {
             const locationData = `${ip.latitude},${ip.longitude}, ${ip.timezone}, ${ip.city}, ${ip.region}, ${ip.postal}, ${ip.country_name}`;
             $("#location-data").html(locationData);
 
-            // Display formatted population and currency
-            const formattedPopulation = Number(ip.country_population).toLocaleString();
-            $("#population").html(`Country Population: ${formattedPopulation}`);
-            $("#currency_name").html(`Currency: ${ip.currency_name}`);
-
-            // Get population features
-            const populationFeatures = getCountryFeaturesByPopulation(ip.country_population);
-            $("#population-features").html(`Category: ${populationFeatures.category}<br>Description: ${populationFeatures.description}`);
+            // Fetch and display population from World Bank API
+            fetchPopulation(ip.country);
 
             // Display Country Calling Code
             $("#country-code").html(`Country Calling Code: ${ip.country_calling_code}`);
@@ -62,6 +56,19 @@ $(document).ready(function() {
             getUnemploymentRate(ip.country);
             fetchHolidays(ip.country);
             getWeatherAndUVIndex(latitude, longitude);
+        });
+    }
+
+    // Fetch population from World Bank API
+    function fetchPopulation(countryCode) {
+        $.getJSON(`https://api.worldbank.org/v2/country/${countryCode}/indicator/SP.POP.TOTL?format=json`, function(data) {
+            if (data && data[1] && data[1][0]) {
+                const population = data[1][0].value;
+                const formattedPopulation = Number(population).toLocaleString();
+                $("#population").html(`Country Population: ${formattedPopulation}`);
+            } else {
+                $("#population").html("Population data not available");
+            }
         });
     }
 
