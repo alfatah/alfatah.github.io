@@ -500,8 +500,8 @@ function getLivestockInfo(temperature, humidity) {
             idealTemperature: "10-25",
             idealHumidity: "50-70",
             impact: "Cattle, Goats, and Sheep are comfortable within this temperature and humidity range. Conditions outside this range can affect their health and productivity.",
-            breedingSeason: "Spring to early summer",
-            birthingSeason: "Spring to early summer"
+            breedingSeason: "March to June",
+            birthingSeason: "March to June"
         };
     } else if (temperature >= 18 && temperature <= 24 && humidity >= 50 && humidity <= 60) {
         return {
@@ -509,8 +509,8 @@ function getLivestockInfo(temperature, humidity) {
             idealTemperature: "18-24",
             idealHumidity: "50-60",
             impact: "Chickens and Rabbits require stable temperature and humidity. Improper conditions can lead to health problems and decreased productivity.",
-            breedingSeason: "Spring and summer",
-            birthingSeason: "Spring and summer"
+            breedingSeason: "March to August",
+            birthingSeason: "March to August"
         };
     } else if (temperature >= 15 && temperature <= 25 && humidity > 70 && humidity <= 80) {
         return {
@@ -518,8 +518,8 @@ function getLivestockInfo(temperature, humidity) {
             idealTemperature: "15-25",
             idealHumidity: "70-80",
             impact: "Ducks need a cool, humid environment to prevent stress and maintain health.",
-            breedingSeason: "Spring to summer",
-            birthingSeason: "Spring to summer"
+            breedingSeason: "March to August",
+            birthingSeason: "March to August"
         };
     } else if (temperature >= 15 && temperature <= 25 && humidity >= 40 && humidity < 50) {
         return {
@@ -527,8 +527,8 @@ function getLivestockInfo(temperature, humidity) {
             idealTemperature: "15-25",
             idealHumidity: "40-50",
             impact: "Turkeys prefer moderate temperatures and humidity. They are more tolerant of a wider range of humidity but require moderate temperatures for optimal health.",
-            breedingSeason: "Spring",
-            birthingSeason: "Summer"
+            breedingSeason: "March",
+            birthingSeason: "July"
         };
     } else if (temperature >= 16 && temperature <= 24 && humidity >= 40 && humidity <= 60) {
         return {
@@ -536,8 +536,8 @@ function getLivestockInfo(temperature, humidity) {
             idealTemperature: "16-24",
             idealHumidity: "40-60",
             impact: "Pigs prefer cooler temperatures and moderate humidity levels. Extreme temperatures or humidity can cause stress and affect their growth and health.",
-            breedingSeason: "Year-round",
-            birthingSeason: "Year-round"
+            breedingSeason: "January to December",
+            birthingSeason: "January to December"
         };
     } else if (temperature >= 20 && temperature <= 30 && humidity > 60 && humidity <= 70) {
         return {
@@ -545,8 +545,8 @@ function getLivestockInfo(temperature, humidity) {
             idealTemperature: "20-30",
             idealHumidity: "60-70",
             impact: "Pigeons thrive in warmer temperatures with moderate humidity. They require good ventilation and can tolerate a range of humidity levels, but prefer conditions that are neither too dry nor too wet.",
-            breedingSeason: "Spring to summer",
-            birthingSeason: "Spring to summer"
+            breedingSeason: "March to August",
+            birthingSeason: "March to August"
         };
     } else if (temperature >= 10 && temperature <= 30 && humidity >= 40 && humidity <= 60) {
         return {
@@ -554,8 +554,8 @@ function getLivestockInfo(temperature, humidity) {
             idealTemperature: "10-30",
             idealHumidity: "40-60",
             impact: "Horses are adaptable to a range of temperatures from cool to warm and prefer moderate humidity. They need protection from extreme weather conditions to maintain health and performance.",
-            breedingSeason: "Spring to early summer",
-            birthingSeason: "Spring to early summer"
+            breedingSeason: "March to June",
+            birthingSeason: "March to June"
         };
     } else if (temperature >= 18 && temperature <= 28 && humidity >= 50 && humidity <= 65) {
         return {
@@ -563,8 +563,8 @@ function getLivestockInfo(temperature, humidity) {
             idealTemperature: "18-28",
             idealHumidity: "50-65",
             impact: "Quails prefer warm temperatures and moderate humidity. They thrive in environments that are neither too cold nor too hot and require good ventilation to stay healthy.",
-            breedingSeason: "Spring to summer",
-            birthingSeason: "Spring to summer"
+            breedingSeason: "March to August",
+            birthingSeason: "March to August"
         };
     } else if (temperature >= 25 && temperature <= 30 && humidity > 80 && humidity <= 90) {
         return {
@@ -572,8 +572,8 @@ function getLivestockInfo(temperature, humidity) {
             idealTemperature: "25-30",
             idealHumidity: "80-90",
             impact: "Catfish thrive in warm water temperatures with high humidity. They require clean water and stable conditions to maintain good health and growth.",
-            breedingSeason: "Spring to summer",
-            birthingSeason: "Spring to summer"
+            breedingSeason: "March to August",
+            birthingSeason: "March to August"
         };
     } else if (temperature >= 15 && temperature <= 35 && humidity >= 50 && humidity <= 70) {
         return {
@@ -581,8 +581,8 @@ function getLivestockInfo(temperature, humidity) {
             idealTemperature: "15-35",
             idealHumidity: "50-70",
             impact: "Bees prefer warm temperatures and moderate humidity for optimal honey production. They are active in temperatures above 15°C and need access to flowers and clean water.",
-            breedingSeason: "Spring to summer",
-            birthingSeason: "Spring to summer"
+            breedingSeason: "March to August",
+            birthingSeason: "March to August"
         };
     } else if (temperature >= 30 && temperature <= 50 && humidity >= 10 && humidity <= 30) {
         return {
@@ -590,8 +590,8 @@ function getLivestockInfo(temperature, humidity) {
             idealTemperature: "30-50",
             idealHumidity: "10-30",
             impact: "Camels are well-adapted to hot, dry climates. They can survive and remain productive in conditions that are too harsh for most other livestock.",
-            breedingSeason: "Winter",
-            birthingSeason: "Spring"
+            breedingSeason: "December to February",
+            birthingSeason: "March"
         };
     } else if (temperature >= 22 && temperature <= 28 && humidity >= 70 && humidity <= 90) {
         return {
@@ -603,22 +603,22 @@ function getLivestockInfo(temperature, humidity) {
             birthingSeason: "Varies by species"
         };
     } else if (temperature >= 10 && temperature <= 20 && humidity >= 50 && humidity <= 70) {
-            return {
-                animal: "Deer",
-                idealTemperature: "10-20",
-                idealHumidity: "50-70",
-                impact: "Deer prefer cooler climates with moderate humidity. Stable conditions ensure good health and productivity.",
-                breedingSeason: "Spring to early summer",
-                birthingSeason: "Spring"
-            };
+        return {
+            animal: "Deer",
+            idealTemperature: "10-20",
+            idealHumidity: "50-70",
+            impact: "Deer prefer cooler climates with moderate humidity. Stable conditions ensure good health and productivity.",
+            breedingSeason: "March to June",
+            birthingSeason: "April"
+        };
     } else if (temperature >= 20 && temperature <= 40 && humidity >= 30 && humidity <= 50) {
         return {
             animal: "Ostriches",
             idealTemperature: "20-40",
             idealHumidity: "30-50",
             impact: "Ostriches thrive in warm, dry climates with moderate humidity. They can tolerate a range of temperatures but require stable conditions for optimal health and egg production.",
-            breedingSeason: "Spring to summer",
-            birthingSeason: "Spring to summer"
+            breedingSeason: "March to August",
+            birthingSeason: "March to August"
         };
     } else {
         return {
@@ -631,6 +631,7 @@ function getLivestockInfo(temperature, humidity) {
         };
     }
 }
+
 
 
 // Function to check outdoor temperature comfort
