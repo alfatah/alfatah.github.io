@@ -602,6 +602,15 @@ function getLivestockInfo(temperature, humidity) {
             breedingSeason: "Varies by species",
             birthingSeason: "Varies by species"
         };
+    } else if (temperature >= 10 && temperature <= 20 && humidity >= 50 && humidity <= 70) {
+            return {
+                animal: "Deer",
+                idealTemperature: "10-20",
+                idealHumidity: "50-70",
+                impact: "Deer prefer cooler climates with moderate humidity. Stable conditions ensure good health and productivity.",
+                breedingSeason: "Spring to early summer",
+                birthingSeason: "Spring"
+            };
     } else if (temperature >= 20 && temperature <= 40 && humidity >= 30 && humidity <= 50) {
         return {
             animal: "Ostriches",
