@@ -497,8 +497,8 @@ function getLivestockInfo(temperature, humidity) {
     if (temperature >= 10 && temperature <= 25 && humidity >= 50 && humidity <= 70) {
         return {
             animal: "Cattle, Goats, Sheep, Local Beef Cattle",
-            idealTemperature: "10-25°C",
-            idealHumidity: "50-70%",
+            idealTemperature: "10-25",
+            idealHumidity: "50-70",
             impact: "Cattle, Goats, Sheep, and Local Beef Cattle are comfortable within this temperature and humidity range. Conditions outside of this can negatively affect their health and productivity.",
             breedingSeason: "March to June",
             birthingSeason: "March to June"
@@ -506,8 +506,8 @@ function getLivestockInfo(temperature, humidity) {
     } else if (temperature >= 20 && temperature <= 30 && humidity >= 60 && humidity <= 80) {
         return {
             animal: "Bali Cattle, Goats, Water Buffalo",
-            idealTemperature: "20-30°C",
-            idealHumidity: "60-80%",
+            idealTemperature: "20-30",
+            idealHumidity: "60-80",
             impact: "Bali Cattle, Goats, and Water Buffalo thrive in warm temperatures and high humidity. While these conditions support their health and productivity, they still need protection from extreme heat.",
             breedingSeason: "January to December",
             birthingSeason: "March to August"
@@ -583,6 +583,69 @@ function getLivestockInfo(temperature, humidity) {
             impact: "Catfish thrive in warm water temperatures with high humidity. They require clean water and stable conditions to maintain good health and growth.",
             breedingSeason: "March to August",
             birthingSeason: "March to August"
+        };
+    } else if (temperature >= 24 && temperature <= 30 && humidity > 75 && humidity <= 85) {
+        return {
+            animal: "Nile Tilapia",
+            idealTemperature: "24-30",
+            idealHumidity: "75-85",
+            impact: "Nile Tilapia prefer warm waters and are known for their rapid growth. They can tolerate a wide range of conditions but thrive in stable environments.",
+            breedingSeason: "All year round",
+            birthingSeason: "All year round"
+        };
+    } else if (temperature >= 26 && temperature <= 32 && humidity > 75 && humidity <= 85) {
+        return {
+            animal: "Gourami",
+            idealTemperature: "26-32",
+            idealHumidity: "75-85",
+            impact: "Gourami can adapt to various conditions and prefer warm waters. They are peaceful and can be kept with other species.",
+            breedingSeason: "April to September",
+            birthingSeason: "April to September"
+        };
+    } else if (temperature >= 22 && temperature <= 30 && humidity > 70 && humidity <= 80) {
+        return {
+            animal: "Carp",
+            idealTemperature: "22-30",
+            idealHumidity: "70-80",
+            impact: "Carp are hardy fish that can thrive in various conditions. They are often used in aquaculture for their adaptability.",
+            breedingSeason: "May to July",
+            birthingSeason: "May to July"
+        };
+    } else if (temperature >= 26 && temperature <= 32 && humidity > 75 && humidity <= 85) {
+        return {
+            animal: "Patin",
+            idealTemperature: "26-32",
+            idealHumidity: "75-85",
+            impact: "Patin prefer warmer waters and are known for their fast growth. They require good water quality for optimal health.",
+            breedingSeason: "All year round",
+            birthingSeason: "All year round"
+        };
+    } else if (temperature >= 24 && temperature <= 30 && humidity > 70 && humidity <= 80) {
+        return {
+            animal: "Milkfish",
+            idealTemperature: "24-30",
+            idealHumidity: "70-80",
+            impact: "Milkfish are tolerant of various salinities and prefer warm waters. They are commonly farmed in coastal areas.",
+            breedingSeason: "April to August",
+            birthingSeason: "April to August"
+        };
+    } else if (temperature >= 26 && temperature <= 32 && humidity > 75 && humidity <= 85) {
+        return {
+            animal: "Snapper",
+            idealTemperature: "26-32",
+            idealHumidity: "75-85",
+            impact: "Snapper thrive in warmer waters and are highly valued for their taste. They require good water quality and management.",
+            breedingSeason: "All year round",
+            birthingSeason: "All year round"
+        };
+    } else if (temperature >= 25 && temperature <= 30 && humidity > 80 && humidity <= 90) {
+        return {
+            animal: "Grouper",
+            idealTemperature: "25-30",
+            idealHumidity: "80-90",
+            impact: "Grouper prefer warm waters and are popular in aquaculture due to their high market value. They require stable conditions.",
+            breedingSeason: "April to September",
+            birthingSeason: "April to September"
         };
     } else if (temperature >= 15 && temperature <= 35 && humidity >= 50 && humidity <= 70) {
         return {
