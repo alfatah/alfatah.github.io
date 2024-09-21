@@ -604,7 +604,7 @@ function getLivestockInfo(temperature, humidity) {
         };
     } else if (temperature >= 18 && temperature <= 30 && humidity >= 60 && humidity <= 80) {
         return {
-            animal: "Ayam Buras/Ayam Kampung",
+            animal: "Chickens Buras/Chickens Local",
             idealTemperature: "18-30",
             idealHumidity: "60-80",
             impact: "Ayam buras thrive in warm temperatures with moderate to high humidity. Stable conditions are essential for good health and productivity.",
