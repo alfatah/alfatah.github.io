@@ -497,11 +497,20 @@ function getLivestockInfo(temperature, humidity) {
     if (temperature >= 10 && temperature <= 25 && humidity >= 50 && humidity <= 70) {
         return {
             animal: "Cattle, Goats, Sheep",
-            idealTemperature: "10-25",
-            idealHumidity: "50-70",
-            impact: "Cattle, Goats, and Sheep are comfortable within this temperature and humidity range. Conditions outside this range can affect their health and productivity.",
+            idealTemperature: "10-25°C",
+            idealHumidity: "50-70%",
+            impact: "Cattle, Goats, and Sheep are comfortable within this temperature and humidity range. Conditions outside of this can negatively affect their health and productivity.",
             breedingSeason: "March to June",
             birthingSeason: "March to June"
+        };
+    } else if (temperature >= 20 && temperature <= 30 && humidity >= 60 && humidity <= 80) {
+        return {
+            animal: "Bali Cattle, Goats, Water Buffalo",
+            idealTemperature: "20-30°C",
+            idealHumidity: "60-80%",
+            impact: "Bali Cattle, Goats, and Water Buffalo thrive in warm temperatures and high humidity. While these conditions support their health and productivity, they still need protection from extreme heat.",
+            breedingSeason: "January to December",
+            birthingSeason: "March to August"
         };
     } else if (temperature >= 18 && temperature <= 24 && humidity >= 50 && humidity <= 60) {
         return {
