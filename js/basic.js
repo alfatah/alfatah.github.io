@@ -496,10 +496,10 @@ function getAgricultureInfo(temperature, humidity, plantingDate) {
 function getLivestockInfo(temperature, humidity) {
     if (temperature >= 10 && temperature <= 25 && humidity >= 50 && humidity <= 70) {
         return {
-            animal: "Cattle, Goats, Sheep",
+            animal: "Cattle, Goats, Sheep, Local Beef Cattle",
             idealTemperature: "10-25°C",
             idealHumidity: "50-70%",
-            impact: "Cattle, Goats, and Sheep are comfortable within this temperature and humidity range. Conditions outside of this can negatively affect their health and productivity.",
+            impact: "Cattle, Goats, Sheep, and Local Beef Cattle are comfortable within this temperature and humidity range. Conditions outside of this can negatively affect their health and productivity.",
             breedingSeason: "March to June",
             birthingSeason: "March to June"
         };
