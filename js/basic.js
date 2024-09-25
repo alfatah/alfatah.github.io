@@ -548,6 +548,15 @@ function getLivestockInfo(temperature, humidity) {
             breedingSeason: "January to December",
             birthingSeason: "January to December"
         };
+    } else if (temperature >= 15 && temperature <= 30 && humidity >= 30 && humidity <= 70) {
+        return {
+            animal: "Donkeys",
+            idealTemperature: "15-30",
+            idealHumidity: "30-70",
+            impact: "Donkeys are hardy animals that can tolerate a range of temperatures but prefer moderate conditions. Extreme cold or excessive humidity can lead to health issues.",
+            breedingSeason: "April to October",
+            birthingSeason: "May to November"
+        };
     } else if (temperature >= 20 && temperature <= 30 && humidity > 60 && humidity <= 70) {
         return {
             animal: "Pigeons",
@@ -556,6 +565,24 @@ function getLivestockInfo(temperature, humidity) {
             impact: "Pigeons thrive in warmer temperatures with moderate humidity. They require good ventilation and can tolerate a range of humidity levels, but prefer conditions that are neither too dry nor too wet.",
             breedingSeason: "March to August",
             birthingSeason: "March to August"
+        };
+    } else if (temperature >= 20 && temperature <= 28 && humidity >= 60 && humidity <= 95) {
+        return {
+            animal: "Kambing Etawa (Etawa Goat)",
+            idealTemperature: "20-28",
+            idealHumidity: "60-95",
+            impact: "Etawa Goats adapt well to warm temperatures and high humidity. However, very high humidity requires extra care to prevent skin issues and respiratory problems.",
+            breedingSeason: "Year-round",
+            birthingSeason: "Year-round"
+        };
+    } else if (temperature >= 20 && temperature <= 30 && humidity >= 80 && humidity <= 95) {
+        return {
+            animal: "Water Buffalo",
+            idealTemperature: "20-30",
+            idealHumidity: "80-95",
+            impact: "Water Buffaloes are well-suited to warm, humid environments. They thrive in tropical conditions and are often found in wetlands or paddy fields.",
+            breedingSeason: "Year-round",
+            birthingSeason: "Year-round"
         };
     } else if (temperature >= 10 && temperature <= 30 && humidity >= 40 && humidity <= 60) {
         return {
