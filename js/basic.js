@@ -512,6 +512,15 @@ function getLivestockInfo(temperature, humidity) {
             breedingSeason: "January to December",
             birthingSeason: "March to August"
         };
+    } else if (temperature >= 25 && temperature <= 35 && humidity >= 70 && humidity <= 90) {
+        return {
+            animal: "Sapi Holstein, Sapi Jersey, Sapi Guernsey",
+            idealTemperature: "25-35",
+            idealHumidity: "70-90",
+            impact: "Sapi Holstein, Sapi Jersey, and Sapi Guernsey are well-suited for these warmer conditions, but prolonged exposure to high humidity without adequate cooling can stress the animals.",
+            breedingSeason: "April to September",
+            birthingSeason: "February to May"
+        };
     } else if (temperature >= 18 && temperature <= 24 && humidity >= 50 && humidity <= 60) {
         return {
             animal: "Chickens, Rabbits",
@@ -665,7 +674,6 @@ function getLivestockInfo(temperature, humidity) {
             breedingSeason: "All year round",
             birthingSeason: "All year round"
         };
-    }
     } else if (temperature >= 24 && temperature <= 30 && humidity > 75 && humidity <= 85) {
         return {
             animal: "Nile Tilapia",
