@@ -514,10 +514,10 @@ function getLivestockInfo(temperature, humidity) {
         };
     } else if (temperature >= 25 && temperature <= 35 && humidity >= 70 && humidity <= 90) {
         return {
-            animal: "Sapi Holstein, Sapi Jersey, Sapi Guernsey",
-            idealTemperature: "25-35",
-            idealHumidity: "70-90",
-            impact: "Sapi Holstein, Sapi Jersey, and Sapi Guernsey are well-suited for these warmer conditions, but prolonged exposure to high humidity without adequate cooling can stress the animals.",
+            animal: "Holstein Cattle, Jersey Cattle, Guernsey Cattle",
+            idealTemperature: "25-35°C",
+            idealHumidity: "70-90%",
+            impact: "Holstein, Jersey, and Guernsey cattle are well-suited for these warmer conditions, but prolonged exposure to high humidity without adequate cooling can stress the animals.",
             breedingSeason: "April to September",
             birthingSeason: "February to May"
         };
