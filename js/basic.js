@@ -568,19 +568,10 @@ function getLivestockInfo(temperature, humidity) {
         };
     } else if (temperature >= 20 && temperature <= 28 && humidity >= 60 && humidity <= 95) {
         return {
-            animal: "Kambing Etawa (Etawa Goat)",
+            animal: "Etawa Goat",
             idealTemperature: "20-28",
             idealHumidity: "60-95",
             impact: "Etawa Goats adapt well to warm temperatures and high humidity. However, very high humidity requires extra care to prevent skin issues and respiratory problems.",
-            breedingSeason: "Year-round",
-            birthingSeason: "Year-round"
-        };
-    } else if (temperature >= 20 && temperature <= 30 && humidity >= 80 && humidity <= 95) {
-        return {
-            animal: "Water Buffalo",
-            idealTemperature: "20-30",
-            idealHumidity: "80-95",
-            impact: "Water Buffaloes are well-suited to warm, humid environments. They thrive in tropical conditions and are often found in wetlands or paddy fields.",
             breedingSeason: "Year-round",
             birthingSeason: "Year-round"
         };
@@ -611,6 +602,70 @@ function getLivestockInfo(temperature, humidity) {
             breedingSeason: "March to August",
             birthingSeason: "March to August"
         };
+    } else if (temperature >= 20 && temperature <= 40 && humidity >= 30 && humidity <= 50) {
+        return {
+            animal: "Ostriches",
+            idealTemperature: "20-40",
+            idealHumidity: "30-50",
+            impact: "Ostriches thrive in warm, dry climates with moderate humidity. They can tolerate a range of temperatures but require stable conditions for optimal health and egg production.",
+            breedingSeason: "March to August",
+            birthingSeason: "March to August"
+        };
+    } else if (temperature >= 20 && temperature <= 35 && humidity >= 40 && humidity <= 60) {
+        return {
+            animal: "Kacang Goat",
+            idealTemperature: "20-35",
+            idealHumidity: "40-60",
+            impact: "Kacang goats are hardy and adapt well to various conditions, but they thrive in warm, moderately humid climates.",
+            breedingSeason: "All year round",
+            birthingSeason: "All year round"
+        };
+    } else if (temperature >= 20 && temperature <= 35 && humidity >= 40 && humidity <= 60) {
+        return {
+            animal: "Boer Goat",
+            idealTemperature: "20-35",
+            idealHumidity: "40-60",
+            impact: "Boer goats are well-suited for warm climates and can adapt to various humidity levels, but prefer moderate conditions for optimal growth.",
+            breedingSeason: "All year round",
+            birthingSeason: "All year round"
+        };
+    } else if (temperature >= 20 && temperature <= 30 && humidity >= 40 && humidity <= 70) {
+        return {
+            animal: "Saanen Goat",
+            idealTemperature: "20-30",
+            idealHumidity: "40-70",
+            impact: "Saanen goats prefer cooler conditions and moderate humidity, which support their milk production.",
+            breedingSeason: "September to December",
+            birthingSeason: "February to April"
+        };
+    } else if (temperature >= 20 && temperature <= 35 && humidity >= 30 && humidity <= 70) {
+        return {
+            animal: "Nubian Goat",
+            idealTemperature: "20-35",
+            idealHumidity: "30-70",
+            impact: "Nubian goats can thrive in various climates but prefer warm and slightly humid conditions.",
+            breedingSeason: "All year round",
+            birthingSeason: "All year round"
+        };
+    } else if (temperature >= 20 && temperature <= 30 && humidity >= 40 && humidity <= 60) {
+        return {
+            animal: "Angora Goat",
+            idealTemperature: "20-30",
+            idealHumidity: "40-60",
+            impact: "Angora goats require moderate temperatures and humidity for optimal fleece quality.",
+            breedingSeason: "September to January",
+            birthingSeason: "February to April"
+        };
+    } else if (temperature >= 20 && temperature <= 35 && humidity >= 30 && humidity <= 60) {
+        return {
+            animal: "Jamnapari Goat",
+            idealTemperature: "20-35",
+            idealHumidity: "30-60",
+            impact: "Jamnapari goats thrive in warm climates and can tolerate varying humidity levels, but prefer stable conditions.",
+            breedingSeason: "All year round",
+            birthingSeason: "All year round"
+        };
+    }
     } else if (temperature >= 24 && temperature <= 30 && humidity > 75 && humidity <= 85) {
         return {
             animal: "Nile Tilapia",
