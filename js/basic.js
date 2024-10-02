@@ -1428,22 +1428,33 @@ function fetchHolidays(countryCode) {
 //////////////////////////////////////////////////////////////////////////
 
 function fetchEmergencyNumbers(countryCode) {
-    const url = `https://emergencynumberapi.com/api/country/${countryCode}`;
+    const url = `https://emergencynumberapi.com/api/${countryCode}`; // Memastikan endpoint API benar
 
     fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            let emergencyHtml = '<h3>Emergency Numbers:</h3><ul>';
-            emergencyHtml += `<li>Police: ${data.data.police.all}</li>`;
-            emergencyHtml += `<li>Ambulance: ${data.data.ambulance.all}</li>`;
-            emergencyHtml += `<li>Fire: ${data.data.fire.all}</li>`;
-            emergencyHtml += '</ul>';
-
-            $("#emergency-numbers").html(emergencyHtml); // Menampilkan nomor darurat di elemen dengan ID emergency-numbers
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
         })
-        .catch(error => console.error('Error fetching emergency numbers:', error));
-}
+        .then(data => {
+            if (data && data.data) {
+                let emergencyHtml = '<h3>Emergency Numbers:</h3><ul>';
+                emergencyHtml += `<li>Police: ${data.data.police.all || 'N/A'}</li>`;
+                emergencyHtml += `<li>Ambulance: ${data.data.ambulance.all || 'N/A'}</li>`;
+                emergencyHtml += `<li>Fire: ${data.data.fire.all || 'N/A'}</li>`;
+                emergencyHtml += '</ul>';
 
+                document.getElementById('emergency-numbers').innerHTML = emergencyHtml; // Menampilkan nomor darurat di elemen dengan ID emergency-numbers
+            } else {
+                document.getElementById('emergency-numbers').innerHTML = '<p>No data available for this country.</p>';
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching emergency numbers:', error);
+            document.getElementById('emergency-numbers').innerHTML = '<p>Error fetching data. Please try again later.</p>';
+        });
+}
 
 //////////////////////////////////////////////////////////////////////////
 
