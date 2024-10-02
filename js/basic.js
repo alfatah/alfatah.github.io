@@ -1427,6 +1427,26 @@ function fetchHolidays(countryCode) {
 
 //////////////////////////////////////////////////////////////////////////
 
+function fetchEmergencyNumbers(countryCode) {
+    const url = `https://emergencynumberapi.com/api/country/${countryCode}`;
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            let emergencyHtml = '<h3>Emergency Numbers:</h3><ul>';
+            emergencyHtml += `<li>Police: ${data.data.police.all}</li>`;
+            emergencyHtml += `<li>Ambulance: ${data.data.ambulance.all}</li>`;
+            emergencyHtml += `<li>Fire: ${data.data.fire.all}</li>`;
+            emergencyHtml += '</ul>';
+
+            $("#emergency-numbers").html(emergencyHtml); // Menampilkan nomor darurat di elemen dengan ID emergency-numbers
+        })
+        .catch(error => console.error('Error fetching emergency numbers:', error));
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+
 function getCountryFeaturesByPopulation(population) {
     let features = {};
     if (population < 1_000_000) {
