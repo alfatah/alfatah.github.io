@@ -56,6 +56,7 @@ $(document).ready(function() {
             getUnemploymentRate(ip.country);
             fetchHolidays(ip.country);
             getWeatherAndUVIndex(latitude, longitude);
+            fetchEmergencyNumbers(ip.country);
         });
     }
 
