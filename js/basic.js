@@ -1415,7 +1415,7 @@ function classifyUnemploymentRate(rate, categoryDiv) {
 // Mengambil data hari libur publik menggunakan HolidayAPI
 function getHolidays(countryCode) {
     const year = new Date().getFullYear(); // Mengambil tahun saat ini
-    const apiKey = 'YOUR_API_KEY'; // Ganti dengan API key Anda
+    const apiKey = '25935d29-b512-4034-83a2-f31077b52221'; // Ganti dengan API key Anda
     const url = `https://holidayapi.com/v1/holidays?pretty&key=${apiKey}&country=${countryCode}&year=${year}`;
 
     $.get(url, function(response) {
