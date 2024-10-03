@@ -1,21 +1,24 @@
 $(document).ready(function() {
+    // Mengecek apakah browser mendukung geolocation
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showPosition, showError);
     } else {
-        document.getElementById('location').innerText = "Geolocation is not supported by this browser.";
+        $('#location').text("Geolocation is not supported by this browser.");
     }
 
+    // Fungsi untuk menangani posisi yang berhasil diambil
     function showPosition(position) {
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
 
-        document.getElementById('location').innerText = `Latitude, Longitude: ${latitude}, ${longitude}`;
+        $('#location').text(`Latitude, Longitude: ${latitude}, ${longitude}`);
         const mapsLink = `https://www.google.com/maps?authuser=0&q=${latitude},${longitude}`;
-        document.getElementById('maps-link').innerHTML = `Location: <a href="${mapsLink}" target="_blank">View on Google Maps</a>`;
+        $('#maps-link').html(`Location: <a href="${mapsLink}" target="_blank">View on Google Maps</a>`);
 
         getLocationF(latitude, longitude);
     }
 
+    // Fungsi untuk menangani error geolocation
     function showError(error) {
         const errorMessages = {
             1: "User denied the request for Geolocation.",
@@ -23,28 +26,26 @@ $(document).ready(function() {
             3: "The request to get user location timed out.",
             0: "An unknown error occurred."
         };
-        document.getElementById('location').innerText = errorMessages[error.code] || "An unknown error occurred.";
+        $('#location').text(errorMessages[error.code] || "An unknown error occurred.");
     }
 
+    // Fungsi untuk mengambil informasi lokasi berdasarkan koordinat
     function getLocationF(latitude, longitude) {
         $.getJSON("https://ipapi.co/json/", function(ip) {
-            $("#ip-address").html(`Your IP: ${ip.ip}, ${ip.org}, ${ip.asn}`);
+            // Menampilkan informasi IP
+            $('#ip-address').html(`Your IP: ${ip.ip}, ${ip.org}, ${ip.asn}`);
 
-            // Provider information based on ASN
+            // Informasi provider
             const providerInfo = getProviderInfo(ip.asn);
-            $("#provider-info").html(providerInfo);
+            $('#provider-info').html(providerInfo);
 
-            // Display location data
-            const locationData = `${ip.latitude},${ip.longitude}, ${ip.timezone}, ${ip.city}, ${ip.region}, ${ip.postal}, ${ip.country_name}`;
-            $("#location-data").html(locationData);
+            // Menampilkan data lokasi
+            const locationData = `${ip.latitude}, ${ip.longitude}, ${ip.timezone}, ${ip.city}, ${ip.region}, ${ip.postal}, ${ip.country_name}`;
+            $('#location-data').html(locationData);
 
-            // Fetch and display population from World Bank API
+            // Memanggil fungsi yang relevan
             fetchPopulation(ip.country);
-
-            // Display Country Calling Code
-            $("#country-code").html(`Country Calling Code: ${ip.country_calling_code}`);
-
-            // Call functions with latitude, longitude, and country code
+            $('#country-code').html(`Country Calling Code: ${ip.country_calling_code}`);
             getGDP(ip.country);
             getWeatherF(latitude, longitude);
             displaySeason(ip.country_name);
@@ -54,9 +55,12 @@ $(document).ready(function() {
             getGovernmentSystem(ip.country_name);
             getCountryEconomicStatus(ip.country);
             getUnemploymentRate(ip.country);
-            fetchHolidays(ip.country);
+            getHolidays(ip.country);
             getWeatherAndUVIndex(latitude, longitude);
-            fetchEmergencyNumbers(ip.country);
+            getEmergencyNumbers(ip.country);
+        }).fail(function() {
+            console.error('Error fetching IP data.');
+            $('#ip-address').html('Error fetching IP data.');
         });
     }
 
@@ -1408,54 +1412,56 @@ function classifyUnemploymentRate(rate, categoryDiv) {
 
 //////////////////////////////////////////////////////////////////////////
 
-function fetchHolidays(countryCode) {
+// Mengambil data hari libur publik menggunakan HolidayAPI
+function getHolidays(countryCode) {
     const year = new Date().getFullYear(); // Mengambil tahun saat ini
-    const url = `https://date.nager.at/Api/v2/PublicHoliday/${year}/${countryCode}`;
+    const apiKey = 'YOUR_API_KEY'; // Ganti dengan API key Anda
+    const url = `https://holidayapi.com/v1/holidays?pretty&key=${apiKey}&country=${countryCode}&year=${year}`;
 
-    fetch(url)
-        .then(response => response.json())
-        .then(holidays => {
+    $.get(url, function(response) {
+        if (response.holidays) {
             let holidaysHtml = '<h3>Holidays:</h3><ul>';
-            holidays.forEach(holiday => {
-                holidaysHtml += `<li>${holiday.localName} (${holiday.date}): ${holiday.name}</li>`;
+            response.holidays.forEach(holiday => {
+                holidaysHtml += `<li>${holiday.local_name} (${holiday.date}): ${holiday.name}</li>`;
             });
             holidaysHtml += '</ul>';
 
             $("#holidays").html(holidaysHtml); // Menampilkan data hari libur dalam elemen dengan ID holidays
-        })
-        .catch(error => console.error('Error fetching holidays:', error));
+        } else {
+            $("#holidays").html('<p>No holiday data available.</p>');
+        }
+    }).fail(function(error) {
+        console.error('Error fetching holidays:', error);
+        $("#holidays").html('<p>Error fetching data. Please try again later.</p>');
+    });
 }
+
 
 //////////////////////////////////////////////////////////////////////////
 
-function fetchEmergencyNumbers(countryCode) {
-    const url = `https://emergencynumberapi.com/api/${countryCode}`; // Memastikan endpoint API benar
+// Mengambil nomor darurat dengan OpenCageData API
+function getEmergencyNumbers(countryCode) {
+    const apiKey = '7fdc8f74ae4a4003b78dbebdc96b5249'; // Ganti dengan API key Anda
+    const url = `https://api.opencagedata.com/geocode/v1/emergency/${countryCode}?key=${apiKey}`;
 
-    fetch(url)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data && data.data) {
-                let emergencyHtml = '<h3>Emergency Numbers:</h3><ul>';
-                emergencyHtml += `<li>Police: ${data.data.police.all || 'N/A'}</li>`;
-                emergencyHtml += `<li>Ambulance: ${data.data.ambulance.all || 'N/A'}</li>`;
-                emergencyHtml += `<li>Fire: ${data.data.fire.all || 'N/A'}</li>`;
-                emergencyHtml += '</ul>';
+    $.get(url, function(data) {
+        if (data && data.results) {
+            let emergencyHtml = '<h3>Emergency Numbers:</h3><ul>';
+            emergencyHtml += `<li>Police: ${data.results[0].emergency.police || 'N/A'}</li>`;
+            emergencyHtml += `<li>Ambulance: ${data.results[0].emergency.ambulance || 'N/A'}</li>`;
+            emergencyHtml += `<li>Fire: ${data.results[0].emergency.fire || 'N/A'}</li>`;
+            emergencyHtml += '</ul>';
 
-                document.getElementById('emergency-numbers').innerHTML = emergencyHtml; // Menampilkan nomor darurat di elemen dengan ID emergency-numbers
-            } else {
-                document.getElementById('emergency-numbers').innerHTML = '<p>No data available for this country.</p>';
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching emergency numbers:', error);
-            document.getElementById('emergency-numbers').innerHTML = '<p>Error fetching data. Please try again later.</p>';
-        });
+            $('#emergency-numbers').html(emergencyHtml);
+        } else {
+            $('#emergency-numbers').html('<p>No data available for this country.</p>');
+        }
+    }).fail(function(error) {
+        console.error('Error fetching emergency numbers:', error);
+        $('#emergency-numbers').html('<p>Error fetching data. Please try again later.</p>');
+    });
 }
+
 
 //////////////////////////////////////////////////////////////////////////
 
