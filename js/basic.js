@@ -1412,47 +1412,47 @@ function classifyUnemploymentRate(rate, categoryDiv) {
 
 //////////////////////////////////////////////////////////////////////////
 
-// Mengambil data hari libur publik menggunakan HolidayAPI
+// Function to fetch public holiday data
 function getHolidays(countryCode) {
-    const year = new Date().getFullYear(); // Mengambil tahun saat ini
-    const apiKey = '25935d29-b512-4034-83a2-f31077b52221'; // Ganti dengan API key Anda
-    const url = `https://holidayapi.com/v1/holidays?pretty&key=${apiKey}&country=${countryCode}&year=${year}`;
+    const year = new Date().getFullYear(); // Get the current year
+    const url = `https://date.nager.at/Api/v2/PublicHoliday/${year}/${countryCode}`;
 
-    $.get(url, function(response) {
-        if (response.holidays) {
-            let holidaysHtml = '<h3>Holidays:</h3><ul>';
-            response.holidays.forEach(holiday => {
-                holidaysHtml += `<li>${holiday.local_name} (${holiday.date}): ${holiday.name}</li>`;
-            });
-            holidaysHtml += '</ul>';
-
-            $("#holidays").html(holidaysHtml); // Menampilkan data hari libur dalam elemen dengan ID holidays
-        } else {
-            $("#holidays").html('<p>No holiday data available.</p>');
-        }
-    }).fail(function(error) {
-        console.error('Error fetching holidays:', error);
-        $("#holidays").html('Error fetching data. Please try again later.');
-    });
+    $.get(url)
+        .done(function(holidays) {
+            if (holidays.length > 0) {
+                let holidaysHtml = '<h3>Holidays:</h3><ul>';
+                holidays.forEach(holiday => {
+                    holidaysHtml += `<li>${holiday.localName} (${holiday.date}): ${holiday.name}</li>`;
+                });
+                holidaysHtml += '</ul>';
+                $("#holidays").html(holidaysHtml); // Display holiday data in the element with ID holidays
+            } else {
+                $("#holidays").html('<h3>No holidays found for this country.</h3>');
+            }
+        })
+        .fail(function(error) {
+            console.error('Error fetching holidays:', error);
+            $("#holidays").html('Error fetching holidays. Please try again later.');
+        });
 }
+
 
 
 //////////////////////////////////////////////////////////////////////////
 
-// Mengambil nomor darurat dengan OpenCageData API
+// Mengambil nomor darurat
 function getEmergencyNumbers(countryCode) {
-    const apiKey = '7fdc8f74ae4a4003b78dbebdc96b5249'; // Ganti dengan API key Anda
-    const url = `https://api.opencagedata.com/geocode/v1/emergency/${countryCode}?key=${apiKey}`;
+    const url = `https://emergencynumberapi.com/api/${countryCode}`; // Memastikan endpoint API benar
 
     $.get(url, function(data) {
-        if (data && data.results) {
+        if (data && data.data) {
             let emergencyHtml = '<h3>Emergency Numbers:</h3><ul>';
-            emergencyHtml += `<li>Police: ${data.results[0].emergency.police || 'N/A'}</li>`;
-            emergencyHtml += `<li>Ambulance: ${data.results[0].emergency.ambulance || 'N/A'}</li>`;
-            emergencyHtml += `<li>Fire: ${data.results[0].emergency.fire || 'N/A'}</li>`;
+            emergencyHtml += `<li>Police: ${data.data.police.all || 'N/A'}</li>`;
+            emergencyHtml += `<li>Ambulance: ${data.data.ambulance.all || 'N/A'}</li>`;
+            emergencyHtml += `<li>Fire: ${data.data.fire.all || 'N/A'}</li>`;
             emergencyHtml += '</ul>';
 
-            $('#emergency-numbers').html(emergencyHtml);
+            $('#emergency-numbers').html(emergencyHtml); // Menampilkan nomor darurat di elemen dengan ID emergency-numbers
         } else {
             $('#emergency-numbers').html('<p>No data available for this country.</p>');
         }
@@ -1461,7 +1461,6 @@ function getEmergencyNumbers(countryCode) {
         $('#emergency-numbers').html('Error fetching data. Please try again later.');
     });
 }
-
 
 //////////////////////////////////////////////////////////////////////////
 
