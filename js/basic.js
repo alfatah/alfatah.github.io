@@ -1432,7 +1432,7 @@ function getHolidays(countryCode) {
         }
     }).fail(function(error) {
         console.error('Error fetching holidays:', error);
-        $("#holidays").html('<p>Error fetching data. Please try again later.</p>');
+        $("#holidays").html('Error fetching data. Please try again later.');
     });
 }
 
@@ -1458,7 +1458,7 @@ function getEmergencyNumbers(countryCode) {
         }
     }).fail(function(error) {
         console.error('Error fetching emergency numbers:', error);
-        $('#emergency-numbers').html('<p>Error fetching data. Please try again later.</p>');
+        $('#emergency-numbers').html('Error fetching data. Please try again later.');
     });
 }
 
