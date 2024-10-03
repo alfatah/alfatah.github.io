@@ -1415,14 +1415,14 @@ function classifyUnemploymentRate(rate, categoryDiv) {
 // Function to fetch public holiday data
 function getHolidays(countryCode) {
     const year = new Date().getFullYear(); // Get the current year
-    const url = `https://date.nager.at/Api/v2/PublicHoliday/${year}/${countryCode}`;
+    const url = `https://date.nager.at/api/v3/PublicHolidays/${year}/${countryCode}`;
 
     $.get(url)
         .done(function(holidays) {
             if (holidays.length > 0) {
                 let holidaysHtml = '<h3>Holidays:</h3><ul>';
                 holidays.forEach(holiday => {
-                    holidaysHtml += `<li>${holiday.localName} (${holiday.date}): ${holiday.name}</li>`;
+                    holidaysHtml += `<p>${holiday.localName} (${holiday.date}): ${holiday.name}<p>`;
                 });
                 holidaysHtml += '</ul>';
                 $("#holidays").html(holidaysHtml); // Display holiday data in the element with ID holidays
@@ -1437,12 +1437,11 @@ function getHolidays(countryCode) {
 }
 
 
-
 //////////////////////////////////////////////////////////////////////////
 
 // Mengambil nomor darurat
 function getEmergencyNumbers(countryCode) {
-    const url = `https://emergencynumberapi.com/api/${countryCode}`; // Memastikan endpoint API benar
+    const url = `https://emergencynumberapi.com/api/country/${countryCode}`; // Memastikan endpoint API benar
 
     $.get(url, function(data) {
         if (data && data.data) {
