@@ -1422,7 +1422,9 @@ function getHolidays(countryCode) {
             if (holidays.length > 0) {
                 let holidaysHtml = '<h3>Holidays:</h3><ul>';
                 holidays.forEach(holiday => {
-                    holidaysHtml += `<p>${holiday.localName} (${holiday.date}): ${holiday.name}<p>`;
+                    const dateParts = holiday.date.split('-'); // Split the date string (YYYY-MM-DD)
+                    const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`; // Reformat to DD/MM/YYYY
+                    holidaysHtml += `<p class="mantab-text">${holiday.localName} (${formattedDate}): ${holiday.name}</p>`;
                 });
                 holidaysHtml += '</ul>';
                 $("#holidays").html(holidaysHtml); // Display holiday data in the element with ID holidays
@@ -1432,33 +1434,37 @@ function getHolidays(countryCode) {
         })
         .fail(function(error) {
             console.error('Error fetching holidays:', error);
-            $("#holidays").html('Error fetching holidays. Please try again later.');
+            $("#holidays").html('<h3>Error fetching holidays. Please try again later.</h3>');
         });
 }
 
 
 //////////////////////////////////////////////////////////////////////////
 
-// Mengambil nomor darurat
+// Function to fetch emergency numbers
 function getEmergencyNumbers(countryCode) {
-    const url = `https://emergencynumberapi.com/api/country/${countryCode}`; // Memastikan endpoint API benar
+    const url = `https://emergencynumberapi.com/api/country/${countryCode}`; // Ensure the API endpoint is correct
 
-    $.get(url, function(data) {
-        if (data && data.data) {
-            let emergencyHtml = '<h3>Emergency Numbers:</h3><ul>';
-            emergencyHtml += `<li>Police: ${data.data.police.all || 'N/A'}</li>`;
-            emergencyHtml += `<li>Ambulance: ${data.data.ambulance.all || 'N/A'}</li>`;
-            emergencyHtml += `<li>Fire: ${data.data.fire.all || 'N/A'}</li>`;
-            emergencyHtml += '</ul>';
+    $.get(url)
+        .done(function(data) {
+            if (data && data.data) {
+                let emergencyHtml = '<h3>Emergency Numbers:</h3><ul>';
+                
+                // Using optional chaining to safely access nested properties
+                emergencyHtml += `<li>Police: ${data.data.police?.all || 'N/A'}</li>`;
+                emergencyHtml += `<li>Ambulance: ${data.data.ambulance?.all || 'N/A'}</li>`;
+                emergencyHtml += `<li>Fire: ${data.data.fire?.all || 'N/A'}</li>`;
+                emergencyHtml += '</ul>';
 
-            $('#emergency-numbers').html(emergencyHtml); // Menampilkan nomor darurat di elemen dengan ID emergency-numbers
-        } else {
-            $('#emergency-numbers').html('<p>No data available for this country.</p>');
-        }
-    }).fail(function(error) {
-        console.error('Error fetching emergency numbers:', error);
-        $('#emergency-numbers').html('Error fetching data. Please try again later.');
-    });
+                $('#emergency-numbers').html(emergencyHtml); // Display emergency numbers in the element with ID emergency-numbers
+            } else {
+                $('#emergency-numbers').html('<p>No data available for this country.</p>');
+            }
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+            console.error('Error fetching emergency numbers:', textStatus, errorThrown);
+            $('#emergency-numbers').html('Error fetching data. Please try again later.');
+        });
 }
 
 //////////////////////////////////////////////////////////////////////////
