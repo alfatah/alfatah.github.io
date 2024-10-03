@@ -1424,7 +1424,7 @@ function getHolidays(countryCode) {
                 holidays.forEach(holiday => {
                     const dateParts = holiday.date.split('-'); // Split the date string (YYYY-MM-DD)
                     const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`; // Reformat to DD/MM/YYYY
-                    holidaysHtml += `<p class="mantab-text">${holiday.localName} (${formattedDate}): ${holiday.name}</p>`;
+                    holidaysHtml += `<p class="mantab-text">${holiday.localName} (${formattedDate})</p>`;
                 });
                 holidaysHtml += '</ul>';
                 $("#holidays").html(holidaysHtml); // Display holiday data in the element with ID holidays
