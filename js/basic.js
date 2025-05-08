@@ -1500,9 +1500,7 @@ function getEmergencyNumbers(countryCode) {
             <br>
             <strong>Police:</strong> ${numbers.police}
            <strong>Ambulance:</strong> ${numbers.ambulance}
-           <strong>Fire:</strong> ${numbers.fire}
-       
-    `;
+           <strong>Fire:</strong> ${numbers.fire}`;
 
     $('#emergency-numbers').html(emergencyHtml);
 }
