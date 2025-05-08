@@ -1441,31 +1441,37 @@ function classifyUnemploymentRate(rate, categoryDiv) {
 
 //////////////////////////////////////////////////////////////////////////
 
-// Function to fetch public holiday data
 function getHolidays(countryCode) {
-    const year = new Date().getFullYear(); // Get the current year
+    const today = new Date();
+    const todayStr = today.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+    const year = today.getFullYear();
     const url = `https://date.nager.at/api/v3/PublicHolidays/${year}/${countryCode}`;
+
+    // Cek jika hari Minggu
+    if (today.getDay() === 0) {
+        $("#holidays").html('<center><p class="mantab-text">Hari ini adalah Hari Minggu (Libur Nasional)</p></center>');
+        return;
+    }
 
     $.get(url)
         .done(function(holidays) {
-            if (holidays.length > 0) {
-                let holidaysHtml = '<h3>Holidays:</h3><ul>';
-                holidays.forEach(holiday => {
-                    const dateParts = holiday.date.split('-'); // Split the date string (YYYY-MM-DD)
-                    const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`; // Reformat to DD/MM/YYYY
-                    holidaysHtml += `<center><p class="mantab-text">${holiday.localName} (${formattedDate})</p></center>`;
-                });
-                holidaysHtml += '</ul>';
-                $("#holidays").html(holidaysHtml); // Display holiday data in the element with ID holidays
+            const todayHoliday = holidays.find(holiday => holiday.date === todayStr);
+
+            if (todayHoliday) {
+                const dateParts = todayHoliday.date.split('-');
+                const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+                const holidayHtml = `<center><p class="mantab-text">${todayHoliday.localName} (${formattedDate})</p></center>`;
+                $("#holidays").html(holidayHtml);
             } else {
-                $("#holidays").html('<h3>No holidays found for this country.</h3>');
+                $("#holidays").html('<center><p class="mantab-text">Hari ini bukan hari libur nasional.</p></center>');
             }
         })
         .fail(function(error) {
             console.error('Error fetching holidays:', error);
-            $("#holidays").html('<h3>Error fetching holidays. Please try again later.</h3>');
+            $("#holidays").html('<center><p class="mantab-text">Gagal mengambil data hari libur. Silakan coba lagi nanti.</p></center>');
         });
 }
+
 
 
 //////////////////////////////////////////////////////////////////////////
