@@ -1476,31 +1476,38 @@ function getHolidays(countryCode) {
 
 //////////////////////////////////////////////////////////////////////////
 
-// Function to fetch emergency numbers
+// Function to fetch emergency numbers using countryCode with fallback defaults
 function getEmergencyNumbers(countryCode) {
-    const url = `https://emergencynumberapi.com/api/country/${countryCode}`; // Ensure the API endpoint is correct
+    // Nomor darurat manual berdasarkan kode negara (ISO Alpha-2)
+    const emergencyNumbers = {
+        ID: { police: '110', ambulance: '118', fire: '113' },
+        US: { police: '911', ambulance: '911', fire: '911' },
+        GB: { police: '999', ambulance: '999', fire: '999' },
+        IN: { police: '100', ambulance: '102', fire: '101' },
+        MY: { police: '999', ambulance: '999', fire: '994' },
+        PH: { police: '117', ambulance: '911', fire: '911' },
+        // Tambahkan negara lain sesuai kebutuhan
+    };
 
-    $.get(url)
-        .done(function(data) {
-            if (data && data.data) {
-                let emergencyHtml = '<h3>Emergency Numbers:</h3><ul>';
-                
-                // Using optional chaining to safely access nested properties
-                emergencyHtml += `<li>Police: ${data.data.police?.all || 'N/A'}</li>`;
-                emergencyHtml += `<li>Ambulance: ${data.data.ambulance?.all || 'N/A'}</li>`;
-                emergencyHtml += `<li>Fire: ${data.data.fire?.all || 'N/A'}</li>`;
-                emergencyHtml += '</ul>';
+    const numbers = emergencyNumbers[countryCode.toUpperCase()] || {
+        police: 'Not available',
+        ambulance: 'Not available',
+        fire: 'Not available'
+    };
 
-                $('#emergency-numbers').html(emergencyHtml); // Display emergency numbers in the element with ID emergency-numbers
-            } else {
-                $('#emergency-numbers').html('<p>No data available for this country.</p>');
-            }
-        })
-        .fail(function(jqXHR, textStatus, errorThrown) {
-            console.error('Error fetching emergency numbers:', textStatus, errorThrown);
-            $('#emergency-numbers').html('Error fetching data. Please try again later.');
-        });
+    const emergencyHtml = `
+            <strong>Emergency Numbers:</strong>
+            <br>
+            <strong>Police:</strong> ${numbers.police}
+           <strong>Ambulance:</strong> ${numbers.ambulance}
+           <strong>Fire:</strong> ${numbers.fire}
+       
+    `;
+
+    $('#emergency-numbers').html(emergencyHtml);
 }
+
+
 
 //////////////////////////////////////////////////////////////////////////
 
