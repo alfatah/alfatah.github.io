@@ -390,25 +390,53 @@ function categorizeRainfall(rainfall) {
 // Function to categorize weather based on description and visibility, with safety messages
 function categorizeWeather(description, visibility) {
     if (description.includes('fog')) {
-        return `Fog (Visibility: < 1 km). Drive slowly, use fog lights, and maintain safe distance.`;
+        return `Fog (Visibility: < 1 km). 
+Drive: Use fog lights, reduce speed, and maintain safe distance. 
+Sea: Reduce speed, use radar/navigation aids. 
+Air: Delay takeoff/landing if necessary.`;
     } else if (description.includes('smog')) {
-        return `Smog (Visibility: Very Low). Limit outdoor activities and wear a mask if needed.`;
+        return `Smog (Visibility: Very Low). 
+Drive: Close windows and use internal air circulation. 
+Sea: Wear masks and avoid exposure on deck. 
+Air: Monitor air quality for ground crew and delay low-altitude operations.`;
     } else if (description.includes('smoke')) {
-        return `Smoke (Visibility: Varies). Stay indoors if air quality is poor and keep windows closed.`;
+        return `Smoke (Visibility: Varies). 
+Drive: Use headlights and drive cautiously. 
+Sea: Navigate carefully and stay informed via radio. 
+Air: Adjust flight paths and check visibility limits.`;
     } else if (description.includes('clouds')) {
-        return `Cloudy (Cloud Cover: Varies). Weather is stable but monitor for possible changes.`;
+        return `Cloudy (Cloud Cover: Varies). 
+Drive: Normal conditions, but stay alert. 
+Sea: Monitor for sudden weather changes. 
+Air: VFR flights should monitor cloud ceiling.`;
     } else if (description.includes('dust')) {
-        return `Dust Storm (Visibility: Very Low). Avoid travel, wear protective eyewear and a mask.`;
+        return `Dust Storm (Visibility: Very Low). 
+Drive: Avoid travel, wear a mask, protect eyes. 
+Sea: Stay in port or sail with extreme caution. 
+Air: Delay flights; reduced engine performance and visibility.`;
     } else if (description.includes('rain') && visibility < 2) {
-        return `Heavy Rain (Visibility: Low). Drive with caution, turn on headlights, and watch for flooding.`;
+        return `Heavy Rain (Visibility: Low). 
+Drive: Slow down, use headlights, beware of hydroplaning. 
+Sea: Beware of rough waters and reduced visibility. 
+Air: Expect turbulence and delays.`;
     } else if (description.includes('snow') && visibility < 2) {
-        return `Heavy Snow (Visibility: Low). Reduce speed, keep distance, and avoid unnecessary travel.`;
+        return `Heavy Snow (Visibility: Low). 
+Drive: Use snow tires, reduce speed, increase following distance. 
+Sea: Avoid sailing unless essential; use ice radar if available. 
+Air: De-icing procedures needed; check runway conditions.`;
     } else if (visibility < 1) {
-        return `Very Poor Visibility. Be extremely cautious when traveling; consider delaying trips.`;
+        return `Very Poor Visibility. 
+Drive: Postpone travel if possible. 
+Sea: Anchor or proceed slowly with navigation aids. 
+Air: Follow IFR protocols strictly and delay if needed.`;
     } else {
-        return `Clear or Partially Cloudy. Safe conditions, but stay updated on weather changes.`;
+        return `Clear or Partially Cloudy. 
+Drive: Good conditions, stay alert. 
+Sea: Safe for sailing, continue monitoring weather. 
+Air: Ideal for flying, but stay informed of updates.`;
     }
 }
+
 
 
 // Function to check outdoor temperature comfort based on humidity
