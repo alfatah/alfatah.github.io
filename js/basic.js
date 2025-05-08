@@ -190,7 +190,7 @@ function getWeatherF(latitude, longitude, plantingDate) {
             $("#category").html(`Humidity: ${humidity}% (${humidityCategory})<br>` +
                                 `Wind Speed: ${windSpeed} m/s (${windSpeedCategory})<br>` +
                                 `Rainfall: ${rainfall} mm (${rainfallCategory})<br>` +
-                                `Visibility: ${visibility} km`);
+                                `Visibility: ${visibility} km (${weatherDescription})`);
 
             // Display comfort message
             $("#comfortMessage").html(`Comfort Message: ${comfortMessage}`);
