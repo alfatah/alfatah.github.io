@@ -387,28 +387,29 @@ function categorizeRainfall(rainfall) {
     }
 }
 
-// Function to categorize weather based on description and visibility
+// Function to categorize weather based on description and visibility, with safety messages
 function categorizeWeather(description, visibility) {
     if (description.includes('fog')) {
-        return `Fog (Visibility: < 1 km)`;
+        return `Fog (Visibility: < 1 km). Drive slowly, use fog lights, and maintain safe distance.`;
     } else if (description.includes('smog')) {
-        return `Smog (Visibility: Very Low)`;
+        return `Smog (Visibility: Very Low). Limit outdoor activities and wear a mask if needed.`;
     } else if (description.includes('smoke')) {
-        return `Smoke (Visibility: Varies)`;
+        return `Smoke (Visibility: Varies). Stay indoors if air quality is poor and keep windows closed.`;
     } else if (description.includes('clouds')) {
-        return `Cloudy (Cloud Cover: Varies)`;
+        return `Cloudy (Cloud Cover: Varies). Weather is stable but monitor for possible changes.`;
     } else if (description.includes('dust')) {
-        return `Dust Storm (Visibility: Very Low)`;
+        return `Dust Storm (Visibility: Very Low). Avoid travel, wear protective eyewear and a mask.`;
     } else if (description.includes('rain') && visibility < 2) {
-        return `Heavy Rain (Visibility: Low)`;
+        return `Heavy Rain (Visibility: Low). Drive with caution, turn on headlights, and watch for flooding.`;
     } else if (description.includes('snow') && visibility < 2) {
-        return `Heavy Snow (Visibility: Low)`;
+        return `Heavy Snow (Visibility: Low). Reduce speed, keep distance, and avoid unnecessary travel.`;
     } else if (visibility < 1) {
-        return `Very Poor Visibility`;
+        return `Very Poor Visibility. Be extremely cautious when traveling; consider delaying trips.`;
     } else {
-        return `Clear or Partially Cloudy`;
+        return `Clear or Partially Cloudy. Safe conditions, but stay updated on weather changes.`;
     }
 }
+
 
 // Function to check outdoor temperature comfort based on humidity
 function checkOutdoorTemperature(temp, humidity) {
