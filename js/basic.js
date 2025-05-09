@@ -171,7 +171,7 @@ function getWeatherF(latitude, longitude, plantingDate) {
             const humidity = weatherData.main.humidity;
             const windSpeed = weatherData.wind.speed;
             const weatherDescription = weatherData.weather[0].description;
-            const rainfall = weatherData.rain ? (weatherData.rain['1h'] || 0) : 0; // next rain 1 hour 
+            const rainfall = weatherData.rain ? (weatherData.rain['1h'] || 0) : 0; // rain in the next 1 hour
             const visibility = weatherData.visibility / 1000; // Visibility in km
 
             // Determine the categories
