@@ -171,7 +171,7 @@ function getWeatherF(latitude, longitude, plantingDate) {
             const humidity = weatherData.main.humidity;
             const windSpeed = weatherData.wind.speed;
             const weatherDescription = weatherData.weather[0].description;
-            const rainfall = weatherData.rain ? (weatherData.rain['1h'] || 0) : 0; // rain in the next 1 hour
+            const rainfall = weatherData.rain ? (weatherData.rain['1h'] || 0) : 0; // Rainfall (Forecast Next 1 Hour)
             const visibility = weatherData.visibility / 1000; // Visibility in km
 
             // Determine the categories
@@ -185,12 +185,13 @@ function getWeatherF(latitude, longitude, plantingDate) {
             const comfortMessage = checkOutdoorTemperature(temperature, humidity);
 
             // Display the weather data with categories
-            $("#temperature").html(`Temperature: ${temperature}°C (${temperatureCategory})`);
-            $("#weather").html(`Weather: ${weatherDescription} (${weatherCategory})`);
-            $("#category").html(`Humidity: ${humidity}% (${humidityCategory})<br>` +
-                                `Wind Speed: ${windSpeed} m/s (${windSpeedCategory})<br>` +
-                                `Rainfall: ${rainfall} mm (${rainfallCategory})<br>` +
-                                `Visibility: ${visibility} km (${weatherDescription})`);
+                $("#temperature").html(`Temperature: ${temperature}°C (${temperatureCategory})`);
+                $("#weather").html(`Weather: ${weatherDescription} (${weatherCategory})`);
+                $("#category").html(`Humidity: ${humidity}% (${humidityCategory})<br>` +
+                    `Wind Speed: ${windSpeed} m/s (${windSpeedCategory})<br>` +
+                    `Rainfall (Forecast Next 1 Hour): ${rainfall} mm (${rainfallCategory})<br>` +
+                    `Visibility: ${visibility} km (${weatherDescription})`);
+
 
             // Display comfort message
             $("#comfortMessage").html(`Comfort Message: ${comfortMessage}`);
