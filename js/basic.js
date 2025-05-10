@@ -1446,14 +1446,30 @@ function getHolidays(countryCode) {
     const today = new Date();
     const todayStr = today.toISOString().split('T')[0]; // Format: YYYY-MM-DD
     const year = today.getFullYear();
+    const dayOfWeek = today.getDay(); // 0: Sunday, 6: Saturday
     const url = `https://date.nager.at/api/v3/PublicHolidays/${year}/${countryCode}`;
 
-    // Cek jika hari Minggu
-    if (today.getDay() === 0) {
-        $("#holidays").html('<center><p class="mantab-text">Hari ini adalah Hari Minggu (Libur Nasional)</p></center>');
+    // Weekend rules by country
+    const weekendByCountry = {
+        'ID': [0, 6], // Indonesia: Sunday & Saturday
+        'US': [0, 6], // United States: Sunday & Saturday
+        'AE': [5, 6], // UAE: Friday & Saturday
+        'IR': [5],    // Iran: Friday
+        'SA': [5, 6], // Saudi Arabia: Friday & Saturday
+        'IN': [0, 6], // India: Sunday & Saturday
+        'JP': [0, 6], // Japan: Sunday & Saturday
+        // Add more countries as needed
+    };
+
+    const weekendDays = weekendByCountry[countryCode] || [0, 6]; // Default: Sunday & Saturday
+
+    if (weekendDays.includes(dayOfWeek)) {
+        const dayName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayOfWeek];
+        $("#holidays").html(`<center><p class="mantab-text">Today is ${dayName} (Weekend Holiday)</p></center>`);
         return;
     }
 
+    // Check for national public holidays
     $.get(url)
         .done(function(holidays) {
             const todayHoliday = holidays.find(holiday => holiday.date === todayStr);
@@ -1464,16 +1480,14 @@ function getHolidays(countryCode) {
                 const holidayHtml = `<center><p class="mantab-text">${todayHoliday.localName} (${formattedDate})</p></center>`;
                 $("#holidays").html(holidayHtml);
             } else {
-                $("#holidays").html('<center><p class="mantab-text">Hari ini bukan hari libur nasional.</p></center>');
+                $("#holidays").html('<center><p class="mantab-text">Today is not a national holiday.</p></center>');
             }
         })
         .fail(function(error) {
             console.error('Error fetching holidays:', error);
-            $("#holidays").html('<center><p class="mantab-text">Gagal mengambil data hari libur. Silakan coba lagi nanti.</p></center>');
+            $("#holidays").html('<center><p class="mantab-text">Failed to fetch holiday data. Please try again later.</p></center>');
         });
 }
-
-
 
 //////////////////////////////////////////////////////////////////////////
 
