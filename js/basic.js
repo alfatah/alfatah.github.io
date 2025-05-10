@@ -1015,100 +1015,89 @@ function displaySeason(countryName) {
   
 
 //////////////////////////////////////////////////////////////////////////
-// Function to get air quality data using latitude and longitude (OpenWeather)
+
+// Function to get air quality data using latitude and longitude
 function getAirQuality(latitude, longitude) {
-    const apiKey = '74cc8a3c199f63bb2998825eb67ca8db'; // Ganti dengan API key dari OpenWeather
-    const apiUrl = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${latitude}&lon=${longitude}&appid=${apiKey}`;
+    var apiKey = '445797c8-f6e0-4754-b57c-c1f7960d43a6'; // Ganti dengan kunci API AirVisual Anda
+    var apiUrl = `https://api.airvisual.com/v2/nearest_city?lat=${latitude}&lon=${longitude}&key=${apiKey}`;
 
     $.getJSON(apiUrl)
-        .done(function(data) {
-            if (data && data.list && data.list.length > 0) {
-                const airQualityIndex = data.list[0].main.aqi;
-                const aqiValue = convertAQI(airQualityIndex);
-                const airQualityCategory = getAirQualityCategory(aqiValue);
-                const healthRecommendations = getHealthRecommendations(aqiValue);
+        .done(function(airData) {
+            var airQualityIndex = airData.data.current.pollution.aqius;
+            var airQualityCategory = getAirQualityCategory(airQualityIndex);
+            var healthRecommendations = getHealthRecommendations(airQualityIndex);
 
-                updateElement("#air-quality-index", `Air Quality Index: ${aqiValue}`);
-                updateElement("#air-quality-category", `Air Quality Category: ${airQualityCategory}`);
-                updateElement("#health-recommendations", `Health Recommendations: ${healthRecommendations}`);
-            } else {
-                showError("No air quality data available.");
-            }
+            $("#air-quality-index").html("Air Quality Index: " + airQualityIndex);
+            $("#air-quality-category").html("Air Quality Category: " + airQualityCategory);
+            $("#health-recommendations").html("Health Recommendations: " + healthRecommendations);
         })
         .fail(function(jqXHR, textStatus, errorThrown) {
             console.error("Error fetching air quality data: " + textStatus, errorThrown);
-            showError("Error fetching air quality data.");
+            $("#air-quality-index").html("Error fetching air quality data");
+            $("#air-quality-category").html("");
+            $("#health-recommendations").html("");
         });
 }
 
-// OpenWeather API: AQI level 1 to 5 mapped to standard AQI
-function convertAQI(aqiLevel) {
-    switch (aqiLevel) {
-        case 1: return 50;    // Good
-        case 2: return 100;   // Fair
-        case 3: return 150;   // Moderate
-        case 4: return 200;   // Poor
-        case 5: return 300;   // Very Poor
-        default: return 999;  // Unknown
-    }
-}
-
-// Function to update an element's HTML
-function updateElement(selector, content) {
-    const element = $(selector);
-    if (element.length) {
-        element.html(content);
-    }
-}
-
-function showError(message) {
-    updateElement("#air-quality-index", message);
-    updateElement("#air-quality-category", "");
-    updateElement("#health-recommendations", "");
-}
-
+// Function to determine air quality category based on air quality index (AQI)
 function getAirQualityCategory(aqi) {
-    if (aqi <= 50) return "Good";
-    if (aqi <= 100) return "Moderate";
-    if (aqi <= 150) return "Unhealthy for Sensitive Groups";
-    if (aqi <= 200) return "Unhealthy";
-    if (aqi <= 300) return "Very Unhealthy";
-    return "Hazardous";
+    if (aqi <= 50) {
+        return "Good";
+    } else if (aqi <= 100) {
+        return "Moderate";
+    } else if (aqi <= 150) {
+        return "Unhealthy for Sensitive Groups";
+    } else if (aqi <= 200) {
+        return "Unhealthy";
+    } else if (aqi <= 300) {
+        return "Very Unhealthy";
+    } else {
+        return "Hazardous";
+    }
 }
 
+// Function to provide health recommendations based on air quality category
 function getHealthRecommendations(aqi) {
-    if (aqi <= 50) return "Air quality is good. No health risks.";
-    if (aqi <= 100) return "Air is acceptable, but sensitive groups should limit prolonged outdoor activities.";
-    if (aqi <= 150) return "Sensitive groups should reduce prolonged or heavy outdoor exertion.";
-    if (aqi <= 200) return "Everyone should reduce outdoor activities. Sensitive groups should avoid outdoor exertion.";
-    if (aqi <= 300) return "Avoid all outdoor exertion. Stay indoors with clean air.";
-    return "Stay indoors, avoid physical activities outdoors. Use air purifiers if available.";
+    if (aqi <= 50) {
+        return "Air quality is good. No health risks.";
+    } else if (aqi <= 100) {
+        return "Air is acceptable, but sensitive groups should limit prolonged outdoor activities.";
+    } else if (aqi <= 150) {
+        return "Sensitive groups should reduce prolonged or heavy outdoor exertion.";
+    } else if (aqi <= 200) {
+        return "Everyone should reduce outdoor activities. Sensitive groups should avoid outdoor exertion.";
+    } else if (aqi <= 300) {
+        return "Avoid all outdoor exertion. Stay indoors with clean air.";
+    } else {
+        return "Stay indoors, avoid physical activities outdoors. Use air purifiers if available.";
+    }
 }
 
+// Function to get the user's location and fetch air quality data
 function getLocationF() {
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const { latitude, longitude } = position.coords;
-                getAirQuality(latitude, longitude);
-            },
-            (error) => {
-                console.error("Geolocation error: " + error.message);
-                showError("Unable to retrieve location.");
-            }
-        );
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+            getAirQuality(latitude, longitude);
+        }, function(error) {
+            console.error("Geolocation error: " + error.message);
+            $("#air-quality-index").html("Unable to retrieve location.");
+            $("#air-quality-category").html("");
+            $("#health-recommendations").html("");
+        });
     } else {
         console.error("Geolocation is not supported by this browser.");
-        showError("Geolocation is not supported by this browser.");
+        $("#air-quality-index").html("Geolocation is not supported by this browser.");
+        $("#air-quality-category").html("");
+        $("#health-recommendations").html("");
     }
 }
 
+// Call the getLocationF function inside $(document).ready
 $(document).ready(function() {
     getLocationF();
 });
-
-
-
 
 
 //////////////////////////////////////////////////////////////////////////
