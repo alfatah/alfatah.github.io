@@ -1018,7 +1018,7 @@ function displaySeason(countryName) {
 
 // Function to get air quality data using latitude and longitude
 function getAirQuality(latitude, longitude) {
-    var apiKey = '445797c8-f6e0-4754-b57c-c1f7960d43a6'; // Ganti dengan kunci API AirVisual Anda
+    var apiKey = '445797c8-f6e0-4754-b57c-c1f7960d43a6'; // Replace with your AirVisual API key
     var apiUrl = `https://api.airvisual.com/v2/nearest_city?lat=${latitude}&lon=${longitude}&key=${apiKey}`;
 
     $.getJSON(apiUrl)
@@ -1026,54 +1026,53 @@ function getAirQuality(latitude, longitude) {
             var airQualityIndex = airData.data.current.pollution.aqius;
             var airQualityCategory = getAirQualityCategory(airQualityIndex);
             var healthRecommendations = getHealthRecommendations(airQualityIndex);
+            var healthEffects = getHealthEffects(airQualityIndex);
 
             $("#air-quality-index").html("Air Quality Index: " + airQualityIndex);
             $("#air-quality-category").html("Air Quality Category: " + airQualityCategory);
             $("#health-recommendations").html("Health Recommendations: " + healthRecommendations);
+            $("#health-effects").html("Health Effects: " + healthEffects);
         })
         .fail(function(jqXHR, textStatus, errorThrown) {
             console.error("Error fetching air quality data: " + textStatus, errorThrown);
             $("#air-quality-index").html("Error fetching air quality data");
             $("#air-quality-category").html("");
             $("#health-recommendations").html("");
+            $("#health-effects").html("");
         });
 }
 
-// Function to determine air quality category based on air quality index (AQI)
+// Function to determine air quality category based on AQI
 function getAirQualityCategory(aqi) {
-    if (aqi <= 50) {
-        return "Good";
-    } else if (aqi <= 100) {
-        return "Moderate";
-    } else if (aqi <= 150) {
-        return "Unhealthy for Sensitive Groups";
-    } else if (aqi <= 200) {
-        return "Unhealthy";
-    } else if (aqi <= 300) {
-        return "Very Unhealthy";
-    } else {
-        return "Hazardous";
-    }
+    if (aqi <= 50) return "Good";
+    if (aqi <= 100) return "Moderate";
+    if (aqi <= 150) return "Unhealthy for Sensitive Groups";
+    if (aqi <= 200) return "Unhealthy";
+    if (aqi <= 300) return "Very Unhealthy";
+    return "Hazardous";
 }
 
-// Function to provide health recommendations based on air quality category
+// Function to provide health recommendations based on AQI
 function getHealthRecommendations(aqi) {
-    if (aqi <= 50) {
-        return "Air quality is good. No health risks.";
-    } else if (aqi <= 100) {
-        return "Air is acceptable, but sensitive groups should limit prolonged outdoor activities.";
-    } else if (aqi <= 150) {
-        return "Sensitive groups should reduce prolonged or heavy outdoor exertion.";
-    } else if (aqi <= 200) {
-        return "Everyone should reduce outdoor activities. Sensitive groups should avoid outdoor exertion.";
-    } else if (aqi <= 300) {
-        return "Avoid all outdoor exertion. Stay indoors with clean air.";
-    } else {
-        return "Stay indoors, avoid physical activities outdoors. Use air purifiers if available.";
-    }
+    if (aqi <= 50) return "Air quality is good. No precautions needed.";
+    if (aqi <= 100) return "Acceptable air quality, but sensitive individuals may consider limiting outdoor activity.";
+    if (aqi <= 150) return "Sensitive groups should reduce prolonged or heavy outdoor exertion.";
+    if (aqi <= 200) return "Everyone should limit outdoor activity. Sensitive groups should avoid prolonged exertion.";
+    if (aqi <= 300) return "Avoid all outdoor exertion. Stay indoors in a clean air environment.";
+    return "Stay indoors, avoid any outdoor activity. Use air purifiers and keep windows closed.";
 }
 
-// Function to get the user's location and fetch air quality data
+// Function to describe possible health effects based on AQI
+function getHealthEffects(aqi) {
+    if (aqi <= 50) return "No adverse health effects expected.";
+    if (aqi <= 100) return "Mild symptoms such as throat irritation may occur in very sensitive individuals.";
+    if (aqi <= 150) return "Possible eye irritation, coughing, and fatigue for sensitive groups.";
+    if (aqi <= 200) return "Increased risk of respiratory symptoms in sensitive groups and some healthy individuals.";
+    if (aqi <= 300) return "Serious respiratory issues, especially for children, elderly, and people with lung conditions.";
+    return "High risk of serious health effects for all groups. May trigger acute or chronic illnesses.";
+}
+
+// Function to get user's geolocation and fetch air quality data
 function getLocationF() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
@@ -1085,16 +1084,18 @@ function getLocationF() {
             $("#air-quality-index").html("Unable to retrieve location.");
             $("#air-quality-category").html("");
             $("#health-recommendations").html("");
+            $("#health-effects").html("");
         });
     } else {
         console.error("Geolocation is not supported by this browser.");
         $("#air-quality-index").html("Geolocation is not supported by this browser.");
         $("#air-quality-category").html("");
         $("#health-recommendations").html("");
+        $("#health-effects").html("");
     }
 }
 
-// Call the getLocationF function inside $(document).ready
+// Automatically get air quality data when the page loads
 $(document).ready(function() {
     getLocationF();
 });
